@@ -1,0 +1,51 @@
+name: Deploy to Vultr
+
+on:
+  pull_request:
+    branches:
+      - dev
+    types:
+      - merged
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+
+      - name: Setup Gradle
+        uses: gradle/setup-gradle@v3
+
+      - name: Grant execute permission for gradlew
+        run: chmod +x gradlew
+
+      - name: Build with Gradle
+        run: ./gradlew build
+
+      - name: Deploy to Vultr
+        env:
+          VULTR_SSH_KEY: ${{ secrets.VULTR_SSH_KEY }}
+          VULTR_SSH_HOST: ${{ secrets.VULTR_SSH_HOST }}
+          VULTR_SSH_USER: ${{ secrets.VULTR_SSH_USER }}
+        run: |
+          echo "$VULTR_SSH_KEY" > ~/.ssh/id_rsa
+          chmod 600 ~/.ssh/id_rsa
+          ssh-keyscan -H $VULTR_SSH_HOST >> ~/.ssh/known_hosts
+          
+          scp -i ~/.ssh/id_rsa build/libs/cntime-0.0.1-SNAPSHOT.jar $VULTR_SSH_USER@$VULTR_SSH_HOST:/app
+
+          # 원격 서버에서 실행
+          ssh -i ~/.ssh/id_rsa $VULTR_SSH_USER@$VULTR_SSH_HOST << 'EOF'
+            # 이전 Spring 프로세스 종료
+            lsof -ti:8081 | xargs kill -9 || true
+
+            # 새로운 Spring 서버 실행
+            nohup java -jar /app/cntime-0.0.1-SNAPSHOT.jar > /dev/null 2>&1 &
+          EOF
