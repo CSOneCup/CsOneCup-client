@@ -1,3 +1,4 @@
+import 'package:cs_onecup/colors.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatelessWidget {
@@ -10,8 +11,8 @@ class LandingPage extends StatelessWidget {
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
             colors: [
-              Color(0xFFFFFFFF), // 밝은 색상 (위쪽)
-              Color(0xFFDFDBCC), // 약간 어두운 색상 (아래쪽)
+              Colors.white,
+              AppColors.mainBeige,
             ],
           ),
         ),
@@ -23,7 +24,7 @@ class LandingPage extends StatelessWidget {
               Text(
                 '매일 한잔씩 마시는 CS 지식',
                 style: TextStyle(
-                  color: Colors.orange,
+                  color: AppColors.mainLightOrange,
                   fontSize: 16,
                 ),
               ),
@@ -31,7 +32,7 @@ class LandingPage extends StatelessWidget {
               Text(
                 '오늘, CS 한잔',
                 style: TextStyle(
-                  color: Colors.orange,
+                  color: AppColors.mainDeepOrange,
                   fontSize: 32,
                   fontWeight: FontWeight.bold,
                 ),
@@ -40,7 +41,7 @@ class LandingPage extends StatelessWidget {
                 margin: EdgeInsets.symmetric(vertical: 10),
                 width: 60,
                 height: 4,
-                color: Colors.orange,
+                color: AppColors.mainDeepOrange,
               ),
               SizedBox(height: 20),
               Image.asset(
@@ -51,7 +52,7 @@ class LandingPage extends StatelessWidget {
               SizedBox(height: 40),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
+                  backgroundColor: AppColors.mainDeepOrange,
                   minimumSize: Size(200, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
@@ -68,7 +69,7 @@ class LandingPage extends StatelessWidget {
               SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.orange,
+                  backgroundColor: AppColors.mainDeepOrange,
                   minimumSize: Size(200, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
