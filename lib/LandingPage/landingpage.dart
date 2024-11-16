@@ -1,3 +1,5 @@
+import 'package:cs_onecup/LandingPage/signinpage.dart';
+import 'package:cs_onecup/LandingPage/signuppage.dart';
 import 'package:cs_onecup/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -73,7 +75,10 @@ class LandingPage extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  // Add login functionality here
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SigninPage()),
+                  );
                 },
                 child: Text(
                   '로그인',
@@ -90,7 +95,10 @@ class LandingPage extends StatelessWidget {
                   ),
                 ),
                 onPressed: () {
-                  // Add sign-up functionality here
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => SignupPage()),
+                  );
                 },
                 child: Text(
                   '회원가입',
