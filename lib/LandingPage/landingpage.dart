@@ -32,36 +32,27 @@ class LandingPage extends StatelessWidget {
                 ),
               ),
               SizedBox(height: 10),
+              // 텍스트와 밑줄 이미지 배치
               Stack(
-                alignment: Alignment.center,
                 children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: '오늘, ',
-                          style: TextStyle(
-                            color: AppColors.mainDeepOrange,
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextSpan(
-                          text: 'CS 한잔',
-                          style: TextStyle(
-                            color: AppColors.mainDeepOrange,
-                            fontSize: 40,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
+                  // 텍스트 표시
+                  Text(
+                    '오늘, CS 한잔',
+                    style: TextStyle(
+                      color: AppColors.mainDeepOrange,
+                      fontSize: 40,
+                      fontWeight: FontWeight.bold,
                     ),
                   ),
+                  // 밑줄 이미지 위치 조정
                   Padding(
-                    padding: const EdgeInsets.only(top: 70, left: 90),
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).size.height * 0.08, // 텍스트 아래로 약간 이동
+                      left: MediaQuery.of(context).size.width * 0.2, // 텍스트 시작점 조정
+                    ),
                     child: Image.asset(
-                      'images/underline.png', // 밑줄 이미지 경로를 업데이트하세요.
-                      width: 120, // 'CS 한잔' 텍스트 길이에 맞춰 이미지 크기 조정
+                      'images/underline.png',
+                      width: MediaQuery.of(context).size.width * 0.4, // 'CS 한잔' 길이에 맞춘 밑줄
                     ),
                   ),
                 ],
