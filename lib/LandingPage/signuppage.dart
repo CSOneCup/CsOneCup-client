@@ -170,6 +170,9 @@ class _SignUpPageState extends State<SignUpPage> {
       if(_nameController.text.isEmpty) {
         nameErrorText = '이름을 입력해 주세요';
       }
+      else {
+        nameErrorText = null;
+      }
     });
 
     if (idErrorText == null && passwordErrorText == null) {
