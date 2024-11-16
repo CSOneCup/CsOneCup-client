@@ -1,5 +1,8 @@
 import 'package:cs_onecup/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:cs_onecup/config.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -14,6 +17,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   String? idErrorText;
   String? passwordErrorText;
+  String? nameErrorText;
 
   @override
   Widget build(BuildContext context) {
@@ -22,12 +26,13 @@ class _SignUpPageState extends State<SignUpPage> {
     return Scaffold(
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.transparent,
+        backgroundColor: AppColors.mainLightGray,
         leading: IconButton(
           icon: Icon(Icons.arrow_back, color: Color(0XFF3F414E)),
           onPressed: () => Navigator.pop(context),
         ),
       ),
+      backgroundColor: AppColors.mainLightGray,
       body: SingleChildScrollView(
         child: Padding(
           padding: const EdgeInsets.symmetric(horizontal: 30),
@@ -67,6 +72,7 @@ class _SignUpPageState extends State<SignUpPage> {
               _buildTextField(
                 label: '이름',
                 controller: _nameController,
+                errorText: nameErrorText,
               ),
               _buildTextField(
                 label: '비밀번호',
@@ -138,30 +144,82 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-  void _validateForm() {
+  Future<void> _validateForm() async {
     setState(() {
-      if (_idController.text == 'isExist') {
+      if(_idController.text.isEmpty) {
+        idErrorText = '아이디를 입력해주세요';
+      }
+      else if (_idController.text == 'isExist') {
         idErrorText = '이미 존재하는 아이디입니다';
-      } else {
+      }
+      else {
         idErrorText = null;
       }
 
       // 비밀번호 확인 로직
-      if (_passwordController.text != _confirmPasswordController.text) {
+      if(_passwordController.text.isEmpty) {
+        passwordErrorText = '비밀번호를 입력해 주세요';
+      }
+      else if (_passwordController.text != _confirmPasswordController.text) {
         passwordErrorText = '비밀번호가 동일하지 않습니다';
-      } else {
+      }
+      else {
         passwordErrorText = null;
+      }
+
+      if(_nameController.text.isEmpty) {
+        nameErrorText = '이름을 입력해 주세요';
       }
     });
 
     if (idErrorText == null && passwordErrorText == null) {
-      // 회원가입 처리 로직
-      Navigator.pop(context);
+      await _signUp();
+    }
+  }
+
+  Future<void> _signUp() async {
+    const url = '${Config.baseUrl}/api/user/signup';
+
+    try {
+      // 요청 데이터
+      final requestBody = {
+        'user_id': _idController.text,
+        'name': _nameController.text,
+        'password': _passwordController.text,
+      };
+
+      // POST 요청
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode(requestBody),
+      );
+
+      if (response.statusCode == 200) {
+        // 성공
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('회원가입 성공! 🎉'),
+            duration: Duration(seconds: 5),
+            backgroundColor: AppColors.mainLightOrange,
+          ),
+        );
+        Navigator.pop(context);
+      }
+      else {
+        setState(() {
+          idErrorText = '이미 존재하는 아이디입니다';
+        });
+        final responseBody = jsonDecode(response.body);
+      }
+    }
+    catch (e) {
+      // 에러 처리
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
-          content: Text('회원가입 성공! 🎉'),
-          duration: Duration(seconds: 2),
-          backgroundColor: AppColors.mainLightOrange,
+          content: Text('네트워크 오류가 발생했습니다: $e'),
+          duration: Duration(seconds: 20),
+          backgroundColor: AppColors.mainDeepOrange,
         ),
       );
     }
