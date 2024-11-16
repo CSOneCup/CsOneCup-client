@@ -4,6 +4,9 @@ import 'package:flutter/material.dart';
 class LandingPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+    // 화면 너비를 계산하여 버튼 너비의 비율로 활용합니다.
+    double buttonWidth = MediaQuery.of(context).size.width * 0.8;
+
     return Scaffold(
       body: Container(
         decoration: BoxDecoration(
@@ -25,35 +28,55 @@ class LandingPage extends StatelessWidget {
                 '매일 한잔씩 마시는 CS 지식',
                 style: TextStyle(
                   color: AppColors.mainLightOrange,
-                  fontSize: 16,
+                  fontSize: 24,
                 ),
               ),
               SizedBox(height: 10),
-              Text(
-                '오늘, CS 한잔',
-                style: TextStyle(
-                  color: AppColors.mainDeepOrange,
-                  fontSize: 32,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-              Container(
-                margin: EdgeInsets.symmetric(vertical: 10),
-                width: 60,
-                height: 4,
-                color: AppColors.mainDeepOrange,
+              Stack(
+                alignment: Alignment.center,
+                children: [
+                  RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: '오늘, ',
+                          style: TextStyle(
+                            color: AppColors.mainDeepOrange,
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'CS 한잔',
+                          style: TextStyle(
+                            color: AppColors.mainDeepOrange,
+                            fontSize: 40,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 70, left: 90),
+                    child: Image.asset(
+                      'images/underline.png', // 밑줄 이미지 경로를 업데이트하세요.
+                      width: 120, // 'CS 한잔' 텍스트 길이에 맞춰 이미지 크기 조정
+                    ),
+                  ),
+                ],
               ),
               SizedBox(height: 20),
               Image.asset(
-                'images/coffee_cat.png', // Add your image to the assets folder and update the path
-                width: 150,
-                height: 150,
+                'images/coffee_cat.png', // 이미지 경로를 확인하세요.
+                width: 200,
+                height: 200,
               ),
               SizedBox(height: 40),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.mainDeepOrange,
-                  minimumSize: Size(200, 50),
+                  minimumSize: Size(buttonWidth, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
@@ -70,7 +93,7 @@ class LandingPage extends StatelessWidget {
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.mainDeepOrange,
-                  minimumSize: Size(200, 50),
+                  minimumSize: Size(buttonWidth, 50),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(30),
                   ),
