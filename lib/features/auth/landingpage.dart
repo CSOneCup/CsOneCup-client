@@ -1,6 +1,6 @@
-import 'package:cs_onecup/LandingPage/signinpage.dart';
-import 'package:cs_onecup/LandingPage/signuppage.dart';
-import 'package:cs_onecup/colors.dart';
+import 'package:cs_onecup/features/auth/signinpage.dart';
+import 'package:cs_onecup/features/auth/signuppage.dart';
+import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class LandingPage extends StatelessWidget {

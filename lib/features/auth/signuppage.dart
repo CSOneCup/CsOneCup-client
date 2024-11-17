@@ -1,8 +1,8 @@
-import 'package:cs_onecup/colors.dart';
+import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:cs_onecup/config.dart';
+import 'package:cs_onecup/core/constants/config.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
