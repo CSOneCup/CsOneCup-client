@@ -1,0 +1,3 @@
+enum QuizType {
+  ox, choice
+}
