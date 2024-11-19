@@ -57,7 +57,7 @@ class LandingPage extends StatelessWidget {
                           MediaQuery.of(context).size.width * 0.2, // 텍스트 시작점 조정
                     ),
                     child: Image.asset(
-                      'images/underline.png',
+                      'assets/images/underline.png',
                       width: MediaQuery.of(context).size.width *
                           0.4, // 'CS 한잔' 길이에 맞춘 밑줄
                     ),
@@ -66,7 +66,7 @@ class LandingPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Image.asset(
-                'images/coffee_cat.png', // 이미지 경로를 확인하세요.
+                'assets/images/coffee_cat.png', // 이미지 경로를 확인하세요.
                 width: 200,
                 height: 200,
               ),
@@ -102,7 +102,7 @@ class LandingPage extends StatelessWidget {
                 onPressed: () {
                   Navigator.push(
                     context,
-                    MaterialPageRoute(builder: (context) => SignUpPage()),
+                    MaterialPageRoute(builder: (context) => const SignUpPage()),
                   );
                 },
                 child: const Text(

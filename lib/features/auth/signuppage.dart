@@ -44,7 +44,7 @@ class _SignUpPageState extends State<SignUpPage> {
             children: [
               const SizedBox(height: 20),
               Image.asset(
-                'images/coffee_cat.png',
+                'assets/images/coffee_cat.png',
                 width: 100,
                 height: 100,
               ),
