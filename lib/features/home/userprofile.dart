@@ -2,21 +2,26 @@ import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
 
 class UserProfile extends StatefulWidget {
-  const UserProfile({super.key});
+  int userLevel;
+  String userName;
+  int userExp;
+
+  UserProfile({
+    super.key,
+    required this.userLevel,
+    required this.userName,
+    required this.userExp,
+  });
 
   @override
   State<UserProfile> createState() => _UserProfileState();
 }
 
 class _UserProfileState extends State<UserProfile> {
-  var userLevel = 1;
-  var userName = '사용자';
-  var userExp = 50;
-
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(top: 50, left: 30, right: 30),
+      padding: const EdgeInsets.only(top: 30, left: 30, right: 30),
       child: Column(
         children: [
           Row(children: [
@@ -39,7 +44,7 @@ class _UserProfileState extends State<UserProfile> {
                       crossAxisAlignment: CrossAxisAlignment.center,
                       children: [
                         Text(
-                          userName,
+                          widget.userName,
                           style: const TextStyle(
                             color: Colors.black,
                             fontSize: 25,
@@ -52,7 +57,7 @@ class _UserProfileState extends State<UserProfile> {
                   ],
                 ),
                 Text(
-                  'LV $userLevel',
+                  'LV ${widget.userLevel}',
                   style: const TextStyle(
                     color: Colors.black,
                     fontSize: 20,
@@ -62,7 +67,7 @@ class _UserProfileState extends State<UserProfile> {
             ),
           ]),
           const SizedBox(height: 20),
-          ExpBar(userExp: userExp),
+          ExpBar(userExp: widget.userExp),
         ],
       ),
     );
