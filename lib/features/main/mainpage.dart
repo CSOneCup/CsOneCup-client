@@ -31,7 +31,7 @@ class _MainPageState extends State<MainPage> {
           child: Scaffold(
             body: IndexedStack(
               index: _index,
-              children: <Widget>[
+              children: const <Widget>[
                 HomePage(),
                 MyDeckPage(),
                 ChallengePage(),
