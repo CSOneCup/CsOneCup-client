@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:cs_onecup/features/home/userprofile.dart';
 import 'package:cs_onecup/features/home/solved_and_retry_problem_info.dart';
+import 'package:cs_onecup/core/widgets/simplecardwidget.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -26,6 +27,7 @@ class _HomePageState extends State<HomePage> {
               solvedProblemsToday: 5,
               retryProblems: 12,
             ),
+            const SimpleCardwidget(),
           ],
         ));
   }
