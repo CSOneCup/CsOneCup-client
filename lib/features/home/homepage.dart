@@ -14,6 +14,19 @@ class HomePage extends StatefulWidget {
 class _HomePageState extends State<HomePage> {
   int exp = 50;
 
+  String? _selectedCategory = '모든 카테고리'; //선택된 카테고리
+  bool _includingSolvedProblems = false; //풀린 문제 포함 여부
+
+  final List<String> _quizCategories = [
+    '모든 카테고리',
+    '운영체제',
+    '네트워크',
+    '데이터베이스',
+    '자료구조',
+    '소프트웨어공학',
+    '프로그래밍'
+  ];
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -39,7 +52,64 @@ class _HomePageState extends State<HomePage> {
               ),
               const CardsInHand(),
               const SizedBox(
-                height: 70,
+                height: 50,
+              ),
+              Container(
+                decoration: BoxDecoration(
+                  color: AppColors.mainDeepOrange,
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                child: const Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
+                  child: Text(
+                    '랜덤 문제 풀이',
+                    style: TextStyle(color: Colors.white, fontSize: 20),
+                  ),
+                ),
+              ),
+              DropdownButton<String>(
+                dropdownColor: AppColors.mainBeige,
+                value: _selectedCategory,
+                hint: const Text('카테고리 선택'),
+                items: _quizCategories.map((String category) {
+                  return DropdownMenuItem<String>(
+                    value: category,
+                    child: Text(category),
+                  );
+                }).toList(),
+                onChanged: (String? newValue) {
+                  setState(() {
+                    _selectedCategory = newValue;
+                  });
+                },
+              ),
+              Padding(
+                padding: const EdgeInsets.only(right: 26),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  children: [
+                    Checkbox(
+                      activeColor: AppColors.mainDeepOrange,
+                      value: _includingSolvedProblems,
+                      onChanged: (bool? value) {
+                        setState(() {
+                          _includingSolvedProblems = value!;
+                        });
+                      },
+                    ),
+                    Text(
+                      '맞춘 문제 포함',
+                      style: TextStyle(
+                        color: _includingSolvedProblems
+                            ? AppColors.mainDeepOrange
+                            : Colors.black,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(
+                height: 10,
               ),
             ],
           ),
