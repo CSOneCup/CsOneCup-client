@@ -1,10 +1,12 @@
-import 'package:cs_onecup/colors.dart';
+import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:cs_onecup/config.dart';
+import 'package:cs_onecup/core/constants/config.dart';
 
 class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
+
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
@@ -13,7 +15,8 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _idController = TextEditingController();
   final TextEditingController _nameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
 
   String? idErrorText;
   String? passwordErrorText;
@@ -28,7 +31,7 @@ class _SignUpPageState extends State<SignUpPage> {
         elevation: 0,
         backgroundColor: AppColors.mainLightGray,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Color(0XFF3F414E)),
+          icon: const Icon(Icons.arrow_back, color: Color(0XFF3F414E)),
           onPressed: () => Navigator.pop(context),
         ),
       ),
@@ -39,14 +42,14 @@ class _SignUpPageState extends State<SignUpPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               Image.asset(
-                'images/coffee_cat.png',
+                'assets/images/coffee_cat.png',
                 width: 100,
                 height: 100,
               ),
-              SizedBox(height: 10),
-              Text(
+              const SizedBox(height: 10),
+              const Text(
                 'CS 한잔',
                 style: TextStyle(
                   color: AppColors.mainLightOrange,
@@ -54,8 +57,8 @@ class _SignUpPageState extends State<SignUpPage> {
                   fontWeight: FontWeight.normal,
                 ),
               ),
-              SizedBox(height: 5),
-              Text(
+              const SizedBox(height: 5),
+              const Text(
                 '회원가입',
                 style: TextStyle(
                   color: AppColors.mainDeepOrange,
@@ -63,7 +66,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   fontWeight: FontWeight.bold,
                 ),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               _buildTextField(
                 label: '아이디',
                 controller: _idController,
@@ -85,7 +88,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 obscureText: true,
                 errorText: passwordErrorText,
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 style: ElevatedButton.styleFrom(
                   backgroundColor: AppColors.mainDeepOrange,
@@ -95,7 +98,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
                 onPressed: _validateForm,
-                child: Text(
+                child: const Text(
                   '시작하기',
                   style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
@@ -123,9 +126,9 @@ class _SignUpPageState extends State<SignUpPage> {
         children: [
           Text(
             label,
-            style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+            style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
           ),
-          SizedBox(height: 5),
+          const SizedBox(height: 5),
           TextField(
             controller: controller,
             obscureText: obscureText,
@@ -146,31 +149,26 @@ class _SignUpPageState extends State<SignUpPage> {
 
   Future<void> _validateForm() async {
     setState(() {
-      if(_idController.text.isEmpty) {
+      if (_idController.text.isEmpty) {
         idErrorText = '아이디를 입력해주세요';
-      }
-      else if (_idController.text == 'isExist') {
+      } else if (_idController.text == 'isExist') {
         idErrorText = '이미 존재하는 아이디입니다';
-      }
-      else {
+      } else {
         idErrorText = null;
       }
 
       // 비밀번호 확인 로직
-      if(_passwordController.text.isEmpty) {
+      if (_passwordController.text.isEmpty) {
         passwordErrorText = '비밀번호를 입력해 주세요';
-      }
-      else if (_passwordController.text != _confirmPasswordController.text) {
+      } else if (_passwordController.text != _confirmPasswordController.text) {
         passwordErrorText = '비밀번호가 동일하지 않습니다';
-      }
-      else {
+      } else {
         passwordErrorText = null;
       }
 
-      if(_nameController.text.isEmpty) {
+      if (_nameController.text.isEmpty) {
         nameErrorText = '이름을 입력해 주세요';
-      }
-      else {
+      } else {
         nameErrorText = null;
       }
     });
@@ -201,27 +199,25 @@ class _SignUpPageState extends State<SignUpPage> {
       if (response.statusCode == 200) {
         // 성공
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('회원가입 성공! 🎉'),
             duration: Duration(seconds: 5),
             backgroundColor: AppColors.mainLightOrange,
           ),
         );
         Navigator.pop(context);
-      }
-      else {
+      } else {
         setState(() {
           idErrorText = '이미 존재하는 아이디입니다';
         });
         final responseBody = jsonDecode(response.body);
       }
-    }
-    catch (e) {
+    } catch (e) {
       // 에러 처리
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
           content: Text('네트워크 오류가 발생했습니다: $e'),
-          duration: Duration(seconds: 20),
+          duration: const Duration(seconds: 20),
           backgroundColor: AppColors.mainDeepOrange,
         ),
       );
