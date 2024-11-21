@@ -1,5 +1,10 @@
 import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:convert';
+
+import '../../core/constants/config.dart';
 
 class SigninPage extends StatefulWidget {
   @override
@@ -8,6 +13,8 @@ class SigninPage extends StatefulWidget {
 
 class _SigninPageState extends State<SigninPage> {
   bool _isPasswordVisible = false; // Toggle password visibility
+  final TextEditingController _idController = TextEditingController(); // ID 입력 필드
+  final TextEditingController _passwordController = TextEditingController(); // 비밀번호 입력 필드
 
   @override
   Widget build(BuildContext context) {
@@ -61,6 +68,7 @@ class _SigninPageState extends State<SigninPage> {
 
             // ID Field
             TextFormField(
+              controller: _idController,
               decoration: InputDecoration(
                 labelText: "아이디",
                 filled: true,
@@ -75,6 +83,7 @@ class _SigninPageState extends State<SigninPage> {
 
             // Password Field
             TextFormField(
+              controller: _passwordController,
               obscureText: !_isPasswordVisible, // Toggle visibility
               decoration: InputDecoration(
                 labelText: "비밀번호",
@@ -110,9 +119,7 @@ class _SigninPageState extends State<SigninPage> {
                   borderRadius: BorderRadius.circular(24),
                 ),
               ),
-              onPressed: () {
-                // Add button action here
-              },
+              onPressed: _login,
               child: Text(
                 "로그인",
                 style: TextStyle(fontSize: 18, color: Colors.white),
@@ -120,6 +127,80 @@ class _SigninPageState extends State<SigninPage> {
             ),
           ],
         ),
+      ),
+    );
+  }
+
+  // 로그인 함수
+  Future<void> _login() async {
+    const url = '${Config.baseUrl}/api/user/signin';
+
+    final String userId = _idController.text.trim();
+    final String password = _passwordController.text.trim();
+
+    if (userId.isEmpty || password.isEmpty) {
+      _showErrorDialog("아이디와 비밀번호를 입력해주세요.");
+      return;
+    }
+
+    try {
+      final response = await http.post(
+        Uri.parse(url),
+        headers: {'Content-Type': 'application/json'},
+        body: jsonEncode({'user_id': userId, 'password': password}),
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = jsonDecode(response.body);
+        final String token = responseData['data']['response'];
+
+        // 토큰을 SharedPreferences에 저장
+        final prefs = await SharedPreferences.getInstance();
+        await prefs.setString('authToken', token);
+
+        // 로그인 성공 메시지
+        _showSuccessDialog("로그인 성공!");
+      } else {
+        _showErrorDialog("로그인 실패: ${response.body}");
+      }
+    } catch (e) {
+      _showErrorDialog("오류가 발생했습니다: $e");
+    }
+  }
+
+  // 성공 다이얼로그
+  void _showSuccessDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text("성공"),
+        content: Text(message),
+        actions: [
+          TextButton(
+            child: Text("확인"),
+            onPressed: () {
+              Navigator.of(ctx).pop();
+              // 성공 후 화면 이동 추가 가능
+            },
+          ),
+        ],
+      ),
+    );
+  }
+
+  // 에러 다이얼로그
+  void _showErrorDialog(String message) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: Text("에러"),
+        content: Text(message),
+        actions: [
+          TextButton(
+            child: Text("확인"),
+            onPressed: () => Navigator.of(ctx).pop(),
+          ),
+        ],
       ),
     );
   }
