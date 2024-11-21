@@ -1,6 +1,6 @@
-import 'package:cs_onecup/LandingPage/landingpage.dart';
+//import 'package:cs_onecup/features/auth/landingpage.dart';
 import 'package:flutter/material.dart';
-import 'MainPage/mainpage.dart';
+import 'package:cs_onecup/features/main/mainpage.dart';
 
 void main() {
   runApp(const MyApp());
@@ -12,11 +12,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'CS 한잔',
+      title: 'CsOneCup',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      home: LandingPage(),
+      home: const MainPage(),
     );
   }
 }
