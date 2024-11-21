@@ -2,8 +2,11 @@ import 'package:cs_onecup/LandingPage/landingpage.dart';
 import 'package:flutter/material.dart';
 import 'MainPage/mainpage.dart';
 
+import 'package:cs_onecup/DeckBuildingPage/deckdetailspage.dart';
+
 void main() {
-  runApp(const MyApp());
+  // runApp(const MyApp());
+  runApp(const DeckDetailsPage());
 }
 
 class MyApp extends StatelessWidget {
