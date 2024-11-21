@@ -2,7 +2,7 @@
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/features/main/mainpage.dart';
 
-import 'package:cs_onecup/DeckBuildingPage/deckdetailspage.dart';
+import 'package:cs_onecup/features/deck/deckdetailspage.dart';
 
 void main() {
   // runApp(const MyApp());
