@@ -1,4 +1,5 @@
 import 'package:cs_onecup/core/constants/colors.dart';
+import 'package:cs_onecup/features/home/homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -159,33 +160,16 @@ class _SigninPageState extends State<SigninPage> {
         await prefs.setString('authToken', token);
 
         // 로그인 성공 메시지
-        _showSuccessDialog("로그인 성공!");
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => HomePage()),
+        );
       } else {
         _showErrorDialog("로그인 실패: ${response.body}");
       }
     } catch (e) {
       _showErrorDialog("오류가 발생했습니다: $e");
     }
-  }
-
-  // 성공 다이얼로그
-  void _showSuccessDialog(String message) {
-    showDialog(
-      context: context,
-      builder: (ctx) => AlertDialog(
-        title: Text("성공"),
-        content: Text(message),
-        actions: [
-          TextButton(
-            child: Text("확인"),
-            onPressed: () {
-              Navigator.of(ctx).pop();
-              // 성공 후 화면 이동 추가 가능
-            },
-          ),
-        ],
-      ),
-    );
   }
 
   // 에러 다이얼로그
