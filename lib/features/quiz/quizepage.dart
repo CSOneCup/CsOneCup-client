@@ -19,14 +19,17 @@ class QuizPage extends StatelessWidget {
           child: SizedBox(
         width: 170 * _scaleFactor,
         height: 285 * _scaleFactor,
-        child: FlipCard(
-          direction: FlipDirection.HORIZONTAL,
-          side: CardSide.FRONT,
-          front: IconCardwidget(
-            scaleFactor: _scaleFactor,
-          ),
-          back: QuizCardwidget(
-            scaleFactor: _scaleFactor,
+        child: Hero(
+          tag: 'Home_to_Quiz_iconCard',
+          child: FlipCard(
+            direction: FlipDirection.HORIZONTAL,
+            side: CardSide.FRONT,
+            front: IconCardwidget(
+              scaleFactor: _scaleFactor,
+            ),
+            back: QuizCardwidget(
+              scaleFactor: _scaleFactor,
+            ),
           ),
         ),
       )),
