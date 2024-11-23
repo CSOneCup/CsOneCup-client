@@ -3,6 +3,7 @@ import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:cs_onecup/core/widgets/cards/iconcardwidget.dart';
 import 'package:cs_onecup/core/widgets/cards/quizcardwidget.dart';
+import 'package:cs_onecup/core/constants/colors.dart';
 
 class QuizPage extends StatefulWidget {
   const QuizPage({super.key});
@@ -29,28 +30,87 @@ class _QuizPageState extends State<QuizPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-      height: double.infinity,
-      color: AppColors.mainLightGray,
-      child: Center(
-          child: Hero(
-        tag: 'Home_to_Quiz_iconCard',
-        child: FlipCard(
-          key: _cardKey,
-          direction: FlipDirection.HORIZONTAL,
-          side: CardSide.FRONT,
-          flipOnTouch: false,
-          front: IconCardwidget(
-            scaleFactor: _scaleFactor,
-          ),
-          back: QuizCardwidget(
-            scaleFactor: _scaleFactor,
-            quizCategory: '소프트웨어공학',
-            quizExplanation: '운영체제가 제공하는 기능에 해당하지 않는 것은 무엇인가요?',
-          ),
+    return Scaffold(
+      resizeToAvoidBottomInset: false,
+      body: Container(
+        color: AppColors.mainLightGray,
+        child: Stack(
+          children: [
+            Positioned(
+              top: 50,
+              left: 20,
+              child: GestureDetector(
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+                child: const Icon(
+                  Icons.arrow_back_ios,
+                  color: AppColors.mainDeepOrange,
+                ),
+              ),
+            ),
+            const Positioned(
+              bottom: 30,
+              left: 20,
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.end,
+                children: [
+                  DefaultTextStyle(
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                    ),
+                    child: Text(
+                      '지금까지 푼 문제',
+                    ),
+                  ),
+                  SizedBox(
+                    width: 5,
+                  ),
+                  DefaultTextStyle(
+                    style: TextStyle(
+                      fontSize: 50,
+                      color: AppColors.mainDeepOrange,
+                      fontWeight: FontWeight.bold,
+                    ),
+                    child: Text(
+                      '7',
+                    ),
+                  ),
+                  DefaultTextStyle(
+                    style: TextStyle(
+                      fontSize: 20,
+                      color: Colors.black,
+                    ),
+                    child: Text(
+                      '문',
+                    ),
+                  ),
+                ],
+              ),
+            ),
+            Center(
+              child: Hero(
+                tag: 'Home_to_Quiz_iconCard',
+                child: FlipCard(
+                  key: _cardKey,
+                  direction: FlipDirection.HORIZONTAL,
+                  side: CardSide.FRONT,
+                  flipOnTouch: false,
+                  front: IconCardwidget(
+                    scaleFactor: _scaleFactor,
+                  ),
+                  back: QuizCardwidget(
+                    scaleFactor: _scaleFactor,
+                    quizCategory: '소프트웨어공학',
+                    quizExplanation: '운영체제가 제공하는 기능에 해당하지 않는 것은 무엇인가요?',
+                  ),
+                ),
+              ),
+            ),
+          ],
         ),
-      )),
+      ),
     );
   }
 }
