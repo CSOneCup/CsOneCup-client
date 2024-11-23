@@ -8,9 +8,15 @@ class CardsInHand extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const QuizPage()));
+      // onTap: () {
+      //   Navigator.push(
+      //       context, MaterialPageRoute(builder: (context) => const QuizPage()));
+      // },
+      onPanUpdate: (details) {
+        if (details.delta.dy < 0) {
+          Navigator.push(context,
+              MaterialPageRoute(builder: (context) => const QuizPage()));
+        }
       },
       child: Stack(
         children: [
