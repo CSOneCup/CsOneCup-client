@@ -111,7 +111,7 @@ class _HomePageState extends State<HomePage> {
                 style: TextStyle(color: AppColors.mainDeepOrange, fontSize: 20),
               ),
               const SizedBox(
-                height: 25,
+                height: 30,
               ),
               const CardsInHand(),
             ],
