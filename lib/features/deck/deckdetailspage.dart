@@ -17,9 +17,10 @@ class _DeckDetailsPageState extends State<DeckDetailsPage> {
     return Scaffold(
       backgroundColor: AppColors.mainBeige,
       appBar: AppBar(
+        elevation: 0,
         backgroundColor: AppColors.mainBeige,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.brown),
+          icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.mainDeepOrange),
           onPressed: () {
             // 뒤로가기 버튼 동작
             Navigator.pop(context);
@@ -34,7 +35,7 @@ class _DeckDetailsPageState extends State<DeckDetailsPage> {
               "편집",
               style: TextStyle(
                 fontSize: 20,
-                color: Colors.brown
+                color: AppColors.mainDeepOrange
               ),
             ),
           ),
@@ -46,7 +47,7 @@ class _DeckDetailsPageState extends State<DeckDetailsPage> {
               "공유",
               style: TextStyle(
                 fontSize: 20,
-                color: Colors.brown
+                color: AppColors.mainDeepOrange
               ),
             ),
           ),
@@ -59,19 +60,21 @@ class _DeckDetailsPageState extends State<DeckDetailsPage> {
           Padding(
             padding: const EdgeInsets.all(16.0),
             child: Column(
-              children: const [
+              children: [
                 Text(
                   "나의 덱 이름",
                   style: TextStyle(
-                    fontSize: 40,
+                    fontSize: 35,
                     fontWeight: FontWeight.normal,
-                    color: Colors.brown,
+                    color: AppColors.mainDeepOrange,
                   ),
                 ),
                 SizedBox(height: 4),
                 Text(
                   "18 cards",
-                  style: TextStyle(fontSize: 16, color: Colors.grey),
+                  style: TextStyle(
+                      fontSize: 16,
+                      color: AppColors.mainDeepOrange.withOpacity(0.5)),
                 ),
               ],
             ),
@@ -89,6 +92,7 @@ class _DeckDetailsPageState extends State<DeckDetailsPage> {
   }
 }
 
+/// 카드 타일 위젯
 class SimpleCardTile extends StatelessWidget {
   final int index;
   const SimpleCardTile({super.key, required this.index});
@@ -98,35 +102,45 @@ class SimpleCardTile extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
       child: Container(
+        // 바깥 컨테이너 (흰색)
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(color: Colors.black, width: 1),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: Colors.black, width: 2.5),
         ),
-        child: ListTile(
-          // 아이콘
-          leading: Container(
-            padding: const EdgeInsets.all(8),
+        child: Padding(
+          // 내부 컨테이너 (베이지색)
+          padding: const EdgeInsets.all(4.0), // 흰 테두리 두꼐
+          child: Container(
             decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(8),
+              color: AppColors.cardBeige,
+              borderRadius: BorderRadius.circular(20),
             ),
-            child: const Icon(Icons.format_list_bulleted, color: Colors.brown),
-          ),
-          // 제목
-          title: Center(
-            child: const Text(
-              "간략한 카드 이름",
-              style: TextStyle(
-                fontSize: 18,
-                color: Colors.brown,
-                fontWeight: FontWeight.bold,
+            child: ListTile(
+              // 아이콘
+              leading: Container(
+                padding: const EdgeInsets.all(8),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(8),
+                ),
+                child: const Icon(Icons.format_list_bulleted, color: Colors.brown),
               ),
+              // 제목
+              title: Center(
+                child: const Text(
+                  "간략한 카드 이름",
+                  style: TextStyle(
+                    fontSize: 25,
+                    color: AppColors.mainDeepOrange,
+                    fontWeight: FontWeight.normal,
+                  ),
+                ),
+              ),
+              onTap: () {
+                // 카드 클릭 이벤트
+              },
             ),
           ),
-          onTap: () {
-            // 카드 클릭 이벤트
-          },
         ),
       ),
 
