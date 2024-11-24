@@ -1,4 +1,5 @@
 //import 'package:cs_onecup/features/auth/landingpage.dart';
+import 'package:cs_onecup/features/auth/landingpage.dart';
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/features/main/mainpage.dart';
 
@@ -16,7 +17,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
       ),
-      home: const MainPage(),
+      home: const LandingPage(),
     );
   }
 }
