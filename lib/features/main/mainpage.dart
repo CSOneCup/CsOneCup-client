@@ -1,3 +1,4 @@
+import 'package:cs_onecup/features/deck/decklistpage.dart';
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/features/home/homepage.dart';
 import 'package:cs_onecup/features/deck/mydeckpage.dart';
@@ -33,7 +34,7 @@ class _MainPageState extends State<MainPage> {
               index: _index,
               children: const <Widget>[
                 HomePage(),
-                MyDeckPage(),
+                DeckListPage(),
                 ChallengePage(),
                 RankingPage(),
               ],
