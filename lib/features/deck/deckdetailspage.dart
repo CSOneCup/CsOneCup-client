@@ -15,10 +15,10 @@ class _DeckDetailsPageState extends State<DeckDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.mainBeige,
+      backgroundColor: AppColors.mainLightGray,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: AppColors.mainBeige,
+        backgroundColor: AppColors.mainLightGray,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.mainDeepOrange),
           onPressed: () {
@@ -76,6 +76,7 @@ class _DeckDetailsPageState extends State<DeckDetailsPage> {
                       fontSize: 16,
                       color: AppColors.mainDeepOrange.withOpacity(0.5)),
                 ),
+                SizedBox(height: 45,)
               ],
             ),
           ),
