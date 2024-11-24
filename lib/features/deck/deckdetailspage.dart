@@ -19,7 +19,7 @@ class _DeckDetailsPageState extends State<DeckDetailsPage> {
       appBar: AppBar(
         backgroundColor: AppColors.mainBeige,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.brown),
+          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.brown),
           onPressed: () {
             // 뒤로가기 버튼 동작
             Navigator.pop(context);
