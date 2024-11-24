@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:cs_onecup/data/models/deck.dart';
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
