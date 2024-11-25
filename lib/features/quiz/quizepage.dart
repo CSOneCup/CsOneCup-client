@@ -15,6 +15,9 @@ class QuizPage extends StatefulWidget {
 
 class _QuizPageState extends State<QuizPage> {
   final _scaleFactor = 2.0;
+  double _dragOffset = 0;
+  //final double _dragDistance = -300.0;
+  double get _dragDistance => -(MediaQuery.of(context).size.height - 200);
 
   final GlobalKey<FlipCardState> _cardKey = GlobalKey<FlipCardState>();
 
@@ -93,22 +96,40 @@ class _QuizPageState extends State<QuizPage> {
             Center(
               child: Hero(
                 tag: 'Home_to_Quiz_iconCard',
-                child: FlipCard(
-                  key: _cardKey,
-                  direction: FlipDirection.HORIZONTAL,
-                  side: CardSide.FRONT,
-                  flipOnTouch: false,
-                  front: IconCardwidget(
-                    scaleFactor: _scaleFactor,
-                  ),
-                  back: AnswerCardwidget(
-                    scaleFactor: _scaleFactor,
-                    quizAnswer: '소프트웨어 공학',
-                    answerExplanation: '운영체제가 제공하는 기능에 해당하지 않는 것은 무엇인가요?',
+                child: AnimatedContainer(
+                  duration: const Duration(milliseconds: 200),
+                  curve: Curves.easeInOut,
+                  transform: Matrix4.translationValues(0, _dragOffset, 0),
+                  child: GestureDetector(
+                    onPanUpdate: (details) {
+                      if (details.delta.dy < 0) {
+                        setState(() {
+                          _dragOffset = _dragDistance;
+                        });
+                      } else if (details.delta.dy > 0) {
+                        setState(() {
+                          _dragOffset = 0;
+                        });
+                      }
+                    },
+                    child: FlipCard(
+                      key: _cardKey,
+                      direction: FlipDirection.HORIZONTAL,
+                      side: CardSide.FRONT,
+                      flipOnTouch: false,
+                      front: IconCardwidget(
+                        scaleFactor: _scaleFactor,
+                      ),
+                      back: QuizCardwidget(
+                        scaleFactor: _scaleFactor,
+                        quizCategory: '소프트웨어공학',
+                        quizExplanation: '운영체제가 제공하는 기능에 해당하지 않는 것은 무엇인가요?',
+                      ),
+                    ),
                   ),
                 ),
               ),
-            ),
+            )
           ],
         ),
       ),
