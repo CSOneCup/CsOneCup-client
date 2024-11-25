@@ -1,15 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
 
-class SimpleCardwidget extends StatelessWidget {
-  const SimpleCardwidget({super.key});
+class IconCardwidget extends StatelessWidget {
+  final double scaleFactor;
+
+  const IconCardwidget({super.key, this.scaleFactor = 1.0});
 
   @override
   Widget build(BuildContext context) {
     return Stack(children: [
       SizedBox(
-          width: 170,
-          height: 285,
+          width: 170 * scaleFactor,
+          height: 285 * scaleFactor,
           child: Card(
             color: const Color(0xFFF4F4F4),
             elevation: 5,
@@ -23,10 +25,11 @@ class SimpleCardwidget extends StatelessWidget {
             ),
           )),
       Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 11),
+        padding: EdgeInsets.symmetric(
+            horizontal: (11 * scaleFactor), vertical: (11 * scaleFactor)),
         child: SizedBox(
-          width: 148,
-          height: 263,
+          width: 148 * scaleFactor,
+          height: 263 * scaleFactor,
           child: Card(
             color: AppColors.cardBeige,
             elevation: 0,

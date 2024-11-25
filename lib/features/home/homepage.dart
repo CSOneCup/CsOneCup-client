@@ -16,6 +16,7 @@ class _HomePageState extends State<HomePage> {
 
   String? _selectedCategory = '모든 카테고리'; //선택된 카테고리
   bool _includingSolvedProblems = false; //풀린 문제 포함 여부
+  final GlobalKey _checkboxKey = GlobalKey();
 
   final List<String> _quizCategories = [
     '모든 카테고리',
@@ -29,43 +30,21 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-        width: double.infinity,
-        height: double.infinity,
-        color: AppColors.mainLightGray,
-        child: SingleChildScrollView(
+    return Stack(
+      children: [
+        Container(
+          width: double.infinity,
+          height: double.infinity,
+          clipBehavior: Clip.hardEdge,
+          decoration: const BoxDecoration(
+            color: AppColors.mainLightGray,
+          ),
           child: Column(
             children: [
               UserProfile(userName: '사용자', userLevel: 5, userExp: exp),
               SolvedAndRetryProblemsInfo(
                 solvedProblemsToday: 5,
                 retryProblems: 12,
-              ),
-              Image.asset(
-                'assets/icons/icon_arrow_up.png',
-                width: 70,
-                height: 70,
-                color: AppColors.mainDeepOrange,
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              const CardsInHand(),
-              const SizedBox(
-                height: 50,
-              ),
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.mainDeepOrange,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const Padding(
-                  padding: EdgeInsets.symmetric(horizontal: 12, vertical: 3),
-                  child: Text(
-                    '랜덤 문제 풀이',
-                    style: TextStyle(color: Colors.white, fontSize: 20),
-                  ),
-                ),
               ),
               DropdownButton<String>(
                 dropdownColor: AppColors.mainBeige,
@@ -86,6 +65,7 @@ class _HomePageState extends State<HomePage> {
               Padding(
                 padding: const EdgeInsets.only(right: 26),
                 child: Row(
+                  key: _checkboxKey,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Checkbox(
@@ -108,11 +88,36 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-              const SizedBox(
-                height: 10,
-              ),
             ],
           ),
-        ));
+        ),
+        Positioned(
+          top: 380,
+          left: 0,
+          right: 0,
+          child: Column(
+            children: [
+              Image.asset(
+                'assets/icons/icon_arrow_up.png',
+                width: 30,
+                height: 30,
+                color: AppColors.mainDeepOrange,
+              ),
+              const SizedBox(
+                height: 5,
+              ),
+              const Text(
+                '랜덤 문제 풀이',
+                style: TextStyle(color: AppColors.mainDeepOrange, fontSize: 20),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
+              const CardsInHand(),
+            ],
+          ),
+        ),
+      ],
+    );
   }
 }
