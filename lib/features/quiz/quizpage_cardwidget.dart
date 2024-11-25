@@ -22,8 +22,11 @@ class _QuizpageCardwidgetState extends State<QuizpageCardwidget> {
   final _scaleFactor = 2.0;
   double _dragOffset = 0;
   late double _dragDistance;
+  bool _loading = true;
 
   final GlobalKey<FlipCardState> _cardKey = GlobalKey<FlipCardState>();
+
+  //TODO : 나중에 서버에서 데이터 받아오기 전에는 icon 보여주다가, 데이터 받아오면 quiz로 변경되게 설계 (시간말고 loading 변수로 조절)
 
   @override
   void initState() {
@@ -35,6 +38,9 @@ class _QuizpageCardwidgetState extends State<QuizpageCardwidget> {
       if (_cardKey.currentState != null && _cardKey.currentState!.isFront) {
         _cardKey.currentState!.toggleCard();
       }
+      setState(() {
+        _loading = false;
+      });
     });
   }
 
@@ -47,17 +53,19 @@ class _QuizpageCardwidgetState extends State<QuizpageCardwidget> {
         curve: Curves.easeOut,
         transform: Matrix4.translationValues(0, _dragOffset, 0),
         child: GestureDetector(
-          onVerticalDragUpdate: (details) {
-            if (details.delta.dy < 0) {
-              setState(() {
-                _dragOffset = -_dragDistance;
-              });
-            } else if (details.delta.dy > 0) {
-              setState(() {
-                _dragOffset = 0;
-              });
-            }
-          },
+          onVerticalDragUpdate: _loading
+              ? null
+              : (details) {
+                  if (details.delta.dy < 0) {
+                    setState(() {
+                      _dragOffset = -_dragDistance;
+                    });
+                  } else if (details.delta.dy > 0) {
+                    setState(() {
+                      _dragOffset = 0;
+                    });
+                  }
+                },
           child: FlipCard(
             key: _cardKey,
             direction: FlipDirection.HORIZONTAL,

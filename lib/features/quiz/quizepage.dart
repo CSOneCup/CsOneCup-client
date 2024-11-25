@@ -74,8 +74,7 @@ class _QuizPageState extends State<QuizPage> {
             ),
             const Center(
               child: QuizpageAnswerlist(
-                answerType: '객관식',
-                answerList: ['A', 'B', 'C', 'D'],
+                answerList: ['O', 'X'],
               ),
             ),
             const Center(
