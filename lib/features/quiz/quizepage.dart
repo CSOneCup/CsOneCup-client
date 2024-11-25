@@ -3,6 +3,7 @@ import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:flip_card/flip_card.dart';
 import 'package:cs_onecup/core/widgets/cards/iconcardwidget.dart';
 import 'package:cs_onecup/core/widgets/cards/quizcardwidget.dart';
+import 'package:cs_onecup/core/widgets/cards/answercardwidget.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
 
 class QuizPage extends StatefulWidget {
@@ -100,10 +101,10 @@ class _QuizPageState extends State<QuizPage> {
                   front: IconCardwidget(
                     scaleFactor: _scaleFactor,
                   ),
-                  back: QuizCardwidget(
+                  back: AnswerCardwidget(
                     scaleFactor: _scaleFactor,
-                    quizCategory: '소프트웨어공학',
-                    quizExplanation: '운영체제가 제공하는 기능에 해당하지 않는 것은 무엇인가요?',
+                    quizAnswer: '소프트웨어 공학',
+                    answerExplanation: '운영체제가 제공하는 기능에 해당하지 않는 것은 무엇인가요?',
                   ),
                 ),
               ),

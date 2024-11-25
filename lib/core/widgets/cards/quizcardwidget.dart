@@ -3,9 +3,9 @@ import 'package:cs_onecup/core/constants/colors.dart';
 
 class QuizCardwidget extends StatelessWidget {
   final double scaleFactor;
-  String quizCategory = '운영체제';
+  String quizCategory;
   late String _quizImage;
-  String quizExplanation = '운영체제가 제공하는 기능에 해당하지 않는 것은 무엇인가요?';
+  String quizExplanation;
 
   QuizCardwidget({
     super.key,
