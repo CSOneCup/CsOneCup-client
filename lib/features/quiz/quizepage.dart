@@ -74,7 +74,12 @@ class _QuizPageState extends State<QuizPage> {
             ),
             const Center(
               child: QuizpageAnswerlist(
-                answerList: ['O', 'X'],
+                answerList: [
+                  '메모리 관리',
+                  'TLB(Translation)',
+                  '애플리케이션 개발',
+                  '프로세스 종료 시 데이터가 자동 삭제됩니다',
+                ],
               ),
             ),
             const Center(

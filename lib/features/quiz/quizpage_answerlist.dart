@@ -16,7 +16,7 @@ class QuizpageAnswerlist extends StatefulWidget {
 class _QuizpageAnswerlistState extends State<QuizpageAnswerlist> {
   String selectedAnswer = '';
   final double _answerAreaWidth = 330; //카드 사이즈 맞춤
-  final double _answerAreaHeight = 400; //카드 사이즈 맞춤
+  final double _answerAreaHeight = 430; //카드 사이즈 맞춤
   late double _answerBoxMinHeight;
   late double _answerFontSize;
   late FontWeight _answerFontWeight;
@@ -31,7 +31,7 @@ class _QuizpageAnswerlistState extends State<QuizpageAnswerlist> {
       _answerFontWeight = FontWeight.bold;
     } else {
       _answerBoxMinHeight = 80;
-      _answerFontSize = 30;
+      _answerFontSize = 25;
       _answerFontWeight = FontWeight.normal;
     }
     super.initState();
@@ -76,12 +76,14 @@ class _QuizpageAnswerlistState extends State<QuizpageAnswerlist> {
                             : BoxDecoration(
                                 color: AppColors.mainDeepOrange.withOpacity(0),
                               ),
-                        child: Align(
-                          alignment: Alignment.center,
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 20),
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 30, vertical: 10),
+                          child: Align(
+                            alignment: Alignment.center,
                             child: Text(
                               widget._answerList[index],
+                              textAlign: TextAlign.center,
                               style: TextStyle(
                                 fontSize: _answerFontSize,
                                 fontWeight: _answerFontWeight,
