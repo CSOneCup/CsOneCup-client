@@ -47,17 +47,6 @@ class _QuizpageCardwidgetState extends State<QuizpageCardwidget> {
         curve: Curves.easeOut,
         transform: Matrix4.translationValues(0, _dragOffset, 0),
         child: GestureDetector(
-          // onPanUpdate: (details) {
-          //   if (details.delta.dy < 0) {
-          //     setState(() {
-          //       _dragOffset = -_dragDistance;
-          //     });
-          //   } else if (details.delta.dy > 0) {
-          //     setState(() {
-          //       _dragOffset = 0;
-          //     });
-          //   }
-          // },
           onVerticalDragUpdate: (details) {
             if (details.delta.dy < 0) {
               setState(() {

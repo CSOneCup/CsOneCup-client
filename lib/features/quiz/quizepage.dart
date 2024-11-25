@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:cs_onecup/features/quiz/quizpage_cardwidget.dart';
+import 'package:cs_onecup/features/quiz/quizpage_answerlist.dart';
 
 class QuizPage extends StatefulWidget {
   const QuizPage({super.key});
@@ -72,7 +73,10 @@ class _QuizPageState extends State<QuizPage> {
               ),
             ),
             const Center(
-              child: Column(),
+              child: QuizpageAnswerlist(
+                answerType: '객관식',
+                answerList: ['A', 'B', 'C', 'D'],
+              ),
             ),
             const Center(
               child: QuizpageCardwidget(
