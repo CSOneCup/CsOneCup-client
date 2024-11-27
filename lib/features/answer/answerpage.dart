@@ -1,3 +1,4 @@
+import 'package:cs_onecup/features/quiz/quizepage.dart';
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:cs_onecup/features/answer/answerpage_cardwidget.dart';
@@ -73,6 +74,34 @@ class _AnswerPageState extends State<AnswerPage> {
                     ),
                   ),
                 ],
+              ),
+            ),
+            Positioned(
+              bottom: 150,
+              right: 0,
+              left: 0,
+              child: Center(
+                child: SizedBox(
+                  width: 330,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.mainDeepOrange,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const QuizPage()));
+                    },
+                    child: const Text(
+                      '다음 문제',
+                      style: TextStyle(
+                        fontSize: 40,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
             const Center(

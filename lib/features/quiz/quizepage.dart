@@ -26,7 +26,7 @@ class _QuizPageState extends State<QuizPage> {
               left: 20,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.of(context).pop();
+                  Navigator.of(context).popUntil(ModalRoute.withName('/home'));
                 },
                 child: const Icon(
                   Icons.arrow_back_ios,
