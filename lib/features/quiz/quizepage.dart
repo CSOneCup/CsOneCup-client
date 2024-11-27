@@ -42,13 +42,14 @@ class _QuizPageState extends State<QuizPage> {
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.black,
+                      height: 4,
                     ),
                     child: Text(
                       '지금까지 푼 문제',
                     ),
                   ),
                   SizedBox(
-                    width: 5,
+                    width: 8,
                   ),
                   DefaultTextStyle(
                     style: TextStyle(
@@ -64,6 +65,7 @@ class _QuizPageState extends State<QuizPage> {
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.black,
+                      height: 4,
                     ),
                     child: Text(
                       '문',
