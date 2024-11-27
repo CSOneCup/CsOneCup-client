@@ -11,6 +11,8 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
+  final int _solvedAnswerCnt = 7;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,13 +34,13 @@ class _QuizPageState extends State<QuizPage> {
                 ),
               ),
             ),
-            const Positioned(
+            Positioned(
               bottom: 30,
               left: 20,
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
                 children: [
-                  DefaultTextStyle(
+                  const DefaultTextStyle(
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.black,
@@ -48,20 +50,20 @@ class _QuizPageState extends State<QuizPage> {
                       '지금까지 푼 문제',
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     width: 8,
                   ),
                   DefaultTextStyle(
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 50,
                       color: AppColors.mainDeepOrange,
                       fontWeight: FontWeight.bold,
                     ),
                     child: Text(
-                      '7',
+                      _solvedAnswerCnt.toString(),
                     ),
                   ),
-                  DefaultTextStyle(
+                  const DefaultTextStyle(
                     style: TextStyle(
                       fontSize: 20,
                       color: Colors.black,

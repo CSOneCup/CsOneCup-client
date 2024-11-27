@@ -8,14 +8,18 @@ import 'dart:convert';
 import '../../core/constants/config.dart';
 
 class SigninPage extends StatefulWidget {
+  const SigninPage({super.key});
+
   @override
   _SigninPageState createState() => _SigninPageState();
 }
 
 class _SigninPageState extends State<SigninPage> {
   bool _isPasswordVisible = false; // Toggle password visibility
-  final TextEditingController _idController = TextEditingController(); // ID 입력 필드
-  final TextEditingController _passwordController = TextEditingController(); // 비밀번호 입력 필드
+  final TextEditingController _idController =
+      TextEditingController(); // ID 입력 필드
+  final TextEditingController _passwordController =
+      TextEditingController(); // 비밀번호 입력 필드
 
   @override
   Widget build(BuildContext context) {
@@ -44,8 +48,8 @@ class _SigninPageState extends State<SigninPage> {
                     width: MediaQuery.of(context).size.width *
                         0.4, // 'CS 한잔' 길이에 맞춘 밑줄
                   ),
-                  SizedBox(height: 8),
-                  Text(
+                  const SizedBox(height: 8),
+                  const Text(
                     "CS 한잔",
                     style: TextStyle(
                       fontSize: 18,
@@ -53,8 +57,8 @@ class _SigninPageState extends State<SigninPage> {
                       color: AppColors.mainLightOrange,
                     ),
                   ),
-                  SizedBox(height: 8),
-                  Text(
+                  const SizedBox(height: 8),
+                  const Text(
                     "로그인",
                     style: TextStyle(
                       fontSize: 32,
@@ -65,7 +69,7 @@ class _SigninPageState extends State<SigninPage> {
                 ],
               ),
             ),
-            SizedBox(height: 32),
+            const SizedBox(height: 32),
 
             // ID Field
             TextFormField(
@@ -80,7 +84,7 @@ class _SigninPageState extends State<SigninPage> {
                 ),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
 
             // Password Field
             TextFormField(
@@ -109,19 +113,19 @@ class _SigninPageState extends State<SigninPage> {
                 ),
               ),
             ),
-            SizedBox(height: 32),
+            const SizedBox(height: 32),
 
             // Login Button
             ElevatedButton(
               style: ElevatedButton.styleFrom(
                 backgroundColor: AppColors.mainDeepOrange, // Button color
-                padding: EdgeInsets.symmetric(vertical: 16),
+                padding: const EdgeInsets.symmetric(vertical: 16),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(24),
                 ),
               ),
               onPressed: _login,
-              child: Text(
+              child: const Text(
                 "로그인",
                 style: TextStyle(fontSize: 18, color: Colors.white),
               ),
@@ -160,10 +164,11 @@ class _SigninPageState extends State<SigninPage> {
         await prefs.setString('authToken', token);
 
         // 로그인 성공 메시지
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => HomePage()),
-        );
+        Navigator.pushNamed(context, '/home');
+        // Navigator.push(
+        //   context,
+        //   MaterialPageRoute(builder: (context) => HomePage()),
+        // );
       } else {
         _showErrorDialog("로그인 실패: ${response.body}");
       }
@@ -177,11 +182,11 @@ class _SigninPageState extends State<SigninPage> {
     showDialog(
       context: context,
       builder: (ctx) => AlertDialog(
-        title: Text("에러"),
+        title: const Text("에러"),
         content: Text(message),
         actions: [
           TextButton(
-            child: Text("확인"),
+            child: const Text("확인"),
             onPressed: () => Navigator.of(ctx).pop(),
           ),
         ],
