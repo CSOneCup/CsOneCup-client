@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
+import 'package:cs_onecup/features/answer/answerpage.dart';
 
 class QuizpageAnswerlist extends StatefulWidget {
   final List<String> _answerList;
@@ -48,7 +49,7 @@ class _QuizpageAnswerlistState extends State<QuizpageAnswerlist> {
           const SizedBox(
             height: 20,
           ),
-          const Text('더블 클릭으로 제출',
+          const Text('두 번 클릭해서 제출',
               style: TextStyle(fontSize: 20, color: AppColors.mainDeepOrange)),
           Expanded(
             child: SingleChildScrollView(
@@ -59,9 +60,18 @@ class _QuizpageAnswerlistState extends State<QuizpageAnswerlist> {
                     padding: const EdgeInsets.only(top: 10),
                     child: GestureDetector(
                       onTap: () {
-                        setState(() {
-                          _selectedAnswerIndex = index;
-                        });
+                        if (_selectedAnswerIndex == index) {
+                          //선택한 답이 또 클릭되면 제출
+                          Navigator.of(context).push(
+                            MaterialPageRoute(
+                              builder: (context) => const AnswerPage(),
+                            ),
+                          );
+                        } else {
+                          setState(() {
+                            _selectedAnswerIndex = index;
+                          });
+                        }
                       },
                       child: Container(
                         width: _answerAreaWidth,
