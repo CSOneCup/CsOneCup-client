@@ -13,8 +13,8 @@ class AnswerCardwidget extends StatelessWidget {
     required this.answerExplanation,
   });
 
-  final String _quizExplanationLong =
-      'A 레코드는 도메인 이름을 특정 IP 주소로 매핑하는 데 사용되어 웹 서버의 실제 위치를 가리킵니다. CNAME 레코드는 도메인 간의 별칭을 생성하지만 SSL/TLS 설정에 필수적이지 않으며, TXT 레코드는 SPF와 DKIM 설정을 통해 이메일 인증을 지원합니다. 이로 인해 SSL/TLS와 이메일 인증 모두에 세 레코드가 필수적이라는 설명은 틀립니다.';
+  // final String _quizExplanationLong =
+  //     'A 레코드는 도메인 이름을 특정 IP 주소로 매핑하는 데 사용되어 웹 서버의 실제 위치를 가리킵니다. CNAME 레코드는 도메인 간의 별칭을 생성하지만 SSL/TLS 설정에 필수적이지 않으며, TXT 레코드는 SPF와 DKIM 설정을 통해 이메일 인증을 지원합니다. 이로 인해 SSL/TLS와 이메일 인증 모두에 세 레코드가 필수적이라는 설명은 틀립니다.';
 
   @override
   Widget build(BuildContext context) {
@@ -75,7 +75,7 @@ class AnswerCardwidget extends StatelessWidget {
                   Expanded(
                     child: SingleChildScrollView(
                       child: Text(
-                        _quizExplanationLong,
+                        answerExplanation,
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 20,

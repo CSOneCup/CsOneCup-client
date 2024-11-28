@@ -1,16 +1,16 @@
+import 'package:cs_onecup/features/quiz/quizepage.dart';
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
-import 'package:cs_onecup/features/quiz/quizpage_cardwidget.dart';
-import 'package:cs_onecup/features/quiz/quizpage_answerlist.dart';
+import 'package:cs_onecup/features/answer/answerpage_cardwidget.dart';
 
-class QuizPage extends StatefulWidget {
-  const QuizPage({super.key});
+class AnswerPage extends StatefulWidget {
+  const AnswerPage({super.key});
 
   @override
-  State<QuizPage> createState() => _QuizPageState();
+  State<AnswerPage> createState() => _AnswerPageState();
 }
 
-class _QuizPageState extends State<QuizPage> {
+class _AnswerPageState extends State<AnswerPage> {
   final int _solvedAnswerCnt = 7;
 
   @override
@@ -76,18 +76,36 @@ class _QuizPageState extends State<QuizPage> {
                 ],
               ),
             ),
-            const Center(
-              child: QuizpageAnswerlist(
-                answerList: [
-                  '메모리 관리',
-                  'TLB(Translation)',
-                  '애플리케이션 개발',
-                  '프로세스 종료 시 데이터가 자동 삭제됩니다',
-                ],
+            Positioned(
+              bottom: 150,
+              right: 0,
+              left: 0,
+              child: Center(
+                child: SizedBox(
+                  width: 330,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.mainDeepOrange,
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const QuizPage()));
+                    },
+                    child: const Text(
+                      '다음 문제',
+                      style: TextStyle(
+                        fontSize: 40,
+                        color: Colors.white,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
             const Center(
-              child: QuizpageCardwidget(
+              child: AnswerpageCardwidget(
                 quizCategory: '소프트웨어공학',
                 quizExplanation: '운영체제가 제공하는 기능에 해당하지 않는 것은 무엇인가요!',
               ),
