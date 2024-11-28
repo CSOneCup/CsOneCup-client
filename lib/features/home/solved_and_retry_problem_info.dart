@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
+import 'package:cs_onecup/features/deckQuiz/deckquizpage.dart';
 
 class SolvedAndRetryProblemsInfo extends StatefulWidget {
   int solvedProblemsToday;
@@ -58,7 +59,19 @@ class _SolvedAndRetryProblemsInfoState
                         style: const TextStyle(fontSize: 25),
                       ),
                       ElevatedButton(
-                          onPressed: () {},
+                          onPressed: () {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => Deckquizpage(
+                                        isRetry: true,
+                                        deckName: '씹상남자 덱',
+                                        deckHashTag:
+                                            '#상특 #cs는 신장이 아닌 심장으로 푸는 것이다',
+                                        deckLength: 35,
+                                      )),
+                            );
+                          },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,
                             backgroundColor: AppColors.lightRed, // 텍스트 색상
