@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/widgets/cards/iconcardwidget.dart';
+import 'package:cs_onecup/core/widgets/cards/deckquiz_info_cardwidget.dart';
 import 'package:cs_onecup/features/quiz/quizepage.dart';
 
 class DeckquizBundle extends StatefulWidget {
-  const DeckquizBundle({super.key});
+  final String _deckName;
+  final String _deckHashTag;
+  final int _deckLength;
+  final Map _deckCategoryInfo;
+
+  const DeckquizBundle({
+    super.key,
+    required String deckName,
+    required String deckHashTag,
+    required int deckLength,
+    required Map deckCategoryInfo,
+  })  : _deckName = deckName,
+        _deckHashTag = deckHashTag,
+        _deckLength = deckLength,
+        _deckCategoryInfo = deckCategoryInfo;
 
   @override
   State<DeckquizBundle> createState() => _CardsInHandState();
@@ -16,6 +31,8 @@ class _CardsInHandState extends State<DeckquizBundle>
 
   late AnimationController _controller;
   late Animation<double> _animation;
+
+  final double scaleFactor = 1.8;
 
   @override
   void initState() {
@@ -67,27 +84,41 @@ class _CardsInHandState extends State<DeckquizBundle>
       child: Stack(
         children: [
           Transform.translate(
-            offset: const Offset(0, 10),
-            child: const IconCardwidget(),
-          ),
-          Transform.translate(
-            offset: const Offset(0, 5),
-            child: const IconCardwidget(),
-          ),
-          Transform.translate(
-            offset: Offset(0, _dragOffsetY),
-            child: const Hero(
-              tag: 'deck_to_Quiz_Card',
-              child: IconCardwidget(),
+            offset: const Offset(0, -10),
+            child: IconCardwidget(
+              scaleFactor: scaleFactor,
             ),
           ),
           Transform.translate(
             offset: const Offset(0, -5),
-            child: const IconCardwidget(),
+            child: IconCardwidget(
+              scaleFactor: scaleFactor,
+            ),
           ),
           Transform.translate(
-            offset: const Offset(0, -10),
-            child: const IconCardwidget(),
+            offset: Offset(0, _dragOffsetY),
+            child: Hero(
+              tag: 'deck_to_Quiz_Card',
+              child: IconCardwidget(
+                scaleFactor: scaleFactor,
+              ),
+            ),
+          ),
+          Transform.translate(
+            offset: const Offset(0, 5),
+            child: IconCardwidget(
+              scaleFactor: scaleFactor,
+            ),
+          ),
+          Transform.translate(
+            offset: const Offset(0, 10),
+            child: DeckquizInfoCardwidget(
+              scaleFactor: scaleFactor,
+              deckName: widget._deckName,
+              deckHashTag: widget._deckHashTag,
+              deckLength: widget._deckLength,
+              deckCategoryInfo: widget._deckCategoryInfo,
+            ),
           ),
         ],
       ),

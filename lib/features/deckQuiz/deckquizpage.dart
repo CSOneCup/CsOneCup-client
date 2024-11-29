@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
-import 'package:cs_onecup/features/answer/answerpage_cardwidget.dart';
+import 'package:cs_onecup/features/deckQuiz/deckquiz_bundle.dart';
 
 //TODO 나중에 deckCode 받아서 quizlist 받아온 다음 문제풀이 페이지에 전송하기
 
@@ -55,7 +55,40 @@ class _AnswerPageState extends State<Deckquizpage> {
                 ),
               ),
             ),
-            const Center()
+            Positioned(
+              top: 100,
+              left: 0,
+              right: 0,
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    'assets/icons/icon_arrow_up.png',
+                    width: 70,
+                    height: 70,
+                    color: AppColors.mainDeepOrange,
+                  ),
+                  const SizedBox(
+                    height: 5,
+                  ),
+                  const Text('퀴즈를 시작하려면 드로우하세요',
+                      style: TextStyle(
+                        fontSize: 20,
+                        color: AppColors.mainDeepOrange,
+                      )),
+                ],
+              ),
+            ),
+            Center(
+                child: Padding(
+              padding: const EdgeInsets.only(top: 100),
+              child: DeckquizBundle(
+                deckName: widget._deckName,
+                deckHashTag: widget._deckHashTag,
+                deckLength: widget._deckLength,
+                deckCategoryInfo: widget._deckCategoryInfo,
+              ),
+            ))
           ],
         ),
       ),
