@@ -1,6 +1,5 @@
 import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:cs_onecup/features/home/userprofile.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class RankingPage extends StatefulWidget {
