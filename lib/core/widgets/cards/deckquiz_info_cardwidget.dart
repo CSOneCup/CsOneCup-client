@@ -51,15 +51,16 @@ class DeckquizInfoCardwidget extends StatelessWidget {
               padding: const EdgeInsets.all(15.0),
               child: Column(
                 children: [
-                  const Row(
+                  Row(
                     children: [
                       Expanded(
                         child: Text(
-                          '카테고리',
-                          style: TextStyle(
+                          deckName,
+                          style: const TextStyle(
                             fontSize: 25,
                             fontWeight: FontWeight.bold,
                           ),
+                          textAlign: TextAlign.center,
                         ),
                       ),
                     ],
@@ -69,26 +70,51 @@ class DeckquizInfoCardwidget extends StatelessWidget {
                     thickness: 2,
                     height: 20,
                   ),
+                  Text(
+                    deckHashTag,
+                    style: const TextStyle(
+                      fontSize: 15,
+                      color: AppColors.mainDeepOrange,
+                    ),
+                    textAlign: TextAlign.start,
+                  ),
                   const SizedBox(
                     height: 10,
                   ),
-                  Image.asset(
-                    'assets/icons/icon_questionQ.png',
-                    width: 100,
-                    height: 100,
-                  ),
-                  const SizedBox(
-                    height: 40,
-                  ),
-                  const Expanded(
-                    child: Text(
-                      '설명',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.end,
+                    children: [
+                      Text(
+                        deckLength.toString(),
+                        style: const TextStyle(
+                          color: AppColors.mainDeepOrange,
+                          fontSize: 80,
+                          fontWeight: FontWeight.bold,
+                        ),
                       ),
-                    ),
+                      const Text(
+                        '문제',
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 25,
+                          fontWeight: FontWeight.bold,
+                          height: 3,
+                        ),
+                      ),
+                    ],
                   ),
+                  Expanded(
+                      child: SingleChildScrollView(
+                    child: Column(
+                      children: deckCategoryInfo.entries.map<Widget>((entry) {
+                        return CategoryRateWidget(
+                          categoryName: entry.key,
+                          categoryRate: entry.value,
+                        );
+                      }).toList(),
+                    ),
+                  )),
                 ],
               ),
             ),
@@ -96,5 +122,70 @@ class DeckquizInfoCardwidget extends StatelessWidget {
         ),
       ),
     ]);
+  }
+}
+
+class CategoryRateWidget extends StatelessWidget {
+  final String _categoryName;
+  final int _categoryRate;
+  const CategoryRateWidget(
+      {super.key, required String categoryName, required int categoryRate})
+      : _categoryName = categoryName,
+        _categoryRate = categoryRate;
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 8.0),
+      child: Row(
+        children: [
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.only(left: 8),
+              alignment: Alignment.centerLeft,
+              decoration: const BoxDecoration(
+                color: AppColors.mainDeepOrange,
+                borderRadius: BorderRadius.only(
+                  topLeft: Radius.circular(10),
+                  bottomLeft: Radius.circular(10),
+                ),
+              ),
+              child: Text(
+                _categoryName,
+                style: const TextStyle(
+                  fontSize: 15,
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+          Expanded(
+            child: Container(
+              padding: const EdgeInsets.only(left: 5),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                border: Border.all(
+                  color: AppColors.mainLightGray,
+                  width: 1,
+                ),
+                borderRadius: const BorderRadius.only(
+                  topRight: Radius.circular(10),
+                  bottomRight: Radius.circular(10),
+                ),
+              ),
+              child: Text(
+                '$_categoryRate%',
+                style: const TextStyle(
+                  fontSize: 15,
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
