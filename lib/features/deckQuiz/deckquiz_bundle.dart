@@ -64,7 +64,7 @@ class _CardsInHandState extends State<DeckquizBundle>
         context,
         MaterialPageRoute(
           builder: (context) => const DeckquizQuizpage(
-            remainingQuestions: 20,
+            remainingQuestions: 5,
           ),
         ),
       ).then((_) {

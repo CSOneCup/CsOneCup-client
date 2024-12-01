@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:cs_onecup/features/quiz/quizpage_cardwidget.dart';
 import 'package:cs_onecup/features/deckQuiz/deckquiz_answerlist.dart';
+import 'package:cs_onecup/features/deckQuiz/deckquiz_answerpage.dart';
 
 class DeckquizQuizpage extends StatefulWidget {
   final int _remainingQuestions;
@@ -16,16 +17,24 @@ class DeckquizQuizpage extends StatefulWidget {
 class _QuizPageState extends State<DeckquizQuizpage> {
   //정답 선택 시 실행 함수
   void _onAnswerSelected() {
-    setState(() {
-      //남은 문제 수 감소
-    });
-    Navigator.pushReplacement(
+    final int nextQuestion = widget._remainingQuestions - 1;
+
+    if (nextQuestion == 0) {
+      Navigator.push(
         context,
-        MaterialPageRoute(
-          builder: (context) => DeckquizQuizpage(
-            remainingQuestions: (widget._remainingQuestions - 1),
-          ),
-        ));
+        MaterialPageRoute(builder: (context) => const DeckquizAnswerPage()),
+      );
+      return;
+    } else {
+      Navigator.pushReplacement(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DeckquizQuizpage(
+              remainingQuestions: (nextQuestion),
+            ),
+          ));
+      return;
+    }
   }
 
   @override
