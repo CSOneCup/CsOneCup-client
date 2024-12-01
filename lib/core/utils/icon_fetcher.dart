@@ -4,10 +4,14 @@
 import 'package:flutter/widgets.dart';
 
 class IconFetcher {
-  static Image fetchImage(String category, double? width, double? height) {
+  _IconFetcher(){}
+
+  static Image fetchImage(String category,
+      {double? width,
+      double? height}) {
     String imagePath = fetchPath(category);
     return Image.asset(
-      'assets/icons/icon_questionQ.png',
+      imagePath,
       width: width ?? 100,
       height: height ?? 100,
     );
