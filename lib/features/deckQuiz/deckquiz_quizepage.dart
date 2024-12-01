@@ -1,17 +1,32 @@
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:cs_onecup/features/quiz/quizpage_cardwidget.dart';
-import 'package:cs_onecup/features/quiz/quizpage_answerlist.dart';
+import 'package:cs_onecup/features/deckQuiz/deckquiz_answerlist.dart';
 
 class DeckquizQuizpage extends StatefulWidget {
-  const DeckquizQuizpage({super.key});
+  final int _remainingQuestions;
+
+  const DeckquizQuizpage({super.key, required int remainingQuestions})
+      : _remainingQuestions = remainingQuestions;
 
   @override
   State<DeckquizQuizpage> createState() => _QuizPageState();
 }
 
 class _QuizPageState extends State<DeckquizQuizpage> {
-  final int _solvedAnswerCnt = 7;
+  //정답 선택 시 실행 함수
+  void _onAnswerSelected() {
+    setState(() {
+      //남은 문제 수 감소
+    });
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => DeckquizQuizpage(
+            remainingQuestions: (widget._remainingQuestions - 1),
+          ),
+        ));
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -26,7 +41,8 @@ class _QuizPageState extends State<DeckquizQuizpage> {
               left: 20,
               child: GestureDetector(
                 onTap: () {
-                  Navigator.of(context).popUntil(ModalRoute.withName('/home'));
+                  Navigator.of(context).pop();
+                  //Navigator.of(context).popUntil(ModalRoute.withName('/home'));
                 },
                 child: const Icon(
                   Icons.arrow_back_ios,
@@ -60,7 +76,7 @@ class _QuizPageState extends State<DeckquizQuizpage> {
                       fontWeight: FontWeight.bold,
                     ),
                     child: Text(
-                      _solvedAnswerCnt.toString(),
+                      widget._remainingQuestions.toString(),
                     ),
                   ),
                   const DefaultTextStyle(
@@ -76,14 +92,15 @@ class _QuizPageState extends State<DeckquizQuizpage> {
                 ],
               ),
             ),
-            const Center(
-              child: QuizpageAnswerlist(
-                answerList: [
+            Center(
+              child: DeckquizAnswerlist(
+                answerList: const [
                   '메모리 관리',
                   'TLB(Translation)',
                   '애플리케이션 개발',
                   '프로세스 종료 시 데이터가 자동 삭제됩니다',
                 ],
+                onAnswerSubmitted: _onAnswerSelected,
               ),
             ),
             const Center(

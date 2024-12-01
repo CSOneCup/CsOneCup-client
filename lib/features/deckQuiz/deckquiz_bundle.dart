@@ -63,7 +63,9 @@ class _CardsInHandState extends State<DeckquizBundle>
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const DeckquizQuizpage(),
+          builder: (context) => const DeckquizQuizpage(
+            remainingQuestions: 20,
+          ),
         ),
       ).then((_) {
         setState(() {
@@ -98,7 +100,7 @@ class _CardsInHandState extends State<DeckquizBundle>
           Transform.translate(
             offset: Offset(0, _dragOffsetY),
             child: Hero(
-              tag: 'deck_to_Quiz_Card',
+              tag: 'deck_to_Quiz_IconCard',
               child: IconCardwidget(
                 scaleFactor: scaleFactor,
               ),
