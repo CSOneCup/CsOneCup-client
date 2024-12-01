@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/widgets/cards/iconcardwidget.dart';
 import 'package:cs_onecup/core/widgets/cards/deckquiz_info_cardwidget.dart';
-import 'package:cs_onecup/features/quiz/quizepage.dart';
+import 'package:cs_onecup/features/deckQuiz/deckquiz_quizepage.dart';
 
 class DeckquizBundle extends StatefulWidget {
   final String _deckName;
@@ -63,7 +63,7 @@ class _CardsInHandState extends State<DeckquizBundle>
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const QuizPage(),
+          builder: (context) => const DeckquizQuizpage(),
         ),
       ).then((_) {
         setState(() {

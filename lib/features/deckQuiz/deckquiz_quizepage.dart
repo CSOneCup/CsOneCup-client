@@ -3,14 +3,14 @@ import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:cs_onecup/features/quiz/quizpage_cardwidget.dart';
 import 'package:cs_onecup/features/quiz/quizpage_answerlist.dart';
 
-class QuizPage extends StatefulWidget {
-  const QuizPage({super.key});
+class DeckquizQuizpage extends StatefulWidget {
+  const DeckquizQuizpage({super.key});
 
   @override
-  State<QuizPage> createState() => _QuizPageState();
+  State<DeckquizQuizpage> createState() => _QuizPageState();
 }
 
-class _QuizPageState extends State<QuizPage> {
+class _QuizPageState extends State<DeckquizQuizpage> {
   final int _solvedAnswerCnt = 7;
 
   @override
@@ -88,6 +88,7 @@ class _QuizPageState extends State<QuizPage> {
             ),
             const Center(
               child: QuizpageCardwidget(
+                heroTag: 'deck_to_Quiz_IconCard',
                 quizCategory: '소프트웨어공학',
                 quizExplanation: '운영체제가 제공하는 기능에 해당하지 않는 것은 무엇인가요!',
               ),
