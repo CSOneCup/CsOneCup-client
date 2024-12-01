@@ -1,3 +1,4 @@
+import 'package:cs_onecup/core/utils/icon_fetcher.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/colors.dart';
@@ -40,13 +41,15 @@ class SimpleCardTile extends StatelessWidget {
             ),
             child: ListTile(
               // 아이콘
-              leading: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(Icons.format_list_bulleted, color: Colors.brown),
-              ),
+              leading: IconFetcher.fetchImage(category, width: 30, height: 30),
+              // leading: Container(
+              //   child:
+              //   // padding: const EdgeInsets.all(8),
+              //   // decoration: BoxDecoration(
+              //   //   borderRadius: BorderRadius.circular(8),
+              //   // ),
+              //   // child: const Icon(Icons.format_list_bulleted, color: Colors.brown),
+              // ),
               // 제목
               title: Center(
                 child: Text(
@@ -55,6 +58,7 @@ class SimpleCardTile extends StatelessWidget {
                     fontSize: 25,
                     color: AppColors.mainDeepOrange,
                     fontWeight: FontWeight.normal,
+                    overflow: TextOverflow.ellipsis
                   ),
                 ),
               ),
