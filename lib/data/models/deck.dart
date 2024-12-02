@@ -1,11 +1,11 @@
-import 'package:cs_onecup/data/models/card.dart';
+import 'package:cs_onecup/data/models/quizcard.dart';
 
 class Deck {
   int _deckId = 0;
   String _ownerId = '';
   String _name = '';
   int _numberOfCards = 0;
-  List _cards = <Card>[];
+  List _cards = <QuizCard>[];
   List _tags = <String>[];
 
   Deck(this._deckId, this._ownerId, this._name, this._numberOfCards);
@@ -30,7 +30,7 @@ class Deck {
       'owner_id' : deck.ownerId,
       'name' : deck.name,
       'number_of_cards' : deck.numberOfCards,
-      'cards' : deck.cards.map((card) => Card.toJson(card)).toList(),
+      'cards' : deck.cards.map((card) => QuizCard.toJson(card)).toList(),
       'tags' : deck.tags
     };
   }
@@ -38,7 +38,7 @@ class Deck {
   static Deck fromJson(Map<String, dynamic> deckMap) {
     return Deck.allArgsConstructor(
         deckMap['deck_id'], deckMap['owner_id'], deckMap['name'], deckMap['number_of_cards'],
-        List<Card>.from(deckMap['cards']), List<String>.from(deckMap['tags'])
+        List<QuizCard>.from(deckMap['cards']), List<String>.from(deckMap['tags'])
     );
   }
 }
