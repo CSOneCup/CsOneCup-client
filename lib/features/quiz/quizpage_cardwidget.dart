@@ -6,12 +6,15 @@ import 'package:cs_onecup/core/widgets/cards/quizcardwidget.dart';
 class QuizpageCardwidget extends StatefulWidget {
   final String _quizCategory;
   final String _quizExplanation;
+  final String _heroTag;
 
   const QuizpageCardwidget(
       {super.key,
+      required String heroTag,
       required String quizCategory,
       required String quizExplanation})
-      : _quizCategory = quizCategory,
+      : _heroTag = heroTag,
+        _quizCategory = quizCategory,
         _quizExplanation = quizExplanation;
 
   @override
@@ -47,7 +50,7 @@ class _QuizpageCardwidgetState extends State<QuizpageCardwidget> {
   @override
   Widget build(BuildContext context) {
     return Hero(
-      tag: 'Home_to_Quiz_iconCard',
+      tag: widget._heroTag,
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         curve: Curves.easeOut,
