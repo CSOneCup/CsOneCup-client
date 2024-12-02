@@ -1,3 +1,4 @@
+import 'package:cs_onecup/core/utils/icon_fetcher.dart';
 import 'package:flutter/material.dart';
 
 import '../../../core/constants/colors.dart';
@@ -6,7 +7,18 @@ import '../../../core/constants/colors.dart';
 /// 카드 타일 위젯
 class SimpleCardTile extends StatelessWidget {
   final int index;
-  const SimpleCardTile({super.key, required this.index});
+  final String title;
+  final String category;
+  // final Card? card;
+
+  const SimpleCardTile({
+    super.key,
+    required this.index,
+    String? title,
+    String? category
+  })
+  : this.title = title ?? '카드 제목',
+    this.category = category ?? 'None';
 
   @override
   Widget build(BuildContext context) {
@@ -29,21 +41,24 @@ class SimpleCardTile extends StatelessWidget {
             ),
             child: ListTile(
               // 아이콘
-              leading: Container(
-                padding: const EdgeInsets.all(8),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(Icons.format_list_bulleted, color: Colors.brown),
-              ),
+              leading: IconFetcher.fetchImage(category, width: 30, height: 30),
+              // leading: Container(
+              //   child:
+              //   // padding: const EdgeInsets.all(8),
+              //   // decoration: BoxDecoration(
+              //   //   borderRadius: BorderRadius.circular(8),
+              //   // ),
+              //   // child: const Icon(Icons.format_list_bulleted, color: Colors.brown),
+              // ),
               // 제목
               title: Center(
-                child: const Text(
-                  "간략한 카드 이름",
-                  style: TextStyle(
+                child: Text(
+                  title,
+                  style: const TextStyle(
                     fontSize: 25,
                     color: AppColors.mainDeepOrange,
                     fontWeight: FontWeight.normal,
+                    overflow: TextOverflow.ellipsis
                   ),
                 ),
               ),

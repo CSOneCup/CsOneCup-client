@@ -1,6 +1,7 @@
+import 'package:flutter/material.dart';
 import "package:cs_onecup/core/constants/colors.dart";
 import "package:cs_onecup/features/deck/widgets/simplecardtile.dart";
-import "package:flutter/material.dart";
+import "package:cs_onecup/data/models/card.dart";
 
 
 class DeckDetailsPage extends StatefulWidget {
@@ -10,6 +11,17 @@ class DeckDetailsPage extends StatefulWidget {
 }
 
 class _DeckDetailsPageState extends State<DeckDetailsPage> {
+
+  // TODO API 연결
+  List<QuizCard> cards = [];
+  
+  void editDeck() {
+    // TODO
+  }
+  
+  void shareDeck() {
+    // 확인 창 띄우고 공유
+  }
 
 
   @override
@@ -28,9 +40,7 @@ class _DeckDetailsPageState extends State<DeckDetailsPage> {
         ),
         actions: [
           TextButton(
-            onPressed: () {
-              // 편집 버튼 동작
-            },
+            onPressed: editDeck,
             child: const Text(
               "편집",
               style: TextStyle(
@@ -40,9 +50,7 @@ class _DeckDetailsPageState extends State<DeckDetailsPage> {
             ),
           ),
           TextButton(
-            onPressed: () {
-              // 공유 버튼 동작
-            },
+            onPressed: shareDeck,
             child: const Text(
               "공유",
               style: TextStyle(

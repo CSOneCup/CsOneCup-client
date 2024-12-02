@@ -1,3 +1,4 @@
+import 'package:cs_onecup/core/utils/icon_fetcher.dart';
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
 
@@ -19,28 +20,29 @@ class QuizCardwidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    switch (quizCategory) {
-      case '운영체제':
-        _quizImage = 'assets/icons/icon_category_OS.png';
-        break;
-      case '네트워크':
-        _quizImage = 'assets/icons/icon_category_network.png';
-        break;
-      case '데이터베이스':
-        _quizImage = 'assets/icons/icon_category_DB.png';
-        break;
-      case '자료구조':
-        _quizImage = 'assets/icons/icon_category_dataStructure.png';
-        break;
-      case '소프트웨어공학':
-        _quizImage = 'assets/icons/icon_category_SE.png';
-        break;
-      case '프로그래밍':
-        _quizImage = 'assets/icons/icon_category_programming.png';
-        break;
-      default:
-        _quizImage = 'assets/icons/icon_none.png';
-    }
+    // switch (quizCategory) {
+    //   case '운영체제':
+    //     _quizImage = 'assets/icons/icon_category_OS.png';
+    //     break;
+    //   case '네트워크':
+    //     _quizImage = 'assets/icons/icon_category_network.png';
+    //     break;
+    //   case '데이터베이스':
+    //     _quizImage = 'assets/icons/icon_category_DB.png';
+    //     break;
+    //   case '자료구조':
+    //     _quizImage = 'assets/icons/icon_category_dataStructure.png';
+    //     break;
+    //   case '소프트웨어공학':
+    //     _quizImage = 'assets/icons/icon_category_SE.png';
+    //     break;
+    //   case '프로그래밍':
+    //     _quizImage = 'assets/icons/icon_category_programming.png';
+    //     break;
+    //   default:
+    //     _quizImage = 'assets/icons/icon_none.png';
+    // }
+    _quizImage = IconFetcher.fetchPath(quizCategory);
 
     return Stack(children: [
       SizedBox(
