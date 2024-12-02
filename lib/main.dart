@@ -6,8 +6,7 @@ import 'package:cs_onecup/features/main/mainpage.dart';
 import 'package:cs_onecup/features/deck/deckdetailspage.dart';
 
 void main() {
-  // runApp(const MyApp());
-  runApp(const DeckDetailsPage());
+  runApp(const MyApp());
 }
 
 class MyApp extends StatelessWidget {
