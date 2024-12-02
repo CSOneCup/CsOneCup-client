@@ -1,4 +1,4 @@
-import 'package:cs_onecup/data/models/card.dart';
+import 'package:cs_onecup/data/models/quizcard.dart';
 import 'package:cs_onecup/data/models/deck.dart';
 import 'package:cs_onecup/data/models/statistics.dart';
 
@@ -8,7 +8,7 @@ class Member {
   String _nickname = '';
   int _level = 1;
   int _expPoint = 0;
-  List _cards = <Card>[];
+  List _cards = <QuizCard>[];
   List _decks = <Deck>[];
   Statistics _statistics = Statistics(0, 0, 0, 0, 0, 0);
 
@@ -47,7 +47,7 @@ class Member {
   static Member fromJson(Map<String, dynamic> memberMap) {
     return Member.allArgsConstructor(
         memberMap['id'], memberMap['pw'], memberMap['nickname'], memberMap['level'], memberMap['exp_point'],
-        List<Card>.from(memberMap['cards']), List<Deck>.from(memberMap['decks']), Statistics.fromJson(memberMap['statistics'])
+        List<QuizCard>.from(memberMap['cards']), List<Deck>.from(memberMap['decks']), Statistics.fromJson(memberMap['statistics'])
     );
   }
 }

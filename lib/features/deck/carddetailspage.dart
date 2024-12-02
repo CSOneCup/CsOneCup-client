@@ -1,6 +1,7 @@
 import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:cs_onecup/core/widgets/cards/answercardwidget.dart';
 import 'package:cs_onecup/core/widgets/cards/quizcardwidget.dart';
+import 'package:cs_onecup/data/models/quizcard.dart';
 import 'package:flip_card/flip_card.dart';
 
 import 'package:flutter/material.dart';
@@ -30,11 +31,7 @@ class CardDetailsPage extends StatefulWidget {
   State<CardDetailsPage> createState() => _CardDetailsPageState();
 }
 
-class _CardDetailsPageState extends State<CardDetailsPage> with SingleTickerProviderStateMixin {
-  // 카드 정보
-
-
-
+class _CardDetailsPageState extends State<CardDetailsPage> {
   // 카드 위젯 관련
   final GlobalKey<FlipCardState> _cardKey = GlobalKey<FlipCardState>();
   final _cardScaleFactor = 2.0;
@@ -72,32 +69,36 @@ class _CardDetailsPageState extends State<CardDetailsPage> with SingleTickerProv
             Center(
               child: Text(widget._cardTitle,
                 style: const TextStyle(
-                  fontSize: 35,
+                  fontSize: 24,
                   color: AppColors.mainDeepOrange
                 ),
               ),
             ),
 
-            const SizedBox(height: 8),
+            const SizedBox(height: 16),
 
             // 카드
-            FlipCard(
-              key: _cardKey,
-              direction: FlipDirection.HORIZONTAL,
-              side: CardSide.FRONT,
-              front: QuizCardwidget(
-                scaleFactor: _cardScaleFactor,
-                quizCategory: widget._quizCategory,
-                quizExplanation: widget._quizExplanation
+            SizedBox(
+              width: 300,
+              height: 500,
+              child: FlipCard(
+                key: _cardKey,
+                direction: FlipDirection.HORIZONTAL,
+                side: CardSide.FRONT,
+                front: QuizCardwidget(
+                  scaleFactor: _cardScaleFactor,
+                  quizCategory: widget._quizCategory,
+                  quizExplanation: widget._quizExplanation
+                ),
+                back: AnswerCardwidget(
+                  scaleFactor: _cardScaleFactor,
+                  quizAnswer: widget._quizAnswer,
+                  answerExplanation: widget._answerExplanation
+                )
               ),
-              back: AnswerCardwidget(
-                scaleFactor: _cardScaleFactor,
-                quizAnswer: widget._quizAnswer,
-                answerExplanation: widget._answerExplanation
-              )
             ),
 
-            const SizedBox(height: 16),
+            const SizedBox(height: 8),
 
             // 레이블 (눌러서 답 보기)
             Text("눌러서 답 보기",

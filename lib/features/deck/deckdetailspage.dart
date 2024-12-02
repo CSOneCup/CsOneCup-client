@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import "package:cs_onecup/core/constants/colors.dart";
 import "package:cs_onecup/features/deck/widgets/simplecardtile.dart";
-import "package:cs_onecup/data/models/card.dart";
+import "package:cs_onecup/data/models/quizcard.dart";
 
 
 class DeckDetailsPage extends StatefulWidget {
