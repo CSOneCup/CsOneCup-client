@@ -1,6 +1,6 @@
 import 'package:cs_onecup/data/models/quiztype.dart';
 
-class Card {
+class QuizCard {
   int _cardId = 0;
   late QuizType _quizType;
   String _title = '';
@@ -10,8 +10,8 @@ class Card {
   int _answer = 0;
   String _explanation = '';
 
-  Card.necessaryArgsConstructor(this._cardId, this._quizType, this._category, this._question, this._choice, this._answer, this._explanation);
-  Card.allArgsConstructor(this._cardId, this._quizType, this._title, this._category, this._question, this._choice, this._answer, this._explanation);
+  QuizCard.necessaryArgsConstructor(this._cardId, this._quizType, this._category, this._question, this._choice, this._answer, this._explanation);
+  QuizCard.allArgsConstructor(this._cardId, this._quizType, this._title, this._category, this._question, this._choice, this._answer, this._explanation);
 
   String get explanation => _explanation;
   int get answer => _answer;
@@ -27,7 +27,7 @@ class Card {
     return 'Card{_cardId: $_cardId, _quizType: $_quizType, _title: $_title, _category: $_category, _question: $_question, _choice: $_choice, _answer: $_answer, _explanation: $_explanation}';
   }
 
-  static Map<String, dynamic> toJson(Card card) {
+  static Map<String, dynamic> toJson(QuizCard card) {
     return {
       'card_id' : card.cardId,
       'quiz_type' : card.quizType.toString(),
@@ -40,8 +40,8 @@ class Card {
     };
   }
 
-  static Card fromJson(Map<String, dynamic> cardMap) {
-    return Card.allArgsConstructor(
+  static QuizCard fromJson(Map<String, dynamic> cardMap) {
+    return QuizCard.allArgsConstructor(
         cardMap['card_id'], cardMap['quiz_type'], cardMap['title'], cardMap['category'],
         cardMap['question'], List<String>.from(cardMap['choice']), cardMap['answer'], cardMap['explanation']
     );

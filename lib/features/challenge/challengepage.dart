@@ -1,7 +1,7 @@
 import 'package:cs_onecup/data/models/deck.dart';
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
-import '../deck/deckdetailpage.dart';
+import '../deck/deckdetailspage.dart';
 
 
 class ChallengePage extends StatefulWidget {
@@ -153,7 +153,7 @@ class _ChallengePageState extends State<ChallengePage> {
                                     ),
                                     onTap: () {
                                       Navigator.push(context, MaterialPageRoute(
-                                        builder: (context) => DeckDetailPage(deckId: _recommendedDeckList[index].deckId),
+                                        builder: (context) => DeckDetailsPage(),
                                       ));
                                     },
                                   ),
@@ -213,7 +213,7 @@ class _ChallengePageState extends State<ChallengePage> {
                                         ),
                                         onTap: () {
                                           Navigator.push(context, MaterialPageRoute(
-                                            builder: (context) => DeckDetailPage(deckId: _recommendedDeckList[index].deckId),
+                                            builder: (context) => DeckDetailsPage(),
                                           ));
                                         },
                                       ),

@@ -1,8 +1,8 @@
 import 'package:cs_onecup/features/deck/deckcreatepage.dart';
+import 'package:cs_onecup/features/deck/deckdetailspage.dart';
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
 import '../../data/models/deck.dart';
-import 'deckdetailpage.dart';
 
 class MyDeckPage extends StatefulWidget {
   const MyDeckPage({super.key});
@@ -142,7 +142,8 @@ class _MyDeckPageState extends State<MyDeckPage> {
                           ),
                           onTap: () {
                             Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => DeckDetailPage(deckId: _deckList[index].deckId),
+                              // builder: (context) => DeckDetailPage(deckId: _deckList[index].deckId),
+                              builder: (context) => DeckDetailsPage()    // 재환이가 짠 페이지로 연결
                             ));
                           },
                         ),

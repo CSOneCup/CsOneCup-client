@@ -18,7 +18,8 @@ class _DeckListPageState extends State<DeckListPage> {
       length: 2,
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('CS 한 잔', style: TextStyle(fontSize: 22, color: AppColors.mainDeepOrange),),
+          title: const Text('CS 한 잔', style: TextStyle(fontSize: 22, color: AppColors.mainDeepOrange, fontWeight: FontWeight.w500),),
+          backgroundColor: Colors.white,
           actions: [
             IconButton(onPressed: () { }, icon: const Icon(Icons.settings_outlined, size: 30,))
           ],
