@@ -148,8 +148,8 @@ class _CardListPageState extends State<CardListPage> {
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
                 child: GridView.builder(
-                  // itemCount: _dummyCards.length, // 카드 개수
-                  itemCount: _myCards.length,
+                  itemCount: _dummyCards.length, // 카드 개수
+                  // itemCount: _myCards.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2, // 가로 2개
                     crossAxisSpacing: 4.0, // 가로 간격
@@ -160,10 +160,10 @@ class _CardListPageState extends State<CardListPage> {
                     return GestureDetector(
                       onTap: () => onQuizCardTap(index),
                       child: SimpleQuizCard(
-                        quizCategory: _myCards[index].category,
-                        quizExplanation: _myCards[index].explanation,
-                        // quizCategory: _dummyCards[index].category,
-                        // quizExplanation: truncate(_dummyCards[index].explanation, 60),
+                        // quizCategory: _myCards[index].category,
+                        // quizExplanation: _myCards[index].explanation,
+                        quizCategory: _dummyCards[index].category,
+                        quizExplanation: truncate(_dummyCards[index].explanation, 60),
                       ),
                     );
                   },
