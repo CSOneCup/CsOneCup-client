@@ -2,7 +2,7 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 
 class ApiService {
-  final String _BASE_URL = "TO_BE_DETERMINED"; // Todo
+  final String _BASE_URL = "http://141.164.52.130:8082";
   Map<String, String>? _defaultHeader;
 
   ApiService({Map<String, String>? defaultHeader}):
