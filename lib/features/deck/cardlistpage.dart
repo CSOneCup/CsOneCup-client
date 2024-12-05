@@ -2,12 +2,12 @@ import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:cs_onecup/core/widgets/cards/quizcardwidget.dart';
 import 'package:cs_onecup/data/models/quizcard.dart';
 import 'package:cs_onecup/data/models/quiztype.dart';
-// import 'package:cs_onecup/data/services/api_service.dart';
+import 'package:cs_onecup/data/services/api_service.dart';
 import 'package:cs_onecup/features/deck/widgets/simplequizcard.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-/// 카드 나열 페이지
+/// 카드 목록 페이지
 class CardListPage extends StatefulWidget {
 
   const CardListPage({super.key});
@@ -17,33 +17,22 @@ class CardListPage extends StatefulWidget {
 }
 
 class _CardListPageState extends State<CardListPage> {
-  // late ApiService apiService;
+  late ApiService apiService;
   late SharedPreferences pref;
-  final List<QuizCard> _dummyCards = List.generate(10, (index) => QuizCard.allArgsConstructor(
-      index,
-      QuizType.choice,
-      '제목 $index',
-      'DUMMY_CATEGORY',
-      '퀴즈 $index',
-      [], // choice
-      1,
-      // 설명
-      '012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
-    )
-  );
-  
   late List<QuizCard> _myCards;
+  bool _isLoading = true;
 
-  String truncate(String s, int limit) {
+  /// 카드 설명 길면 잘라냄
+  String _truncateExplanation(String s, int limit) {
     return '${s.substring(0, limit-3)}...';
   }
 
+  // TODO
   void onQuizCardTap(int index) {
     print("card touch $index");
   }
 
   /// pref 및 apiService 초기화
-  /*
   Future<void> _initialize() async {
     pref = await SharedPreferences.getInstance();
     String? jwt = await pref.getString('authToken');
@@ -51,25 +40,47 @@ class _CardListPageState extends State<CardListPage> {
   }
   
   /// Card 가져오기
-  Future<void> _fetchData() async {
+  Future<void> _fetchCards() async {
     _myCards = await apiService.get(
         'api/cards/user',
         fromJson: (jsonList) => jsonList
                                 .map((json) => QuizCard.fromJson(json))
                                 .toList());
-    _myCards.forEach((c) {
+    for (var c in _myCards) {
       print(c); // test
+    }
+
+    setState(() {
+      _isLoading = false;
     });
+  }
+  
+  /// dummy data 집어넣음 TODO 나중에 지우기
+  Future<void> _putDummyData() async {
+    _myCards = List.generate(10, (index) => QuizCard.allArgsConstructor(
+        index,
+        QuizType.choice,
+        '제목 $index',
+        'DUMMY_CATEGORY',
+        '퀴즈 $index',
+        [], // choice
+        1,
+        // 설명
+        '012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
+    )
+    );
   }
   
   @override
   void initState() {
     super.initState();
     _initialize().then((_) {
-      _fetchData();
+      _fetchCards().then((_) {
+        _putDummyData(); // TODO 나중에 지우기
+      });
     });
     // API 호출하는 다른 함수
-  }*/
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -143,12 +154,24 @@ class _CardListPageState extends State<CardListPage> {
             ),
             const SizedBox(height: 16),
 
+
+            _isLoading
+            // API Fetch 전엔 로딩 화면 출력
+            ? const CircularProgressIndicator()
             // 카드 Grid View 나열
-            Expanded(
+            : Expanded(
               child: Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: GridView.builder(
-                  itemCount: _dummyCards.length, // 카드 개수
+                child: 
+                _myCards.isEmpty
+                // 카드 없으면 텍스트 출력
+                ? const Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Center(child: Text("카드가 없습니다!", style: TextStyle(color: Colors.black, fontSize: 36),)),
+                )
+                // 카드 있으면 GridView로 출력
+                : GridView.builder(
+                  itemCount: _myCards.length, // 카드 개수
                   // itemCount: _myCards.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                     crossAxisCount: 2, // 가로 2개
@@ -162,8 +185,8 @@ class _CardListPageState extends State<CardListPage> {
                       child: SimpleQuizCard(
                         // quizCategory: _myCards[index].category,
                         // quizExplanation: _myCards[index].explanation,
-                        quizCategory: _dummyCards[index].category,
-                        quizExplanation: truncate(_dummyCards[index].explanation, 60),
+                        quizCategory: _myCards[index].category,
+                        quizExplanation: _truncateExplanation(_myCards[index].explanation, 60),
                       ),
                     );
                   },
