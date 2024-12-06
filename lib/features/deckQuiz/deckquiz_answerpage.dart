@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
 import "package:cs_onecup/features/deck/widgets/simplecardtile.dart";
 import 'deckquiz_scoreball.dart';
+import 'deckquiz_carddetail.dart';
 
 class DeckquizAnswerPage extends StatelessWidget {
   final int score = 98;
@@ -42,18 +43,37 @@ class DeckquizAnswerPage extends StatelessWidget {
             Expanded(
                 child: ListView.builder(
                     itemCount: 15,
-                    itemBuilder: (context, index) => Row(
-                          children: [
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            const Icon(
-                              Icons.trip_origin,
-                              color: AppColors.lightGreen,
-                              size: 50,
-                            ),
-                            Expanded(child: SimpleCardTile(index: index)),
-                          ],
+                    itemBuilder: (context, index) => GestureDetector(
+                          onTap: () {
+                            print("$index card tapped");
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => const DeckquizCarddetail(
+                                  cardTitle: "카드 제목",
+                                  quizCategory: "소프트웨어공학",
+                                  quizExplanation: "카드에 대한 설명",
+                                  quizAnswer: "문제 정답",
+                                  answerExplanation: "정답에 대한 해설",
+                                ),
+                              ),
+                            );
+                          },
+                          child: Row(
+                            children: [
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              const Icon(
+                                Icons.trip_origin,
+                                color: AppColors.lightGreen,
+                                size: 50,
+                              ),
+                              Expanded(
+                                child: SimpleCardTile(index: index),
+                              ),
+                            ],
+                          ),
                         )))
           ],
         ));
