@@ -69,32 +69,9 @@ class _CardDetailsPageState extends State<DeckquizCarddetail> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Container(
-                margin: const EdgeInsets.only(top: 16),
-                width: 200,
-                decoration: BoxDecoration(
-                  border: Border.all(color: AppColors.lightGreen, width: 4),
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    const Icon(
-                      Icons.trip_origin,
-                      color: AppColors.lightGreen,
-                      size: 35,
-                    ),
-                    const SizedBox(width: 8),
-                    Text(
-                      widget._quizAnswer,
-                      style: const TextStyle(
-                        fontSize: 35,
-                        color: AppColors.lightGreen,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+              OX_widget(
+                isCorrect: false,
+                quizAnswer: widget._quizAnswer,
               ),
               // 카드 제목
               Center(
@@ -140,5 +117,87 @@ class _CardDetailsPageState extends State<DeckquizCarddetail> {
         ),
       ),
     );
+  }
+}
+
+class OX_widget extends StatelessWidget {
+  final bool _isCorrect;
+  final String _quizAnswer;
+
+  const OX_widget(
+      {super.key, required bool isCorrect, required String quizAnswer})
+      : _isCorrect = isCorrect,
+        _quizAnswer = quizAnswer;
+
+  @override
+  Widget build(BuildContext context) {
+    if (_isCorrect) {
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          border: Border.all(color: AppColors.lightGreen, width: 4),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: IntrinsicWidth(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Icon(
+                  Icons.trip_origin,
+                  color: AppColors.lightGreen,
+                  size: 35,
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  _quizAnswer,
+                  style: const TextStyle(
+                    fontSize: 35,
+                    color: AppColors.lightGreen,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    } else {
+      return Container(
+        margin: const EdgeInsets.symmetric(vertical: 10),
+        decoration: BoxDecoration(
+          border: Border.all(color: AppColors.lightRed, width: 4),
+          borderRadius: BorderRadius.circular(10),
+        ),
+        child: IntrinsicWidth(
+          child: Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                const Text(
+                  'X',
+                  style: TextStyle(
+                    color: AppColors.lightRed,
+                    fontSize: 35,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  _quizAnswer,
+                  style: const TextStyle(
+                    fontSize: 35,
+                    color: AppColors.lightRed,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ),
+      );
+    }
   }
 }

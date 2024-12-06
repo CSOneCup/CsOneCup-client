@@ -9,6 +9,8 @@ class DeckquizAnswerPage extends StatelessWidget {
   final int total = 20;
   final int correct = 17;
 
+  final bool isCorrect = false;
+
   const DeckquizAnswerPage({super.key});
 
   @override
@@ -64,11 +66,20 @@ class DeckquizAnswerPage extends StatelessWidget {
                               const SizedBox(
                                 width: 10,
                               ),
-                              const Icon(
-                                Icons.trip_origin,
-                                color: AppColors.lightGreen,
-                                size: 50,
-                              ),
+                              isCorrect
+                                  ? const Icon(
+                                      Icons.trip_origin,
+                                      color: AppColors.lightGreen,
+                                      size: 50,
+                                    )
+                                  : const Text(
+                                      'X',
+                                      style: TextStyle(
+                                        color: AppColors.lightRed,
+                                        fontSize: 50,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                               Expanded(
                                 child: SimpleCardTile(index: index),
                               ),
