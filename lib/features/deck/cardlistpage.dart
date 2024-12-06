@@ -3,6 +3,7 @@ import 'package:cs_onecup/core/widgets/cards/quizcardwidget.dart';
 import 'package:cs_onecup/data/models/quizcard.dart';
 import 'package:cs_onecup/data/models/quiztype.dart';
 import 'package:cs_onecup/data/services/api_service.dart';
+import 'package:cs_onecup/features/deck/carddetailspage.dart';
 import 'package:cs_onecup/features/deck/widgets/simplequizcard.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -27,9 +28,16 @@ class _CardListPageState extends State<CardListPage> {
     return '${s.substring(0, limit-3)}...';
   }
 
-  // TODO
   void onQuizCardTap(int index) {
     print("card touch $index");
+    Navigator.push(context, MaterialPageRoute(
+        builder: (context) => CardDetailsPage(
+            cardTitle: _myCards[index].title,
+            quizCategory: _myCards[index].category,
+            quizExplanation: _myCards[index].question,
+            quizAnswer: _myCards[index].choice[_myCards[index].answer], // TODO index 맞는지 확인
+            answerExplanation: _myCards[index].explanation))
+    );
   }
 
   /// pref 및 apiService 초기화
@@ -41,16 +49,14 @@ class _CardListPageState extends State<CardListPage> {
   
   /// Card 가져오기
   Future<void> _fetchCards() async {
-    _myCards = await apiService.get(
+    final fetchedCards = await apiService.get(
         'api/cards/user',
         fromJson: (jsonList) => jsonList
                                 .map((json) => QuizCard.fromJson(json))
                                 .toList());
-    for (var c in _myCards) {
-      print(c); // test
-    }
-
+    for (var c in _myCards) print(c); // test
     setState(() {
+      _myCards = fetchedCards;
       _isLoading = false;
     });
   }
@@ -71,15 +77,16 @@ class _CardListPageState extends State<CardListPage> {
     );
   }
   
+  Future<void> _fetchApiData() async {
+    await _initialize();
+    await _fetchCards();
+    await _putDummyData(); // TODO 나중에 지우기
+  }
+  
   @override
   void initState() {
     super.initState();
-    _initialize().then((_) {
-      _fetchCards().then((_) {
-        _putDummyData(); // TODO 나중에 지우기
-      });
-    });
-    // API 호출하는 다른 함수
+    _fetchApiData();
   }
 
   @override
