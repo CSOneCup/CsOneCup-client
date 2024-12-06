@@ -3,6 +3,7 @@ import 'package:cs_onecup/core/constants/colors.dart';
 import "package:cs_onecup/features/deck/widgets/simplecardtile.dart";
 import 'deckquiz_scoreball.dart';
 import 'deckquiz_carddetail.dart';
+import 'deckquiz_simplecardtile.dart';
 
 class DeckquizAnswerPage extends StatelessWidget {
   final int score = 98;
@@ -45,46 +46,45 @@ class DeckquizAnswerPage extends StatelessWidget {
             Expanded(
                 child: ListView.builder(
                     itemCount: 15,
-                    itemBuilder: (context, index) => GestureDetector(
-                          onTap: () {
-                            print("$index card tapped");
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const DeckquizCarddetail(
-                                  cardTitle: "카드 제목",
-                                  quizCategory: "소프트웨어공학",
-                                  quizExplanation: "카드에 대한 설명",
-                                  quizAnswer: "문제 정답",
-                                  answerExplanation: "정답에 대한 해설",
-                                ),
-                              ),
-                            );
-                          },
-                          child: Row(
-                            children: [
-                              const SizedBox(
-                                width: 10,
-                              ),
-                              isCorrect
-                                  ? const Icon(
-                                      Icons.trip_origin,
-                                      color: AppColors.lightGreen,
-                                      size: 50,
-                                    )
-                                  : const Text(
-                                      'X',
-                                      style: TextStyle(
-                                        color: AppColors.lightRed,
-                                        fontSize: 50,
-                                        fontWeight: FontWeight.bold,
-                                      ),
+                    itemBuilder: (context, index) => Row(
+                          children: [
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            isCorrect
+                                ? const Icon(
+                                    Icons.trip_origin,
+                                    color: AppColors.lightGreen,
+                                    size: 50,
+                                  )
+                                : const Text(
+                                    'X',
+                                    style: TextStyle(
+                                      color: AppColors.lightRed,
+                                      fontSize: 50,
+                                      fontWeight: FontWeight.bold,
                                     ),
-                              Expanded(
-                                child: SimpleCardTile(index: index),
-                              ),
-                            ],
-                          ),
+                                  ),
+                            Expanded(
+                              child: GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (context) =>
+                                            const DeckquizCarddetail(
+                                          cardTitle: "카드 제목",
+                                          quizCategory: "소프트웨어공학",
+                                          quizExplanation: "카드에 대한 설명",
+                                          quizAnswer: "문제 정답",
+                                          answerExplanation: "정답에 대한 해설",
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: DeckquizSimplecardtile(index: index)),
+                            ),
+                          ],
                         )))
           ],
         ));

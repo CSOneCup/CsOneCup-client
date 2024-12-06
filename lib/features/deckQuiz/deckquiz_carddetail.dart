@@ -46,74 +46,68 @@ class _CardDetailsPageState extends State<DeckquizCarddetail> {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () {
-        print("Gesture Detector Tap");
-        Navigator.pop(context);
-      },
-      child: Scaffold(
+    return Scaffold(
+      backgroundColor: AppColors.mainLightGray,
+      appBar: AppBar(
+        elevation: 0,
         backgroundColor: AppColors.mainLightGray,
-        appBar: AppBar(
-          elevation: 0,
-          backgroundColor: AppColors.mainLightGray,
-          leading: IconButton(
-              onPressed: () {
-                Navigator.pop(context);
-              },
-              icon: const Icon(
-                Icons.arrow_back_ios_new,
-                color: Colors.brown,
-              )),
-        ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              OX_widget(
-                isCorrect: false,
-                quizAnswer: widget._quizAnswer,
+        leading: IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: const Icon(
+              Icons.arrow_back_ios_new,
+              color: Colors.brown,
+            )),
+      ),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            OX_widget(
+              isCorrect: false,
+              quizAnswer: widget._quizAnswer,
+            ),
+            // 카드 제목
+            Center(
+              child: Text(
+                widget._cardTitle,
+                style: const TextStyle(
+                    fontSize: 24, color: AppColors.mainDeepOrange),
               ),
-              // 카드 제목
-              Center(
-                child: Text(
-                  widget._cardTitle,
-                  style: const TextStyle(
-                      fontSize: 24, color: AppColors.mainDeepOrange),
-                ),
+            ),
+
+            const SizedBox(height: 16),
+
+            // 카드
+            SizedBox(
+              width: 300,
+              height: 500,
+              child: FlipCard(
+                  key: _cardKey,
+                  direction: FlipDirection.HORIZONTAL,
+                  side: CardSide.FRONT,
+                  front: QuizCardwidget(
+                      scaleFactor: _cardScaleFactor,
+                      quizCategory: widget._quizCategory,
+                      quizExplanation: widget._quizExplanation),
+                  back: AnswerCardwidget(
+                      scaleFactor: _cardScaleFactor,
+                      quizAnswer: widget._quizAnswer,
+                      answerExplanation: widget._answerExplanation)),
+            ),
+
+            const SizedBox(height: 8),
+
+            // 레이블 (눌러서 답 보기)
+            Text(
+              "눌러서 답 보기",
+              style: TextStyle(
+                fontSize: 24,
+                color: AppColors.mainDeepOrange.withOpacity(0.3),
               ),
-
-              const SizedBox(height: 16),
-
-              // 카드
-              SizedBox(
-                width: 300,
-                height: 500,
-                child: FlipCard(
-                    key: _cardKey,
-                    direction: FlipDirection.HORIZONTAL,
-                    side: CardSide.FRONT,
-                    front: QuizCardwidget(
-                        scaleFactor: _cardScaleFactor,
-                        quizCategory: widget._quizCategory,
-                        quizExplanation: widget._quizExplanation),
-                    back: AnswerCardwidget(
-                        scaleFactor: _cardScaleFactor,
-                        quizAnswer: widget._quizAnswer,
-                        answerExplanation: widget._answerExplanation)),
-              ),
-
-              const SizedBox(height: 8),
-
-              // 레이블 (눌러서 답 보기)
-              Text(
-                "눌러서 답 보기",
-                style: TextStyle(
-                  fontSize: 24,
-                  color: AppColors.mainDeepOrange.withOpacity(0.3),
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
       ),
     );
