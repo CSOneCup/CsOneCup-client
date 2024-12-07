@@ -32,7 +32,7 @@ class _DeckDetailsPageState extends State<DeckDetailsPage> {
   /// pref 및 apiService 초기화
   Future<void> _initialize() async {
     pref = await SharedPreferences.getInstance();
-    String? jwt = await pref.getString('authToken');
+    String? jwt = pref.getString('authToken');
     apiService = ApiService(defaultHeader: {'Authorization': jwt ?? ''});
   }
 
