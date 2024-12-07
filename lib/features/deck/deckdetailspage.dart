@@ -153,7 +153,7 @@ class _DeckDetailsPageState extends State<DeckDetailsPage> {
                                 cardTitle: quizCard.title,
                                 quizCategory: quizCard.category,
                                 quizExplanation: quizCard.question,
-                                quizAnswer: quizCard.choice[quizCard.answer], // TODO indexing 맞는지 확인
+                                quizAnswer: quizCard.choice[quizCard.answer - 1],
                                 answerExplanation: quizCard.explanation))
                     );
                   },
