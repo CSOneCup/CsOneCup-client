@@ -107,7 +107,7 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
             const SizedBox(height: 8),
 
             // 레이블 (눌러서 답 보기)
-            Text("눌러서 답 보기" ,
+            Text(bottomLabelText ,
               style: TextStyle(
                 fontSize: 24,
                 color: AppColors.mainDeepOrange.withOpacity(0.3),
