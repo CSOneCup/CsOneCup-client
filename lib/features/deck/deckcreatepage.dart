@@ -1,24 +1,28 @@
 import 'package:cs_onecup/core/utils/icon_fetcher.dart';
 import 'package:cs_onecup/core/widgets/RectangularElevatedButton.dart';
 import 'package:cs_onecup/data/models/quizcard.dart';
+import 'package:cs_onecup/data/models/quiztype.dart';
+import 'package:cs_onecup/data/services/api_service.dart';
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 /// 덱 생성 화면
 class DeckCreatePage extends StatefulWidget {
-
-  const DeckCreatePage({super.key});
+  final int? deckId; // 덱 수정하는 경우 deckId 기입. 덱 생성 시엔 기입 X
+  const DeckCreatePage({super.key, this.deckId});
 
   @override
   State<DeckCreatePage> createState() => _DeckCreatePageState();
 }
 
 class _DeckCreatePageState extends State<DeckCreatePage> {
-  // TODO 내 카드 = API로 가져오기
   // TODO API 연결 후 Dismissible ValueKey 수정 (myCards[index], deckCards[index]로)
-  List<QuizCard> myCards = [];
-  List<QuizCard> deckCards = [];
+  late ApiService apiService;
+  late SharedPreferences prefs;
+  late List<QuizCard> myCards;
+  late List<QuizCard> deckCards;
   final _deckTitleController = TextEditingController();
 
   bool isTitleValid(String title) {
@@ -26,7 +30,8 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
     return t.isNotEmpty && t.length >= 2;
   }
 
-  void onCreateButtonPress() {
+  /// 생성 버튼 클릭 시 API 전송
+  void onCreateButtonPress() async {
     // 제목 validation
     if(!isTitleValid(_deckTitleController.text)){
       // Toast 메시지 띄우고 return
@@ -44,7 +49,94 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
     // API 전송 (TODO)
     _deckTitleController.text = '';
     print("${_deckTitleController.text} title is valid.");
+    await createDeck(_deckTitleController.text);
+  }
 
+  Future<int> createDeck(String title) async {
+    // TODO: 덱 생성 안 된 경우
+    // 덱 생성하는 경우 (deckId 제공 안된 경우) API 호출해서 새 id 받아옴
+    int id = widget.deckId ?? await apiService.post(
+      'api/decks',
+      requestBody: {'name': title},
+      fromJson: (response) => (response['deck_id'] as int)
+    );
+
+    for (var card in deckCards) {
+      registerCardToDeck(card.cardId, id);
+    }
+    return -1;
+  }
+
+  /// 덱에 단일 카드 등록
+  Future<void> registerCardToDeck(int cardId, int deckId) async {
+    Map<String, dynamic> response = await apiService.post('api/cards/deck/add',
+        requestBody: {'card_id': cardId, 'deck_id': deckId},
+        fromJson: (json) => (json as Map<String, dynamic>)
+    );
+    print("DeckCreatePage: registered card #${response['card_id']} to $deckId"); // test
+  }
+
+  /// pref 및 apiService 초기화
+  Future<void> _initialize() async {
+    prefs = await SharedPreferences.getInstance();
+    String? jwt = prefs.getString('auth_token');
+    apiService = ApiService(defaultHeader: {'Authorization' : jwt ?? ''});
+  }
+
+
+  /// 테스트 데이터 삽입. TODO 배포 시 삭제
+  Future<void> _fillDummyData() async {
+    quizCardGenerator(index) => QuizCard.necessaryArgsConstructor(
+        index,
+        QuizType.choice,
+        "DUMMY_CATEGORY",
+        "퀴즈 질문",
+        ["선택지1", "선택지2", "선택지3", "선택지4"],
+        1,
+        "정답 설명"
+    );
+
+    myCards = List.generate(10, quizCardGenerator , growable: true);
+    deckCards = List.generate(1, quizCardGenerator);
+  }
+
+  /// API로 카드 가져옴
+  Future<void> _fetchCards() async {
+    // 내 카드 검색
+    myCards = await apiService.get(
+      'api/cards/user',
+      fromJson: (jsonArray) => (jsonArray as List<Map<String, dynamic>>)
+        .map((json) => QuizCard.fromJson(json))
+        .toList()
+    );
+    print("DeckCreatePage: fetched my cards ");
+    for(var c in myCards) print(c); // test
+
+    // 덱 내 카드 검색
+    if(widget.deckId != null) {
+      deckCards = await apiService.get(
+        'api/decks/${widget.deckId}/cards',
+        fromJson: (response) => (response['cards'] as List<Map<String, dynamic>>)
+          .map((json) => QuizCard.fromJson(json))
+          .toList()
+      );
+      print("DeckCreatePage: fetched deck cards");
+      for(var c in deckCards) print(c); // test
+    } else {
+      deckCards = [];
+    }
+  }
+
+  Future<void> _fetchApiData() async {
+    await _initialize();
+    await _fetchCards();
+    await _fillDummyData(); // TODO 테스트 용, 배포 시 삭제
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchApiData();
   }
 
   @override
@@ -87,13 +179,6 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
                     fontWeight: FontWeight.w400, // 힌트 글자 굵기
                   ),
                   border: InputBorder.none
-                  // focusedBorder: OutlineInputBorder(
-                  //   borderRadius: BorderRadius.circular(10.0),
-                  //   borderSide: const BorderSide(
-                  //     color: Colors.orange, // 포커스 시 테두리 색상
-                  //     width: 1.0,
-                  //   ),
-                  // ),
                 ),
               ),
             ),
@@ -117,7 +202,7 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
                               itemCount: 5,
                               itemBuilder: (context, index) {
                                 return Dismissible(
-                                  key: ValueKey(index), // TODO API 연결 후 deckCards[index]로 변경
+                                  key: ValueKey(deckCards[index]),
                                   child: SimpleCardTileSmall(index: index),
                                   onDismissed: (direction) {
                                     // 덱 카드 Dismiss 시 나의 카드에 추가
@@ -147,7 +232,7 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
                                     itemCount: 5,
                                     itemBuilder: (context, index) {
                                       return Dismissible(
-                                        key: ValueKey(index), // TODO myCards[index]로 변경
+                                        key: ValueKey(myCards[index]),
                                         child: SimpleCardTileSmall(index: index),
                                         onDismissed: (direction) {
                                           setState(() {
