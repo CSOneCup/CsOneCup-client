@@ -35,7 +35,7 @@ class _CardListPageState extends State<CardListPage> {
             cardTitle: _myCards[index].title,
             quizCategory: _myCards[index].category,
             quizExplanation: _myCards[index].question,
-            quizAnswer: _myCards[index].choice[_myCards[index].answer], // TODO index 맞는지 확인
+            quizAnswer: _myCards[index].choice[_myCards[index].answer - 1],
             answerExplanation: _myCards[index].explanation))
     );
   }
