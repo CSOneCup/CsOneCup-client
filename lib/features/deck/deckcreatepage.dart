@@ -137,7 +137,7 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
     print("DeckCreatePage: INITIALIZING");
     await _initialize();
     await _fetchCards();
-    await _fillDummyData(); // TODO 테스트 용, 배포 시 삭제
+    // await _fillDummyData(); // TODO 테스트 용, 배포 시 삭제
   }
 
   @override
@@ -212,7 +212,13 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
                               itemBuilder: (context, index) {
                                 return Dismissible(
                                   key: ValueKey(deckCards[index]),
-                                  child: SimpleCardTileSmall(index: index),
+                                  child: SimpleCardTileSmall(
+                                    index: index,
+                                    title: deckCards[index].title,
+                                    category: deckCards[index].category,
+                                    csCard: deckCards[index],
+                                    onTap: (){}, // TODO
+                                  ),
                                   onDismissed: (direction) {
                                     // 덱 카드 Dismiss 시 나의 카드에 추가
                                     setState(() {
@@ -244,7 +250,13 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
                                     itemBuilder: (context, index) {
                                       return Dismissible(
                                         key: ValueKey(myCards[index]),
-                                        child: SimpleCardTileSmall(index: index),
+                                        child: SimpleCardTileSmall(
+                                          index: index,
+                                          title: myCards[index].title,
+                                          category: myCards[index].category,
+                                          csCard: myCards[index],
+                                          onTap: (){},
+                                        ),
                                         onDismissed: (direction) {
                                           setState(() {
                                             // 나의 카드 Dismiss 시 덱에 추가
