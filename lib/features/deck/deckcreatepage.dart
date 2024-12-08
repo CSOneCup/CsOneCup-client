@@ -132,7 +132,7 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
     print("DeckCreatePage: INITIALIZING");
     await _initialize();
     await _fetchCards();
-    //await _fillDummyData(); // TODO 테스트 용, 배포 시 삭제
+    // await _fillDummyData(); // TODO 테스트 용, 배포 시 삭제
   }
 
   @override
@@ -199,41 +199,28 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
                         children: [
                           // 덱 나열
                           Expanded(
-                              child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 4),
-                            child: Column(
-                              children: [
-                                const Text(
-                                  "나의 덱",
-                                  style: TextStyle(
-                                      fontSize: 16, color: Colors.deepOrange),
-                                ),
-                                const SizedBox(
-                                  height: 8,
-                                ),
-                                Expanded(
-                                  child: ListView.builder(
-                                      itemCount: deckCards.length,
-                                      itemBuilder: (context, index) {
-                                        return Dismissible(
-                                          key: ValueKey(deckCards[index]),
-                                          child:
-                                              SimpleCardTileSmall(index: index),
-                                          onDismissed: (direction) {
-                                            // 덱 카드 Dismiss 시 나의 카드에 추가
-                                            setState(() {
-                                              myCards.add(
-                                                  deckCards.removeAt(index));
-                                              print(
-                                                  "deck: ${deckCards.length}");
-                                              print(
-                                                  "myCards: ${myCards.length}");
-                                            });
-                                          },
-                                        );
-                                      }),
-                                )
-                              ],
+                            child: ListView.builder(
+                              itemCount: deckCards.length,
+                              itemBuilder: (context, index) {
+                                return Dismissible(
+                                  key: ValueKey(deckCards[index]),
+                                  child: SimpleCardTileSmall(
+                                    index: index,
+                                    title: deckCards[index].title,
+                                    category: deckCards[index].category,
+                                    csCard: deckCards[index],
+                                    onTap: (){}, // TODO
+                                  ),
+                                  onDismissed: (direction) {
+                                    // 덱 카드 Dismiss 시 나의 카드에 추가
+                                    setState(() {
+                                      myCards.add(deckCards.removeAt(index));
+                                      print("deck: ${deckCards.length}");
+                                      print("myCards: ${myCards.length}");
+                                    });
+                                  },
+                                );
+                              }
                             ),
                           )),
 
@@ -271,8 +258,48 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
                           )),
                         ],
                       ),
-                    ),
+                    )
+                  ),
 
+                  // 카드 목록 나열
+                  Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 4),
+                        child: Column(
+                          children: [
+                            const Text("카드 목록", style: TextStyle(fontSize: 16, color: Colors.deepOrange),),
+                            const SizedBox(height: 8,),
+                            Expanded(
+                                child: ListView.builder(
+                                    itemCount: myCards.length,
+                                    itemBuilder: (context, index) {
+                                      return Dismissible(
+                                        key: ValueKey(myCards[index]),
+                                        child: SimpleCardTileSmall(
+                                          index: index,
+                                          title: myCards[index].title,
+                                          category: myCards[index].category,
+                                          csCard: myCards[index],
+                                          onTap: (){},
+                                        ),
+                                        onDismissed: (direction) {
+                                          setState(() {
+                                            // 나의 카드 Dismiss 시 덱에 추가
+                                            deckCards.add(myCards.removeAt(index));
+                                          });
+                                        },
+                                      );
+                                    }
+                                )
+                            )
+                          ]
+                        ),
+                      )
+                  ),
+
+                ],
+              ),
+            ),
               // 하단 버튼 영역
               Container(
                   padding: const EdgeInsets.symmetric(
