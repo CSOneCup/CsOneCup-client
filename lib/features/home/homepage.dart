@@ -75,31 +75,32 @@ class _HomePageState extends State<HomePage> {
           decoration: const BoxDecoration(
             color: AppColors.mainLightGray,
           ),
+          child: FutureBuilder<Map<String, dynamic>>(
+            future: _userData,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (snapshot.hasData) {
+                final data = snapshot.data!;
+                final String name = data['name'];
+                final int level = data['level'];
+                final int expPoints = data['exp_point'];
+                return UserProfile(
+                    userLevel: level, userName: name, userExp: expPoints);
+              } else {
+                return const Center(child: Text('No data available'));
+              }
+            },
+          ),
+        ),
+        Positioned(
+          top: 200,
+          left: 0,
+          right: 0,
           child: Column(
             children: [
-              FutureBuilder<Map<String, dynamic>>(
-                future: _userData,
-                builder: (context, snapshot) {
-                  if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const Center(child: CircularProgressIndicator());
-                  } else if (snapshot.hasError) {
-                    return Center(child: Text('Error: ${snapshot.error}'));
-                  } else if (snapshot.hasData) {
-                    final data = snapshot.data!;
-                    final String name = data['name'];
-                    final int level = data['level'];
-                    final int expPoints = data['exp_point'];
-                    return UserProfile(
-                        userLevel: level, userName: name, userExp: expPoints);
-                  } else {
-                    return const Center(child: Text('No data available'));
-                  }
-                },
-              ),
-              SolvedAndRetryProblemsInfo(
-                solvedProblemsToday: 5,
-                retryProblems: 12,
-              ),
               DropdownButton<String>(
                 dropdownColor: AppColors.mainBeige,
                 value: _selectedCategory,
@@ -142,19 +143,13 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-        Positioned(
-          top: 380,
-          left: 0,
-          right: 0,
-          child: Column(
-            children: [
+              const SizedBox(
+                height: 20,
+              ),
               Image.asset(
                 'assets/icons/icon_arrow_up.png',
-                width: 30,
-                height: 30,
+                width: 40,
+                height: 40,
                 color: AppColors.mainDeepOrange,
               ),
               const SizedBox(
