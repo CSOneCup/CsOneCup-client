@@ -42,7 +42,7 @@ class QuizCard {
 
   static QuizCard fromJson(Map<String, dynamic> cardMap) {
     return QuizCard.allArgsConstructor(
-        cardMap['card_id'], cardMap['quiz_type'], cardMap['title'], cardMap['category'],
+        cardMap['card_id'], QuizType.fromString(cardMap['quiz_type']), cardMap['title'], cardMap['category'],
         cardMap['question'], List<String>.from(cardMap['choice']), cardMap['answer'], cardMap['explanation']
     );
   }
