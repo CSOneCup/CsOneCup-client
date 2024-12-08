@@ -24,6 +24,7 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
   late List<QuizCard> myCards;
   late List<QuizCard> deckCards;
   final _deckTitleController = TextEditingController();
+  bool _isLoading = true;
 
   bool isTitleValid(String title) {
     final t = title.trim();
@@ -79,8 +80,9 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
   /// pref 및 apiService 초기화
   Future<void> _initialize() async {
     prefs = await SharedPreferences.getInstance();
-    String? jwt = prefs.getString('auth_token');
-    apiService = ApiService(defaultHeader: {'Authorization' : jwt ?? ''});
+    String? jwt = prefs.getString('authToken');
+    print("jwt: $jwt");
+    apiService = ApiService(defaultHeader: {'Authorization' : 'Bearer $jwt' ?? ''});
   }
 
 
@@ -105,8 +107,8 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
     // 내 카드 검색
     myCards = await apiService.get(
       'api/cards/user',
-      fromJson: (jsonArray) => (jsonArray as List<Map<String, dynamic>>)
-        .map((json) => QuizCard.fromJson(json))
+      fromJson: (jsonArray) => (jsonArray as List<dynamic>)
+        .map((json) => QuizCard.fromJson(json as Map<String, dynamic>))
         .toList()
     );
     print("DeckCreatePage: fetched my cards ");
@@ -125,9 +127,14 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
     } else {
       deckCards = [];
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   Future<void> _fetchApiData() async {
+    print("DeckCreatePage: INITIALIZING");
     await _initialize();
     await _fetchCards();
     await _fillDummyData(); // TODO 테스트 용, 배포 시 삭제
@@ -185,7 +192,9 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
 
             const SizedBox(height: 8,),
 
-            Expanded(
+            _isLoading
+            ? const CircularProgressIndicator()
+            : Expanded(
               child: Row(
                 children: [
 
@@ -199,7 +208,7 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
                           const SizedBox(height: 8,),
                           Expanded(
                             child: ListView.builder(
-                              itemCount: 5,
+                              itemCount: deckCards.length,
                               itemBuilder: (context, index) {
                                 return Dismissible(
                                   key: ValueKey(deckCards[index]),
@@ -208,6 +217,8 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
                                     // 덱 카드 Dismiss 시 나의 카드에 추가
                                     setState(() {
                                       myCards.add(deckCards.removeAt(index));
+                                      print("deck: ${deckCards.length}");
+                                      print("myCards: ${myCards.length}");
                                     });
                                   },
                                 );
@@ -229,7 +240,7 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
                             const SizedBox(height: 8,),
                             Expanded(
                                 child: ListView.builder(
-                                    itemCount: 5,
+                                    itemCount: myCards.length,
                                     itemBuilder: (context, index) {
                                       return Dismissible(
                                         key: ValueKey(myCards[index]),
