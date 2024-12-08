@@ -1,6 +1,10 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:cs_onecup/features/deckQuiz/deckquizpage.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
 
 class SolvedAndRetryProblemsInfo extends StatefulWidget {
   int solvedProblemsToday;
@@ -59,18 +63,30 @@ class _SolvedAndRetryProblemsInfoState
                         style: const TextStyle(fontSize: 25),
                       ),
                       ElevatedButton(
-                          onPressed: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Deckquizpage(
-                                        isRetry: true,
-                                        deckName: '씹상남자 덱',
-                                        deckHashTag:
-                                            '#상특 #cs는 신장이 아닌 심장으로 푸는 것이다',
-                                        deckLength: 35,
-                                      )),
-                            );
+                          onPressed: () async {
+                            final SharedPreferences prefs =
+                                await SharedPreferences.getInstance();
+
+                            final url = Uri.parse(
+                                'http://141.164.52.130:8082/api/cards/card?redundant=true&category=all');
+
+                            final headers = {
+                              'Authorization':
+                                  "Bearer ${prefs.getString('authToken')}"
+                            };
+
+                            final response =
+                                await http.get(url, headers: headers);
+
+                            if (response.statusCode == 200) {
+                              print('response.body');
+
+                              print(utf8.decode(response.bodyBytes));
+                            } else {
+                              print('response.statusCode');
+                              print(response.statusCode);
+                              print(utf8.decode(response.bodyBytes));
+                            }
                           },
                           style: ElevatedButton.styleFrom(
                             foregroundColor: Colors.white,

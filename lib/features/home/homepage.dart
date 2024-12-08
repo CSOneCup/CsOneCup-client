@@ -4,6 +4,12 @@ import 'package:cs_onecup/features/home/userprofile.dart';
 import 'package:cs_onecup/features/home/solved_and_retry_problem_info.dart';
 import 'package:cs_onecup/features/home/cards_in_hand.dart';
 
+import '../../core/constants/config.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
 
@@ -18,6 +24,10 @@ class _HomePageState extends State<HomePage> {
   bool _includingSolvedProblems = false; //풀린 문제 포함 여부
   final GlobalKey _checkboxKey = GlobalKey();
 
+  final String _name = '';
+  final int _level = 0;
+  final int _expPoints = 0;
+
   final List<String> _quizCategories = [
     '모든 카테고리',
     '운영체제',
@@ -27,6 +37,32 @@ class _HomePageState extends State<HomePage> {
     '소프트웨어공학',
     '프로그래밍'
   ];
+
+  late Future<Map<String, dynamic>> _userData;
+
+  @override
+  void initState() {
+    super.initState();
+    _userData = _fetchUserData();
+  }
+
+  Future<Map<String, dynamic>> _fetchUserData() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? authToken = prefs.getString('authToken');
+    const String url = '${Config.baseUrl}/api/user/info';
+    final http.Response response = await http.get(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Authorization': 'Bearer $authToken',
+      },
+    );
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body)['data'];
+      return data;
+    } else {
+      throw Exception('Failed to load user data');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -39,13 +75,32 @@ class _HomePageState extends State<HomePage> {
           decoration: const BoxDecoration(
             color: AppColors.mainLightGray,
           ),
+          child: FutureBuilder<Map<String, dynamic>>(
+            future: _userData,
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (snapshot.hasError) {
+                return Center(child: Text('Error: ${snapshot.error}'));
+              } else if (snapshot.hasData) {
+                final data = snapshot.data!;
+                final String name = data['name'];
+                final int level = data['level'];
+                final int expPoints = data['exp_point'];
+                return UserProfile(
+                    userLevel: level, userName: name, userExp: expPoints);
+              } else {
+                return const Center(child: Text('No data available'));
+              }
+            },
+          ),
+        ),
+        Positioned(
+          top: 200,
+          left: 0,
+          right: 0,
           child: Column(
             children: [
-              UserProfile(userName: '사용자', userLevel: 5, userExp: exp),
-              SolvedAndRetryProblemsInfo(
-                solvedProblemsToday: 5,
-                retryProblems: 12,
-              ),
               DropdownButton<String>(
                 dropdownColor: AppColors.mainBeige,
                 value: _selectedCategory,
@@ -88,19 +143,13 @@ class _HomePageState extends State<HomePage> {
                   ],
                 ),
               ),
-            ],
-          ),
-        ),
-        Positioned(
-          top: 380,
-          left: 0,
-          right: 0,
-          child: Column(
-            children: [
+              const SizedBox(
+                height: 20,
+              ),
               Image.asset(
                 'assets/icons/icon_arrow_up.png',
-                width: 30,
-                height: 30,
+                width: 40,
+                height: 40,
                 color: AppColors.mainDeepOrange,
               ),
               const SizedBox(
@@ -113,7 +162,10 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 30,
               ),
-              const CardsInHand(),
+              CardsInHand(
+                redundant: _includingSolvedProblems,
+                category: _selectedCategory ?? 'all',
+              ),
             ],
           ),
         ),

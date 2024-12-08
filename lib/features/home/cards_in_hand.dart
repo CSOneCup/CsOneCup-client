@@ -1,9 +1,21 @@
+import 'package:cs_onecup/core/constants/config.dart';
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/widgets/cards/iconcardwidget.dart';
 import 'package:cs_onecup/features/quiz/quizepage.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class CardsInHand extends StatefulWidget {
-  const CardsInHand({super.key});
+  final bool redundant;
+  String category;
+
+  CardsInHand({
+    super.key,
+    required this.redundant,
+    required this.category,
+  });
 
   @override
   State<CardsInHand> createState() => _CardsInHandState();
@@ -20,6 +32,7 @@ class _CardsInHandState extends State<CardsInHand>
   @override
   void initState() {
     super.initState();
+
     _controller = AnimationController(
       duration: const Duration(milliseconds: 250),
       vsync: this,
@@ -46,7 +59,11 @@ class _CardsInHandState extends State<CardsInHand>
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => const QuizPage(),
+          builder: (context) => QuizPage(
+            redundant: widget.redundant,
+            category: widget.category,
+            solvedAnswerCnt: 0,
+          ),
         ),
       ).then((_) {
         setState(() {
@@ -58,6 +75,10 @@ class _CardsInHandState extends State<CardsInHand>
 
   @override
   Widget build(BuildContext context) {
+    if (widget.category == '모든 카테고리') {
+      widget.category = 'all';
+    }
+
     return GestureDetector(
       onPanUpdate: (details) {
         if (details.delta.dy < 0) {

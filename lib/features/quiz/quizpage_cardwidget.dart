@@ -29,8 +29,6 @@ class _QuizpageCardwidgetState extends State<QuizpageCardwidget> {
 
   final GlobalKey<FlipCardState> _cardKey = GlobalKey<FlipCardState>();
 
-  //TODO : 나중에 서버에서 데이터 받아오기 전에는 icon 보여주다가, 데이터 받아오면 quiz로 변경되게 설계 (시간말고 loading 변수로 조절)
-
   @override
   void initState() {
     super.initState();
