@@ -30,6 +30,7 @@ class _CardListPageState extends State<CardListPage> {
 
   void onQuizCardTap(int index) {
     print("card touch $index");
+    print(_myCards[index]);
     Navigator.push(context, MaterialPageRoute(
         builder: (context) => CardDetailsPage(
             cardTitle: _myCards[index].title,
@@ -44,37 +45,42 @@ class _CardListPageState extends State<CardListPage> {
   Future<void> _initialize() async {
     pref = await SharedPreferences.getInstance();
     String? jwt = await pref.getString('authToken');
-    apiService = ApiService(defaultHeader: {'Authorization': jwt ?? ''});
+    print("CardListPage: jwt set to $jwt");
+    apiService = ApiService(defaultHeader: {'Authorization': 'Bearer $jwt' ?? ''});
   }
   
   /// Card 가져오기
   Future<void> _fetchCards() async {
-    final fetchedCards = await apiService.get(
+    List<QuizCard> fetchedCards = await apiService.get(
         'api/cards/user',
-        fromJson: (jsonList) => jsonList
-                                .map((json) => QuizCard.fromJson(json))
-                                .toList());
-    for (var c in _myCards) print(c); // test
+        fromJson: (jsonList) => (jsonList as List<dynamic>)
+                            .map((json) => QuizCard.fromJson(json as Map<String, dynamic>))
+                            .toList()
+    );
+
     setState(() {
-      _myCards = fetchedCards;
+      _myCards = fetchedCards ?? [];
       _isLoading = false;
     });
+    for (var c in _myCards) print(c); // test
   }
   
   /// dummy data 집어넣음 TODO 나중에 지우기
   Future<void> _putDummyData() async {
-    _myCards = List.generate(10, (index) => QuizCard.allArgsConstructor(
-        index,
-        QuizType.choice,
-        '제목 $index',
-        'DUMMY_CATEGORY',
-        '퀴즈 $index',
-        [], // choice
-        1,
-        // 설명
-        '012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
-    )
-    );
+    setState(() {
+      _myCards = List.generate(10, (index) => QuizCard.allArgsConstructor(
+          index,
+          QuizType.choice,
+          '제목 $index',
+          'DUMMY_CATEGORY',
+          '퀴즈 $index',
+          [], // choice
+          1,
+          // 설명
+          '012345678901234567890123456789012345678901234567890123456789012345678901234567890123456789'
+      )
+      );
+    });
   }
   
   Future<void> _fetchApiData() async {
@@ -93,18 +99,6 @@ class _CardListPageState extends State<CardListPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: AppColors.mainLightGray,
-      appBar: AppBar(
-        elevation: 0,
-        backgroundColor: AppColors.mainLightGray,
-        leading: IconButton(
-        icon: const Icon(Icons.arrow_back_ios_new, color: AppColors.mainDeepOrange),
-        onPressed: () {
-            // 뒤로가기 버튼 동작
-            Navigator.pop(context);
-          }
-        ),
-      ),
-
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(
@@ -178,10 +172,9 @@ class _CardListPageState extends State<CardListPage> {
                 )
                 // 카드 있으면 GridView로 출력
                 : GridView.builder(
-                  itemCount: _myCards.length, // 카드 개수
-                  // itemCount: _myCards.length,
+                  itemCount: _myCards.length,
                   gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, // 가로 2개
+                    crossAxisCount: 2,
                     crossAxisSpacing: 4.0, // 가로 간격
                     mainAxisSpacing: 8.0, // 세로 간격
                     childAspectRatio: 0.7, // 카드 비율 (너비 대비 높이)
