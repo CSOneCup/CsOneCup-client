@@ -65,9 +65,11 @@ class AnswerCardwidget extends StatelessWidget {
                     quizAnswer,
                     style: const TextStyle(
                       color: AppColors.mainDeepOrange,
-                      fontSize: 30,
+                      fontSize: 20,
                       fontWeight: FontWeight.bold,
+                      // overflow: TextOverflow.ellipsis
                     ),
+                    textAlign: TextAlign.center,
                   ),
                   const SizedBox(
                     height: 20,
@@ -78,7 +80,7 @@ class AnswerCardwidget extends StatelessWidget {
                         answerExplanation,
                         style: const TextStyle(
                           color: Colors.black,
-                          fontSize: 20,
+                          fontSize: 18,
                         ),
                       ),
                     ),
