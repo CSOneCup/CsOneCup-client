@@ -66,15 +66,15 @@ class _ChallengePageState extends State<ChallengePage> {
   }
 
   @override
-  void dispose() {
-    _deckSearchController.dispose();
-    super.dispose();
-  }
-
-  @override
   void initState() {
     // API로 데이터 받아와서 저장
     super.initState();
+  }
+
+  @override
+  void dispose() {
+    _deckSearchController.dispose();
+    super.dispose();
   }
 
   @override
@@ -146,9 +146,9 @@ class _ChallengePageState extends State<ChallengePage> {
                                           child: Image.asset('assets/images/recommend_deck.png', width: 70, height: 90,)
                                         ),
                                         onTap: () {
-                                          Navigator.push(context, MaterialPageRoute(
-                                            builder: (context) => DeckDetailsPage(),
-                                          ));
+                                          // Navigator.push(context, MaterialPageRoute(
+                                          //   builder: (context) => DeckDetailsPage(),
+                                          // ));
                                         },
                                       ),
                                       const SizedBox(
@@ -203,9 +203,9 @@ class _ChallengePageState extends State<ChallengePage> {
                                                 child: Image.asset('assets/images/popular_deck.png', width: 70, height: 90,)
                                             ),
                                             onTap: () {
-                                              Navigator.push(context, MaterialPageRoute(
-                                                builder: (context) => DeckDetailsPage(),
-                                              ));
+                                            //   Navigator.push(context, MaterialPageRoute(
+                                            //     builder: (context) => DeckDetailsPage(),
+                                            //   ));
                                             },
                                           ),
                                           const SizedBox(
