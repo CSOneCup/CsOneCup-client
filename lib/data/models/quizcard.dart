@@ -6,8 +6,8 @@ class QuizCard {
   String _title = '';
   String _category = '';
   String _question = '';
-  List _choice = <String>[];
-  int _answer = 0;
+  List _choice = <String>['답 1', '답 2', '답 3', '답 4'];
+  int _answer = 1;
   String _explanation = '';
 
   QuizCard.necessaryArgsConstructor(this._cardId, this._quizType, this._category, this._question, this._choice, this._answer, this._explanation);
