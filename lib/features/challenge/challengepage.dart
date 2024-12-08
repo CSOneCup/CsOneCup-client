@@ -129,22 +129,15 @@ class _ChallengePageState extends State<ChallengePage> {
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(10)), // 둥근 모서리
                         ),
-                        child: SingleChildScrollView(
-                          scrollDirection: Axis.horizontal,
-                          child: Container(
-                            width: widgetWidth,
-                            child: GridView.builder(
-                              padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                              physics: NeverScrollableScrollPhysics(),
-                              shrinkWrap: true,
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 3,
-                                mainAxisSpacing: 0.5,
-                                crossAxisSpacing: 0.5
-                              ),
-                              itemCount: 3,
-                              itemBuilder: (context, index) {
-                                return Center(
+                        child: Container(
+                          width: widgetWidth,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: _recommendedDeckList.length,
+                            itemBuilder: (context, index) {
+                              return Center(
+                                child: Container(
+                                  width: widgetWidth / 3,
                                   child: Column(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -161,12 +154,14 @@ class _ChallengePageState extends State<ChallengePage> {
                                       const SizedBox(
                                         height: 5,
                                       ),
-                                      Text(_recommendedDeckList[index].name, style: TextStyle(fontWeight: FontWeight.bold),)
+                                      Container(
+                                        child: Text(_recommendedDeckList[index].name, style: TextStyle(fontWeight: FontWeight.bold),)
+                                      )
                                     ],
                                   ),
-                                );
-                              }
-                            ),
+                                ),
+                              );
+                            }
                           ),
                         )
                       ),
@@ -191,32 +186,21 @@ class _ChallengePageState extends State<ChallengePage> {
                             color: Colors.white,
                             borderRadius: BorderRadius.all(Radius.circular(10)), // 둥근 모서리
                           ),
-                          child: SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            child: Container(
-                              width: widgetWidth,
-                              child: GridView.builder(
-                                  padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                                  physics: NeverScrollableScrollPhysics(),
-                                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                      crossAxisCount: 3,
-                                      mainAxisSpacing: 0.5,
-                                      crossAxisSpacing: 0.5
-                                  ),
-                                  itemCount: 3,
-                                  itemBuilder: (context, index) {
-                                    return Center(
+                          child: Container(
+                            width: widgetWidth,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: _popularDeckList.length,
+                              itemBuilder: (context, index) {
+                                  return Container(
+                                    width: widgetWidth / 3,
+                                    child: Center(
                                       child: Column(
                                         mainAxisAlignment: MainAxisAlignment.end,
                                         children: [
                                           GestureDetector(
-                                            child: Stack(
-                                                key: UniqueKey(),
-                                                children: [
-                                                  Center(
-                                                      child: Image.asset('assets/images/popular_deck.png', width: 70, height: 90,)
-                                                  ),
-                                                ]
+                                            child: Center(
+                                                child: Image.asset('assets/images/popular_deck.png', width: 70, height: 90,)
                                             ),
                                             onTap: () {
                                               Navigator.push(context, MaterialPageRoute(
@@ -230,9 +214,9 @@ class _ChallengePageState extends State<ChallengePage> {
                                           Text(_popularDeckList[index].name, style: TextStyle(fontWeight: FontWeight.bold),)
                                         ],
                                       ),
-                                    );
-                                  }
-                              ),
+                                    ),
+                                  );
+                                }
                             ),
                           )
                       ),
@@ -269,10 +253,10 @@ class _ChallengePageState extends State<ChallengePage> {
                       const SizedBox(
                         height: 45,
                       ),
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const Text('덱 검색', style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),),
+                          Text('덱 검색', style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),),
                         ],
                       ),
                       const SizedBox(
