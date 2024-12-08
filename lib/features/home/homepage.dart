@@ -49,7 +49,7 @@ class _HomePageState extends State<HomePage> {
   Future<Map<String, dynamic>> _fetchUserData() async {
     final SharedPreferences prefs = await SharedPreferences.getInstance();
     final String? authToken = prefs.getString('authToken');
-    const String url = 'http://141.164.52.130:8082/api/user/info';
+    const String url = '${Config.baseUrl}/api/user/info';
     final http.Response response = await http.get(
       Uri.parse(url),
       headers: <String, String>{
@@ -162,7 +162,10 @@ class _HomePageState extends State<HomePage> {
               const SizedBox(
                 height: 30,
               ),
-              const CardsInHand(),
+              CardsInHand(
+                redundant: _includingSolvedProblems,
+                category: _selectedCategory ?? 'all',
+              ),
             ],
           ),
         ),

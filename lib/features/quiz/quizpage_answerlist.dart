@@ -3,11 +3,22 @@ import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:cs_onecup/features/answer/answerpage.dart';
 
 class QuizpageAnswerlist extends StatefulWidget {
-  final List<String> _answerList;
+  final bool redundant;
+  String category;
+  final String quizCategory;
+  final String quizExplanation;
+  final int quizAnswer;
 
-  const QuizpageAnswerlist({
+  final List<dynamic> _answerList;
+
+  QuizpageAnswerlist({
     super.key,
-    required List<String> answerList,
+    required List<dynamic> answerList,
+    required this.redundant,
+    required this.category,
+    required this.quizCategory,
+    required this.quizExplanation,
+    required this.quizAnswer,
   }) : _answerList = answerList;
 
   @override
@@ -22,6 +33,8 @@ class _QuizpageAnswerlistState extends State<QuizpageAnswerlist> {
   late double _answerFontSize;
   late FontWeight _answerFontWeight;
 
+  late String _answerString;
+
   int _selectedAnswerIndex = -1;
 
   @override
@@ -35,6 +48,9 @@ class _QuizpageAnswerlistState extends State<QuizpageAnswerlist> {
       _answerFontSize = 25;
       _answerFontWeight = FontWeight.normal;
     }
+
+    _answerString = widget._answerList[widget.quizAnswer - 1];
+
     super.initState();
   }
 
@@ -64,7 +80,13 @@ class _QuizpageAnswerlistState extends State<QuizpageAnswerlist> {
                           //선택한 답이 또 클릭되면 제출
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const AnswerPage(),
+                              builder: (context) => AnswerPage(
+                                redundant: widget.redundant,
+                                category: widget.category,
+                                quizCategory: widget.quizCategory,
+                                quizExplanation: widget.quizExplanation,
+                                quizAnswer: _answerString,
+                              ),
                             ),
                           );
                         } else {

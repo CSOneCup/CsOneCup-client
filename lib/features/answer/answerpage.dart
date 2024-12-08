@@ -4,7 +4,20 @@ import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:cs_onecup/features/answer/answerpage_cardwidget.dart';
 
 class AnswerPage extends StatefulWidget {
-  const AnswerPage({super.key});
+  final bool redundant;
+  String category;
+  final String quizCategory;
+  final String quizExplanation;
+  final String quizAnswer;
+
+  AnswerPage({
+    super.key,
+    required this.redundant,
+    required this.category,
+    required this.quizCategory,
+    required this.quizExplanation,
+    required this.quizAnswer,
+  });
 
   @override
   State<AnswerPage> createState() => _AnswerPageState();
@@ -94,7 +107,9 @@ class _AnswerPageState extends State<AnswerPage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => const QuizPage()));
+                                builder: (context) => QuizPage(
+                                    redundant: widget.redundant,
+                                    category: widget.category)));
                       },
                       child: const Text(
                         '다음 문제',
@@ -107,10 +122,11 @@ class _AnswerPageState extends State<AnswerPage> {
                   ),
                 ),
               ),
-              const Center(
+              Center(
                 child: AnswerpageCardwidget(
-                  quizCategory: '소프트웨어공학',
-                  quizExplanation: '운영체제가 제공하는 기능에 해당하지 않는 것은 무엇인가요!',
+                  quizCategory: widget.quizCategory,
+                  quizExplanation: widget.quizExplanation,
+                  quizAnswer: widget.quizAnswer,
                 ),
               )
             ],
