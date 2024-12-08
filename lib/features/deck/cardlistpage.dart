@@ -25,6 +25,7 @@ class _CardListPageState extends State<CardListPage> {
 
   /// 카드 설명 길면 잘라냄
   String _truncateExplanation(String s, int limit) {
+    if(s.length < limit) return s;
     return '${s.substring(0, limit-3)}...';
   }
 
@@ -62,6 +63,7 @@ class _CardListPageState extends State<CardListPage> {
       _myCards = fetchedCards ?? [];
       _isLoading = false;
     });
+    print("received ${_myCards.length} cards");
     for (var c in _myCards) print(c); // test
   }
   
@@ -86,7 +88,7 @@ class _CardListPageState extends State<CardListPage> {
   Future<void> _fetchApiData() async {
     await _initialize();
     await _fetchCards();
-    await _putDummyData(); // TODO 나중에 지우기
+    // await _putDummyData(); // TODO 나중에 지우기
   }
   
   @override
@@ -187,6 +189,7 @@ class _CardListPageState extends State<CardListPage> {
                         // quizExplanation: _myCards[index].explanation,
                         quizCategory: _myCards[index].category,
                         quizExplanation: _truncateExplanation(_myCards[index].explanation, 60),
+                        // quizExplanation: _myCards[index].explanation,
                       ),
                     );
                   },
