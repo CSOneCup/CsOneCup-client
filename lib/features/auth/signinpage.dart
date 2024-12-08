@@ -33,104 +33,106 @@ class _SigninPageState extends State<SigninPage> {
           onPressed: () => Navigator.pop(context),
         ),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            // Coffee icon
-            Center(
-              child: Column(
-                children: [
-                  Image.asset(
-                    'assets/images/coffee_cat.png',
-                    width: MediaQuery.of(context).size.width *
-                        0.4, // 'CS 한잔' 길이에 맞춘 밑줄
-                  ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    "CS 한잔",
-                    style: TextStyle(
-                      fontSize: 18,
-                      fontWeight: FontWeight.normal,
-                      color: AppColors.mainLightOrange,
+      body: SingleChildScrollView(
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              // Coffee icon
+              Center(
+                child: Column(
+                  children: [
+                    Image.asset(
+                      'assets/images/coffee_cat.png',
+                      width: MediaQuery.of(context).size.width *
+                          0.4, // 'CS 한잔' 길이에 맞춘 밑줄
                     ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      "CS 한잔",
+                      style: TextStyle(
+                        fontSize: 18,
+                        fontWeight: FontWeight.normal,
+                        color: AppColors.mainLightOrange,
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    const Text(
+                      "로그인",
+                      style: TextStyle(
+                        fontSize: 32,
+                        fontWeight: FontWeight.bold,
+                        color: AppColors.mainDeepOrange,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              const SizedBox(height: 32),
+
+              // ID Field
+              TextFormField(
+                controller: _idController,
+                decoration: InputDecoration(
+                  labelText: "아이디",
+                  filled: true,
+                  fillColor: AppColors.mainBeige,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
                   ),
-                  const SizedBox(height: 8),
-                  const Text(
-                    "로그인",
-                    style: TextStyle(
-                      fontSize: 32,
-                      fontWeight: FontWeight.bold,
+                ),
+              ),
+              const SizedBox(height: 16),
+
+              // Password Field
+              TextFormField(
+                controller: _passwordController,
+                obscureText: !_isPasswordVisible, // Toggle visibility
+                decoration: InputDecoration(
+                  labelText: "비밀번호",
+                  filled: true,
+                  fillColor: AppColors.mainBeige,
+                  border: OutlineInputBorder(
+                    borderRadius: BorderRadius.circular(12),
+                    borderSide: BorderSide.none,
+                  ),
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _isPasswordVisible
+                          ? Icons.visibility
+                          : Icons.visibility_off,
                       color: AppColors.mainDeepOrange,
                     ),
+                    onPressed: () {
+                      setState(() {
+                        _isPasswordVisible = !_isPasswordVisible;
+                      });
+                    },
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 32),
-
-            // ID Field
-            TextFormField(
-              controller: _idController,
-              decoration: InputDecoration(
-                labelText: "아이디",
-                filled: true,
-                fillColor: AppColors.mainBeige,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
                 ),
               ),
-            ),
-            const SizedBox(height: 16),
+              const SizedBox(height: 32),
 
-            // Password Field
-            TextFormField(
-              controller: _passwordController,
-              obscureText: !_isPasswordVisible, // Toggle visibility
-              decoration: InputDecoration(
-                labelText: "비밀번호",
-                filled: true,
-                fillColor: AppColors.mainBeige,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(12),
-                  borderSide: BorderSide.none,
-                ),
-                suffixIcon: IconButton(
-                  icon: Icon(
-                    _isPasswordVisible
-                        ? Icons.visibility
-                        : Icons.visibility_off,
-                    color: AppColors.mainDeepOrange,
+              // Login Button
+              ElevatedButton(
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.mainDeepOrange, // Button color
+                  padding: const EdgeInsets.symmetric(vertical: 16),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(24),
                   ),
-                  onPressed: () {
-                    setState(() {
-                      _isPasswordVisible = !_isPasswordVisible;
-                    });
-                  },
+                ),
+                onPressed: _login,
+                child: const Text(
+                  "로그인",
+                  style: TextStyle(fontSize: 18, color: Colors.white),
                 ),
               ),
-            ),
-            const SizedBox(height: 32),
-
-            // Login Button
-            ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.mainDeepOrange, // Button color
-                padding: const EdgeInsets.symmetric(vertical: 16),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(24),
-                ),
-              ),
-              onPressed: _login,
-              child: const Text(
-                "로그인",
-                style: TextStyle(fontSize: 18, color: Colors.white),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
