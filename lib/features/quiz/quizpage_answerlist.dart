@@ -2,12 +2,19 @@ import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:cs_onecup/features/answer/answerpage.dart';
 
+import '../../core/constants/config.dart';
+
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class QuizpageAnswerlist extends StatefulWidget {
   final bool redundant;
   String category;
   final String quizCategory;
   final String quizExplanation;
   final int quizAnswer;
+  final int csv_num;
 
   final List<dynamic> _answerList;
 
@@ -19,6 +26,7 @@ class QuizpageAnswerlist extends StatefulWidget {
     required this.quizCategory,
     required this.quizExplanation,
     required this.quizAnswer,
+    required this.csv_num,
   }) : _answerList = answerList;
 
   @override
@@ -54,6 +62,24 @@ class _QuizpageAnswerlistState extends State<QuizpageAnswerlist> {
     super.initState();
   }
 
+  Future<void> _getCard() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? authToken = prefs.getString('authToken');
+    const String url = '${Config.baseUrl}/api/cards/user/add';
+    final body = jsonEncode({
+      "csv_num": widget.csv_num,
+    });
+
+    final http.Response response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $authToken',
+      },
+      body: body,
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return SizedBox(
@@ -83,7 +109,9 @@ class _QuizpageAnswerlistState extends State<QuizpageAnswerlist> {
                               _selectedAnswerIndex == widget.quizAnswer - 1;
 
                           //정답 시 로직
-                          if (isCorrect) {}
+                          if (isCorrect) {
+                            _getCard();
+                          }
 
                           Navigator.of(context).push(
                             MaterialPageRoute(

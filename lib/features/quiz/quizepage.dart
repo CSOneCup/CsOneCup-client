@@ -49,12 +49,6 @@ class _QuizPageState extends State<QuizPage> {
           json.decode(utf8.decode(response.bodyBytes))['data'];
       return data;
     } else {
-      print('response.statusCode');
-      print(response.statusCode);
-      print(utf8.decode(response.bodyBytes));
-      print('redunant: ${widget.redundant}');
-      print('category: ${widget.category}');
-
       throw Exception('Failed to load card data');
     }
   }
@@ -137,6 +131,7 @@ class _QuizPageState extends State<QuizPage> {
                         quizCategory: snapshot.data!['category'],
                         quizExplanation: snapshot.data!['explanation'],
                         quizAnswer: snapshot.data!['answer'],
+                        csv_num: snapshot.data!['csv_number'],
                       ),
                     ),
                     Center(
