@@ -34,7 +34,7 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
   /// 생성 버튼 클릭 시 API 전송
   void onCreateButtonPress() async {
     // 제목 validation
-    if(!isTitleValid(_deckTitleController.text)){
+    if (!isTitleValid(_deckTitleController.text)) {
       // Toast 메시지 띄우고 return
       Fluttertoast.showToast(
         msg: "덱 제목이 올바르지 않습니다!",
@@ -56,11 +56,10 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
   Future<int> createDeck(String title) async {
     // TODO: 덱 생성 안 된 경우
     // 덱 생성하는 경우 (deckId 제공 안된 경우) API 호출해서 새 id 받아옴
-    int id = widget.deckId ?? await apiService.post(
-      'api/decks',
-      requestBody: {'name': title},
-      fromJson: (response) => (response['deck_id'] as int)
-    );
+    int id = widget.deckId ??
+        await apiService.post('api/decks',
+            requestBody: {'name': title},
+            fromJson: (response) => (response['deck_id'] as int));
 
     for (var card in deckCards) {
       registerCardToDeck(card.cardId, id);
@@ -72,9 +71,9 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
   Future<void> registerCardToDeck(int cardId, int deckId) async {
     Map<String, dynamic> response = await apiService.post('api/cards/deck/add',
         requestBody: {'card_id': cardId, 'deck_id': deckId},
-        fromJson: (json) => (json as Map<String, dynamic>)
-    );
-    print("DeckCreatePage: registered card #${response['card_id']} to $deckId"); // test
+        fromJson: (json) => (json as Map<String, dynamic>));
+    print(
+        "DeckCreatePage: registered card #${response['card_id']} to $deckId"); // test
   }
 
   /// pref 및 apiService 초기화
@@ -82,9 +81,9 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
     prefs = await SharedPreferences.getInstance();
     String? jwt = prefs.getString('authToken');
     print("jwt: $jwt");
-    apiService = ApiService(defaultHeader: {'Authorization' : 'Bearer $jwt' ?? ''});
+    apiService =
+        ApiService(defaultHeader: {'Authorization': 'Bearer $jwt' ?? ''});
   }
-
 
   /// 테스트 데이터 삽입. TODO 배포 시 삭제
   Future<void> _fillDummyData() async {
@@ -95,35 +94,31 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
         "퀴즈 질문",
         ["선택지1", "선택지2", "선택지3", "선택지4"],
         1,
-        "정답 설명"
-    );
+        "정답 설명");
 
-    myCards = List.generate(10, quizCardGenerator , growable: true);
+    myCards = List.generate(10, quizCardGenerator, growable: true);
     deckCards = List.generate(1, quizCardGenerator);
   }
 
   /// API로 카드 가져옴
   Future<void> _fetchCards() async {
     // 내 카드 검색
-    myCards = await apiService.get(
-      'api/cards/user',
-      fromJson: (jsonArray) => (jsonArray as List<dynamic>)
-        .map((json) => QuizCard.fromJson(json as Map<String, dynamic>))
-        .toList()
-    );
+    myCards = await apiService.get('api/cards/user',
+        fromJson: (jsonArray) => (jsonArray as List<dynamic>)
+            .map((json) => QuizCard.fromJson(json as Map<String, dynamic>))
+            .toList());
     print("DeckCreatePage: fetched my cards ");
-    for(var c in myCards) print(c); // test
+    for (var c in myCards) print(c); // test
 
     // 덱 내 카드 검색
-    if(widget.deckId != null) {
-      deckCards = await apiService.get(
-        'api/decks/${widget.deckId}/cards',
-        fromJson: (response) => (response['cards'] as List<Map<String, dynamic>>)
-          .map((json) => QuizCard.fromJson(json))
-          .toList()
-      );
+    if (widget.deckId != null) {
+      deckCards = await apiService.get('api/decks/${widget.deckId}/cards',
+          fromJson: (response) =>
+              (response['cards'] as List<Map<String, dynamic>>)
+                  .map((json) => QuizCard.fromJson(json))
+                  .toList());
       print("DeckCreatePage: fetched deck cards");
-      for(var c in deckCards) print(c); // test
+      for (var c in deckCards) print(c); // test
     } else {
       deckCards = [];
     }
@@ -137,7 +132,7 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
     print("DeckCreatePage: INITIALIZING");
     await _initialize();
     await _fetchCards();
-    await _fillDummyData(); // TODO 테스트 용, 배포 시 삭제
+    //await _fillDummyData(); // TODO 테스트 용, 배포 시 삭제
   }
 
   @override
@@ -154,138 +149,152 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
         FocusManager.instance.primaryFocus?.unfocus();
       },
       child: Scaffold(
-        backgroundColor: AppColors.mainBeige,
-
-        appBar: AppBar(
-          elevation: 0,
           backgroundColor: AppColors.mainBeige,
-          leading: IconButton(onPressed: (){ Navigator.pop(context); }, icon: const Icon(Icons.arrow_back_ios_new, color: Colors.brown,)),
-        ),
-
-        body: Column(
-          children: [
-            const Center(
-              child: Text("덱 생성",
-                style: TextStyle(
-                    fontSize: 35,
-                    color: AppColors.mainDeepOrange
+          appBar: AppBar(
+            elevation: 0,
+            backgroundColor: AppColors.mainBeige,
+            leading: IconButton(
+                onPressed: () {
+                  Navigator.pop(context);
+                },
+                icon: const Icon(
+                  Icons.arrow_back_ios_new,
+                  color: Colors.brown,
+                )),
+          ),
+          body: Column(
+            children: [
+              const Center(
+                child: Text(
+                  "덱 생성",
+                  style:
+                      TextStyle(fontSize: 35, color: AppColors.mainDeepOrange),
                 ),
               ),
-            ),
 
-            SizedBox(
-              width: 300,
-              child: TextField(
-                controller: _deckTitleController,
-                textAlign: TextAlign.center,
-                decoration: InputDecoration(
-                  hintText: "덱 제목",
-                  hintStyle: TextStyle(
-                    fontSize: 18, // 힌트 글자 크기
-                    color: Colors.deepOrange.withOpacity(0.5), // 힌트 글자 색
-                    fontWeight: FontWeight.w400, // 힌트 글자 굵기
-                  ),
-                  border: InputBorder.none
+              SizedBox(
+                width: 300,
+                child: TextField(
+                  controller: _deckTitleController,
+                  textAlign: TextAlign.center,
+                  decoration: InputDecoration(
+                      hintText: "덱 제목",
+                      hintStyle: TextStyle(
+                        fontSize: 18, // 힌트 글자 크기
+                        color: Colors.deepOrange.withOpacity(0.5), // 힌트 글자 색
+                        fontWeight: FontWeight.w400, // 힌트 글자 굵기
+                      ),
+                      border: InputBorder.none),
                 ),
               ),
-            ),
 
-            const SizedBox(height: 8,),
+              const SizedBox(
+                height: 8,
+              ),
 
-            _isLoading
-            ? const CircularProgressIndicator()
-            : Expanded(
-              child: Row(
-                children: [
-
-                  // 덱 나열
-                  Expanded(
-                    child: Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 4),
-                      child: Column(
+              _isLoading
+                  ? const CircularProgressIndicator()
+                  : Expanded(
+                      child: Row(
                         children: [
-                          const Text("나의 덱", style: TextStyle(fontSize: 16, color: Colors.deepOrange),),
-                          const SizedBox(height: 8,),
+                          // 덱 나열
                           Expanded(
-                            child: ListView.builder(
-                              itemCount: deckCards.length,
-                              itemBuilder: (context, index) {
-                                return Dismissible(
-                                  key: ValueKey(deckCards[index]),
-                                  child: SimpleCardTileSmall(index: index),
-                                  onDismissed: (direction) {
-                                    // 덱 카드 Dismiss 시 나의 카드에 추가
-                                    setState(() {
-                                      myCards.add(deckCards.removeAt(index));
-                                      print("deck: ${deckCards.length}");
-                                      print("myCards: ${myCards.length}");
-                                    });
-                                  },
-                                );
-                              }
+                              child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: Column(
+                              children: [
+                                const Text(
+                                  "나의 덱",
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.deepOrange),
+                                ),
+                                const SizedBox(
+                                  height: 8,
+                                ),
+                                Expanded(
+                                  child: ListView.builder(
+                                      itemCount: deckCards.length,
+                                      itemBuilder: (context, index) {
+                                        return Dismissible(
+                                          key: ValueKey(deckCards[index]),
+                                          child:
+                                              SimpleCardTileSmall(index: index),
+                                          onDismissed: (direction) {
+                                            // 덱 카드 Dismiss 시 나의 카드에 추가
+                                            setState(() {
+                                              myCards.add(
+                                                  deckCards.removeAt(index));
+                                              print(
+                                                  "deck: ${deckCards.length}");
+                                              print(
+                                                  "myCards: ${myCards.length}");
+                                            });
+                                          },
+                                        );
+                                      }),
+                                )
+                              ],
                             ),
-                          )
+                          )),
+
+                          // 카드 목록 나열
+                          Expanded(
+                              child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 4),
+                            child: Column(children: [
+                              const Text(
+                                "카드 목록",
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.deepOrange),
+                              ),
+                              const SizedBox(
+                                height: 8,
+                              ),
+                              Expanded(
+                                  child: ListView.builder(
+                                      itemCount: myCards.length,
+                                      itemBuilder: (context, index) {
+                                        return Dismissible(
+                                          key: ValueKey(myCards[index]),
+                                          child:
+                                              SimpleCardTileSmall(index: index),
+                                          onDismissed: (direction) {
+                                            setState(() {
+                                              // 나의 카드 Dismiss 시 덱에 추가
+                                              deckCards
+                                                  .add(myCards.removeAt(index));
+                                            });
+                                          },
+                                        );
+                                      }))
+                            ]),
+                          )),
                         ],
                       ),
-                    )
-                  ),
+                    ),
 
-                  // 카드 목록 나열
-                  Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 4),
-                        child: Column(
-                          children: [
-                            const Text("카드 목록", style: TextStyle(fontSize: 16, color: Colors.deepOrange),),
-                            const SizedBox(height: 8,),
-                            Expanded(
-                                child: ListView.builder(
-                                    itemCount: myCards.length,
-                                    itemBuilder: (context, index) {
-                                      return Dismissible(
-                                        key: ValueKey(myCards[index]),
-                                        child: SimpleCardTileSmall(index: index),
-                                        onDismissed: (direction) {
-                                          setState(() {
-                                            // 나의 카드 Dismiss 시 덱에 추가
-                                            deckCards.add(myCards.removeAt(index));
-                                          });
-                                        },
-                                      );
-                                    }
-                                )
-                            )
-                          ]
-                        ),
-                      )
-                  ),
-
-                ],
-              ),
-            ),
-
-            // 하단 버튼 영역
-            Container(
-              padding: const EdgeInsets.symmetric(vertical: 16.0, horizontal: 8.0),
-              child: SizedBox(
-                width: 300,
-                height: 50,
-                child: RectangularElevatedButton(
-                  onPressed: onCreateButtonPress,
-                  borderRadius: 8,
-                  child: const Text("덱 생성", style: TextStyle(fontSize: 20, color: Colors.white),),
-                  backgroundColor: AppColors.mainDeepOrange,
-                ),
-              )
-            ),
-          ],
-        )
-      ),
+              // 하단 버튼 영역
+              Container(
+                  padding: const EdgeInsets.symmetric(
+                      vertical: 16.0, horizontal: 8.0),
+                  child: SizedBox(
+                    width: 300,
+                    height: 50,
+                    child: RectangularElevatedButton(
+                      onPressed: onCreateButtonPress,
+                      borderRadius: 8,
+                      backgroundColor: AppColors.mainDeepOrange,
+                      child: const Text(
+                        "덱 생성",
+                        style: TextStyle(fontSize: 20, color: Colors.white),
+                      ),
+                    ),
+                  )),
+            ],
+          )),
     );
   }
 }
-
-
 
 /// 카드 타일 위젯
 class SimpleCardTileSmall extends StatelessWidget {
@@ -302,11 +311,9 @@ class SimpleCardTileSmall extends StatelessWidget {
     category,
     csCard,
     this.onTap,
-  }): this.title = title ?? '아주 긴 카드 제목 12345',
-      this.category = category ?? 'None',
-      this.csCard = csCard;
-
-
+  })  : title = title ?? '아주 긴 카드 제목 12345',
+        category = category ?? 'None',
+        csCard = csCard;
 
   @override
   Widget build(BuildContext context) {
@@ -339,7 +346,6 @@ class SimpleCardTileSmall extends StatelessWidget {
                 color: AppColors.cardBeige,
                 borderRadius: BorderRadius.circular(8),
               ),
-
               child: Row(
                 // 리스트 타일
                 children: [
@@ -349,7 +355,8 @@ class SimpleCardTileSmall extends StatelessWidget {
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(8),
                     ),
-                    child: IconFetcher.fetchImage(category, width: 20, height: 20),
+                    child:
+                        IconFetcher.fetchImage(category, width: 20, height: 20),
                   ),
 
                   // 제목
@@ -367,7 +374,9 @@ class SimpleCardTileSmall extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(width: 10,)
+                  const SizedBox(
+                    width: 10,
+                  )
                 ],
               ),
             ),

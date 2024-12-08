@@ -10,11 +10,13 @@ import 'dart:convert';
 class CardsInHand extends StatefulWidget {
   final bool redundant;
   String category;
+  final VoidCallback onPop;
 
   CardsInHand({
     super.key,
     required this.redundant,
     required this.category,
+    required this.onPop,
   });
 
   @override
@@ -54,22 +56,22 @@ class _CardsInHandState extends State<CardsInHand>
     super.dispose();
   }
 
-  void _startAnimation() {
-    _controller.forward(from: 0.0).then((_) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => QuizPage(
-            redundant: widget.redundant,
-            category: widget.category,
-            solvedAnswerCnt: 0,
-          ),
+  void _startAnimation() async {
+    await _controller.forward(from: 0.0);
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => QuizPage(
+          redundant: widget.redundant,
+          category: widget.category,
+          solvedAnswerCnt: 0,
         ),
-      ).then((_) {
-        setState(() {
-          _dragOffsetY = 0.0;
-        });
-      });
+      ),
+    );
+    widget.onPop();
+
+    setState(() {
+      _dragOffsetY = 0.0;
     });
   }
 
