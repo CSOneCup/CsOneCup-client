@@ -9,6 +9,7 @@ class AnswerPage extends StatefulWidget {
   final String quizCategory;
   final String quizExplanation;
   final String quizAnswer;
+  final bool isCorrect;
 
   AnswerPage({
     super.key,
@@ -17,6 +18,7 @@ class AnswerPage extends StatefulWidget {
     required this.quizCategory,
     required this.quizExplanation,
     required this.quizAnswer,
+    required this.isCorrect,
   });
 
   @override
@@ -123,12 +125,28 @@ class _AnswerPageState extends State<AnswerPage> {
                 ),
               ),
               Center(
+                child: widget.isCorrect
+                    ? const Icon(
+                        Icons.trip_origin,
+                        color: AppColors.lightGreen,
+                        size: 150,
+                      )
+                    : const Text(
+                        'X',
+                        style: TextStyle(
+                          color: AppColors.lightRed,
+                          fontSize: 150,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+              ),
+              Center(
                 child: AnswerpageCardwidget(
                   quizCategory: widget.quizCategory,
                   quizExplanation: widget.quizExplanation,
                   quizAnswer: widget.quizAnswer,
                 ),
-              )
+              ),
             ],
           ),
         ),

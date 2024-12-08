@@ -78,6 +78,13 @@ class _QuizpageAnswerlistState extends State<QuizpageAnswerlist> {
                       onTap: () {
                         if (_selectedAnswerIndex == index) {
                           //선택한 답이 또 클릭되면 제출
+
+                          final bool isCorrect =
+                              _selectedAnswerIndex == widget.quizAnswer - 1;
+
+                          //정답 시 로직
+                          if (isCorrect) {}
+
                           Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => AnswerPage(
@@ -86,6 +93,7 @@ class _QuizpageAnswerlistState extends State<QuizpageAnswerlist> {
                                 quizCategory: widget.quizCategory,
                                 quizExplanation: widget.quizExplanation,
                                 quizAnswer: _answerString,
+                                isCorrect: isCorrect,
                               ),
                             ),
                           );
