@@ -11,11 +11,13 @@ import 'dart:convert';
 class QuizPage extends StatefulWidget {
   final bool redundant;
   String category;
+  final int solvedAnswerCnt;
 
   QuizPage({
     super.key,
     required this.redundant,
     required this.category,
+    required this.solvedAnswerCnt,
   });
 
   @override
@@ -23,8 +25,6 @@ class QuizPage extends StatefulWidget {
 }
 
 class _QuizPageState extends State<QuizPage> {
-  final int _solvedAnswerCnt = 7;
-
   late Future<Map<String, dynamic>> _cardData;
 
   @override
@@ -107,7 +107,7 @@ class _QuizPageState extends State<QuizPage> {
                               fontWeight: FontWeight.bold,
                             ),
                             child: Text(
-                              _solvedAnswerCnt.toString(),
+                              widget.solvedAnswerCnt.toString(),
                             ),
                           ),
                           const DefaultTextStyle(
@@ -132,6 +132,7 @@ class _QuizPageState extends State<QuizPage> {
                         quizExplanation: snapshot.data!['explanation'],
                         quizAnswer: snapshot.data!['answer'],
                         csv_num: snapshot.data!['csv_number'],
+                        solvedAnswerCnt: widget.solvedAnswerCnt,
                       ),
                     ),
                     Center(

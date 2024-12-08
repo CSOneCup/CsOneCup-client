@@ -10,6 +10,7 @@ class AnswerPage extends StatefulWidget {
   final String quizExplanation;
   final String quizAnswer;
   final bool isCorrect;
+  final int solvedAnswerCnt;
 
   AnswerPage({
     super.key,
@@ -19,6 +20,7 @@ class AnswerPage extends StatefulWidget {
     required this.quizExplanation,
     required this.quizAnswer,
     required this.isCorrect,
+    required this.solvedAnswerCnt,
   });
 
   @override
@@ -26,8 +28,6 @@ class AnswerPage extends StatefulWidget {
 }
 
 class _AnswerPageState extends State<AnswerPage> {
-  final int _solvedAnswerCnt = 7;
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,7 +78,7 @@ class _AnswerPageState extends State<AnswerPage> {
                         fontWeight: FontWeight.bold,
                       ),
                       child: Text(
-                        _solvedAnswerCnt.toString(),
+                        widget.solvedAnswerCnt.toString(),
                       ),
                     ),
                     const DefaultTextStyle(
@@ -107,11 +107,14 @@ class _AnswerPageState extends State<AnswerPage> {
                       ),
                       onPressed: () {
                         Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => QuizPage(
-                                    redundant: widget.redundant,
-                                    category: widget.category)));
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => QuizPage(
+                                redundant: widget.redundant,
+                                category: widget.category,
+                                solvedAnswerCnt: widget.solvedAnswerCnt + 1),
+                          ),
+                        );
                       },
                       child: const Text(
                         '다음 문제',

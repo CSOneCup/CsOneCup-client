@@ -15,6 +15,7 @@ class QuizpageAnswerlist extends StatefulWidget {
   final String quizExplanation;
   final int quizAnswer;
   final int csv_num;
+  final int solvedAnswerCnt;
 
   final List<dynamic> _answerList;
 
@@ -27,6 +28,7 @@ class QuizpageAnswerlist extends StatefulWidget {
     required this.quizExplanation,
     required this.quizAnswer,
     required this.csv_num,
+    required this.solvedAnswerCnt,
   }) : _answerList = answerList;
 
   @override
@@ -122,6 +124,7 @@ class _QuizpageAnswerlistState extends State<QuizpageAnswerlist> {
                                 quizExplanation: widget.quizExplanation,
                                 quizAnswer: _answerString,
                                 isCorrect: isCorrect,
+                                solvedAnswerCnt: widget.solvedAnswerCnt,
                               ),
                             ),
                           );

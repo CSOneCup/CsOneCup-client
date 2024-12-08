@@ -62,6 +62,7 @@ class _CardsInHandState extends State<CardsInHand>
           builder: (context) => QuizPage(
             redundant: widget.redundant,
             category: widget.category,
+            solvedAnswerCnt: 0,
           ),
         ),
       ).then((_) {
