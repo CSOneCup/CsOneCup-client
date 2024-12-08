@@ -80,7 +80,11 @@ class _MyDeckPageState extends State<MyDeckPage> {
               height: 15,
             ),
             Padding(
-              padding: EdgeInsets.only(left: buttonWidth / 16, right: buttonWidth / 16, top: 5, bottom: 5),
+              padding: EdgeInsets.only(
+                  left: buttonWidth / 16,
+                  right: buttonWidth / 16,
+                  top: 5,
+                  bottom: 5),
               child: SizedBox(
                 height: 45,
                 child: TextField(
@@ -94,22 +98,17 @@ class _MyDeckPageState extends State<MyDeckPage> {
                     focusColor: AppColors.mainDeepOrange,
                     hintText: '검색어를 입력해주세요',
                     hintStyle: const TextStyle(
-                      fontSize: 15,
-                      color: AppColors.mainDeepOrange),
+                        fontSize: 15, color: AppColors.mainDeepOrange),
                     suffixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                        color: AppColors.mainDeepOrange,
-                        width: 1.5
-                      ),
+                          color: AppColors.mainDeepOrange, width: 1.5),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                          color: AppColors.mainDeepOrange,
-                          width: 2.0
-                      ),
+                          color: AppColors.mainDeepOrange, width: 2.0),
                     ),
                   ),
                   onChanged: (text) {
@@ -124,53 +123,54 @@ class _MyDeckPageState extends State<MyDeckPage> {
               height: 20,
             ),
             Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 1 / 1.4,
-                  mainAxisSpacing: 5,
-                  crossAxisSpacing: 0.5
-                ),
-                itemCount: _deckList.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          child: const Image(
-                            image: AssetImage('assets/images/emptyDeck.png')
-                          ),
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(
-                              // builder: (context) => DeckDetailPage(deckId: _deckList[index].deckId),
-                              builder: (context) => DeckDetailsPage()    // 재환이가 짠 페이지로 연결
-                            ));
-                          },
+                child: GridView.builder(
+                    gridDelegate:
+                        const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 3,
+                            childAspectRatio: 1 / 1.4,
+                            mainAxisSpacing: 5,
+                            crossAxisSpacing: 0.5),
+                    itemCount: _deckList.length,
+                    itemBuilder: (context, index) {
+                      return Container(
+                        child: Column(
+                          children: [
+                            GestureDetector(
+                              child: const Image(
+                                  image: AssetImage(
+                                      'assets/images/emptyDeck.png')),
+                              onTap: () {
+                                // Navigator.push(context, MaterialPageRoute(
+                                //   // builder: (context) => DeckDetailPage(deckId: _deckList[index].deckId),
+                                //   builder: (context) => DeckDetailsPage()    // 재환이가 짠 페이지로 연결
+                                // ));
+                              },
+                            ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Text(_deckList[index].name)
+                          ],
                         ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(_deckList[index].name)
-                      ],
-                    ),
-                  );
-                }
-              )
-            ),
+                      );
+                    })),
           ],
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const DeckCreatePage()));
+              MaterialPageRoute(builder: (context) => const DeckCreatePage()));
         },
         tooltip: 'Create Deck',
         backgroundColor: AppColors.mainDeepOrange,
         foregroundColor: Colors.white,
         elevation: 25,
         shape: const CircleBorder(),
-        child: const Icon(Icons.add, size: 30,),
+        child: const Icon(
+          Icons.add,
+          size: 30,
+        ),
       ),
     );
   }

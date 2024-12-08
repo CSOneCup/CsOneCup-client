@@ -4,7 +4,6 @@ import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:flutter/rendering.dart';
 import '../deck/deckdetailspage.dart';
 
-
 class ChallengePage extends StatefulWidget {
   const ChallengePage({super.key});
 
@@ -20,13 +19,13 @@ class _ChallengePageState extends State<ChallengePage> {
     Deck(2, '재환', '테스트 덱 3', 3),
     Deck(3, '혁진', '테스트 덱 4', 3),
   ];
-  List<Deck> _recommendedDeckList = <Deck>[
+  final List<Deck> _recommendedDeckList = <Deck>[
     Deck(0, '선호', '테스트 덱 1', 3),
     Deck(1, '재훈', '테스트 덱 2', 3),
     Deck(2, '재환', '테스트 덱 3', 3),
     Deck(3, '혁진', '테스트 덱 4', 3),
   ];
-  List<Deck> _popularDeckList = <Deck>[
+  final List<Deck> _popularDeckList = <Deck>[
     Deck(0, '선호', '테스트 덱 1', 3),
     Deck(1, '재훈', '테스트 덱 2', 3),
     Deck(2, '재환', '테스트 덱 3', 3),
@@ -89,12 +88,21 @@ class _ChallengePageState extends State<ChallengePage> {
           children: [
             Container(
               width: MediaQuery.of(context).size.width,
-              padding: EdgeInsets.only(top: 10),
+              padding: const EdgeInsets.only(top: 10),
               child: const Column(
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Text('CHALLENGE', style: TextStyle(fontSize: 35, color: Colors.white, fontWeight: FontWeight.w500),),
-                  Text('다른 유저가 올린 퀴즈 덱을 풀어보세요!', style: TextStyle(fontSize: 13, color: Colors.white),)
+                  Text(
+                    'CHALLENGE',
+                    style: TextStyle(
+                        fontSize: 35,
+                        color: Colors.white,
+                        fontWeight: FontWeight.w500),
+                  ),
+                  Text(
+                    '다른 유저가 올린 퀴즈 덱을 풀어보세요!',
+                    style: TextStyle(fontSize: 13, color: Colors.white),
+                  )
                 ],
               ),
             ),
@@ -105,75 +113,30 @@ class _ChallengePageState extends State<ChallengePage> {
                 padding: const EdgeInsets.only(top: 20),
                 decoration: const BoxDecoration(
                   color: AppColors.mainLightGray,
-                  borderRadius: BorderRadius.only(topLeft: Radius.circular(28), topRight: Radius.circular(28)), // 둥근 모서리
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(28),
+                      topRight: Radius.circular(28)), // 둥근 모서리
                 ),
                 child: Padding(
-                  padding: EdgeInsets.only(top: 8.0, left: paddingWidth, right: paddingWidth),
+                  padding: EdgeInsets.only(
+                      top: 8.0, left: paddingWidth, right: paddingWidth),
                   child: Column(
                     children: [
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Image(image: AssetImage('assets/icons/icon_star.png')),
-                          SizedBox(width: 5,),
-                          Text('오늘의 추천 덱', style: TextStyle(fontSize: 20, color: AppColors.mainDeepOrange, fontWeight: FontWeight.bold),)
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 150,
-                        alignment: Alignment.center,
-                        decoration: const BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.all(Radius.circular(10)), // 둥근 모서리
-                        ),
-                        child: Container(
-                          width: widgetWidth,
-                          child: ListView.builder(
-                            scrollDirection: Axis.horizontal,
-                            itemCount: _recommendedDeckList.length,
-                            itemBuilder: (context, index) {
-                              return Center(
-                                child: Container(
-                                  width: widgetWidth / 3,
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      GestureDetector(
-                                        child: Center(
-                                          child: Image.asset('assets/images/recommend_deck.png', width: 70, height: 90,)
-                                        ),
-                                        onTap: () {
-                                          Navigator.push(context, MaterialPageRoute(
-                                            builder: (context) => DeckDetailsPage(),
-                                          ));
-                                        },
-                                      ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Container(
-                                        child: Text(_recommendedDeckList[index].name, style: TextStyle(fontWeight: FontWeight.bold),)
-                                      )
-                                    ],
-                                  ),
-                                ),
-                              );
-                            }
+                          Image(
+                              image: AssetImage('assets/icons/icon_star.png')),
+                          SizedBox(
+                            width: 5,
                           ),
-                        )
-                      ),
-                      const SizedBox(
-                        height: 25,
-                      ),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Image(image: AssetImage('assets/icons/icon_gold_medal.png')),
-                          SizedBox(width: 5,),
-                          Text('인기 덱', style: TextStyle(fontSize: 20, color: AppColors.mainDeepOrange, fontWeight: FontWeight.bold),)
+                          Text(
+                            '오늘의 추천 덱',
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: AppColors.mainDeepOrange,
+                                fontWeight: FontWeight.bold),
+                          )
                         ],
                       ),
                       const SizedBox(
@@ -184,49 +147,127 @@ class _ChallengePageState extends State<ChallengePage> {
                           alignment: Alignment.center,
                           decoration: const BoxDecoration(
                             color: Colors.white,
-                            borderRadius: BorderRadius.all(Radius.circular(10)), // 둥근 모서리
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10)), // 둥근 모서리
                           ),
-                          child: Container(
+                          child: SizedBox(
                             width: widgetWidth,
                             child: ListView.builder(
-                              scrollDirection: Axis.horizontal,
-                              itemCount: _popularDeckList.length,
-                              itemBuilder: (context, index) {
-                                  return Container(
-                                    width: widgetWidth / 3,
-                                    child: Center(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: _recommendedDeckList.length,
+                                itemBuilder: (context, index) {
+                                  return Center(
+                                    child: SizedBox(
+                                      width: widgetWidth / 3,
                                       child: Column(
-                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.center,
                                         children: [
                                           GestureDetector(
                                             child: Center(
-                                                child: Image.asset('assets/images/popular_deck.png', width: 70, height: 90,)
-                                            ),
+                                                child: Image.asset(
+                                              'assets/images/recommend_deck.png',
+                                              width: 70,
+                                              height: 90,
+                                            )),
                                             onTap: () {
-                                              Navigator.push(context, MaterialPageRoute(
-                                                builder: (context) => DeckDetailsPage(),
-                                              ));
+                                              // Navigator.push(context, MaterialPageRoute(
+                                              //   builder: (context) => DeckDetailsPage(),
+                                              // ));
                                             },
                                           ),
                                           const SizedBox(
                                             height: 5,
                                           ),
-                                          Text(_popularDeckList[index].name, style: TextStyle(fontWeight: FontWeight.bold),)
+                                          Container(
+                                              child: Text(
+                                            _recommendedDeckList[index].name,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          ))
                                         ],
                                       ),
                                     ),
                                   );
-                                }
-                            ),
-                          )
+                                }),
+                          )),
+                      const SizedBox(
+                        height: 25,
                       ),
+                      const Row(
+                        mainAxisAlignment: MainAxisAlignment.start,
+                        children: [
+                          Image(
+                              image: AssetImage(
+                                  'assets/icons/icon_gold_medal.png')),
+                          SizedBox(
+                            width: 5,
+                          ),
+                          Text(
+                            '인기 덱',
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: AppColors.mainDeepOrange,
+                                fontWeight: FontWeight.bold),
+                          )
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 10,
+                      ),
+                      Container(
+                          height: 150,
+                          alignment: Alignment.center,
+                          decoration: const BoxDecoration(
+                            color: Colors.white,
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(10)), // 둥근 모서리
+                          ),
+                          child: SizedBox(
+                            width: widgetWidth,
+                            child: ListView.builder(
+                                scrollDirection: Axis.horizontal,
+                                itemCount: _popularDeckList.length,
+                                itemBuilder: (context, index) {
+                                  return SizedBox(
+                                    width: widgetWidth / 3,
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.end,
+                                        children: [
+                                          GestureDetector(
+                                            child: Center(
+                                                child: Image.asset(
+                                              'assets/images/popular_deck.png',
+                                              width: 70,
+                                              height: 90,
+                                            )),
+                                            onTap: () {
+                                              // Navigator.push(context, MaterialPageRoute(
+                                              //   builder: (context) => DeckDetailsPage(),
+                                              // ));
+                                            },
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                            _popularDeckList[index].name,
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold),
+                                          )
+                                        ],
+                                      ),
+                                    ),
+                                  );
+                                }),
+                          )),
                       const SizedBox(
                         height: 45,
                       ),
                       ElevatedButton(
-                        onPressed: () {
-
-                        },
+                        onPressed: () {},
                         style: ElevatedButton.styleFrom(
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -236,16 +277,26 @@ class _ChallengePageState extends State<ChallengePage> {
                           elevation: 10,
                           shadowColor: AppColors.mainDeepOrange,
                         ),
-                        child: Container(
+                        child: SizedBox(
                           width: widgetWidth * 0.5,
                           height: 45,
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
                             children: [
-                              Image(image: AssetImage('assets/icons/icon_rocket.png')),
-                              SizedBox(width: 10,),
-                              Text('빠른 시작', style: TextStyle(color: Colors.black, fontSize: 20, fontWeight: FontWeight.bold),)
+                              Image(
+                                  image: AssetImage(
+                                      'assets/icons/icon_rocket.png')),
+                              SizedBox(
+                                width: 10,
+                              ),
+                              Text(
+                                '빠른 시작',
+                                style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold),
+                              )
                             ],
                           ),
                         ),
@@ -256,7 +307,13 @@ class _ChallengePageState extends State<ChallengePage> {
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          Text('덱 검색', style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),),
+                          Text(
+                            '덱 검색',
+                            style: TextStyle(
+                                fontSize: 20,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ],
                       ),
                       const SizedBox(
@@ -265,31 +322,28 @@ class _ChallengePageState extends State<ChallengePage> {
                       Container(
                         height: 40,
                         decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10)
-                        ),
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10)),
                         child: TextField(
                           controller: _deckSearchController,
                           cursorColor: AppColors.mainDeepOrange,
                           textAlign: TextAlign.start,
                           textAlignVertical: TextAlignVertical.center,
                           decoration: InputDecoration(
-                            contentPadding: EdgeInsets.only(left: 10, bottom: 5),
+                            contentPadding:
+                                const EdgeInsets.only(left: 10, bottom: 5),
                             fillColor: AppColors.mainDeepOrange,
                             prefixIconColor: Colors.black,
                             suffixIconColor: Colors.black,
                             focusColor: AppColors.mainDeepOrange,
                             hintText: '검색어를 입력해주세요',
                             hintStyle: const TextStyle(
-                                fontSize: 15,
-                                color: Colors.grey),
+                                fontSize: 15, color: Colors.grey),
                             suffixIcon: const Icon(Icons.search),
                             focusedBorder: OutlineInputBorder(
                               borderRadius: BorderRadius.circular(10),
                               borderSide: const BorderSide(
-                                  color: AppColors.mainDeepOrange,
-                                  width: 2.0
-                              ),
+                                  color: AppColors.mainDeepOrange, width: 2.0),
                             ),
                           ),
                           onChanged: (text) {
@@ -303,23 +357,30 @@ class _ChallengePageState extends State<ChallengePage> {
                         height: 20,
                       ),
                       Container(
-                        width: widgetWidth,
-                        height: 180,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: _searchResultDeckList.isEmpty ?
-                        const Center(child: Text('검색 결과 없음', textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.grey, fontWeight: FontWeight.bold),)) :
-                        ListView.builder(
-                          itemCount: _searchResultDeckList.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(_searchResultDeckList[index].name),
-                            );
-                          }
-                        )
-                      ),
+                          width: widgetWidth,
+                          height: 180,
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          child: _searchResultDeckList.isEmpty
+                              ? const Center(
+                                  child: Text(
+                                  '검색 결과 없음',
+                                  textAlign: TextAlign.center,
+                                  style: TextStyle(
+                                      fontSize: 20,
+                                      color: Colors.grey,
+                                      fontWeight: FontWeight.bold),
+                                ))
+                              : ListView.builder(
+                                  itemCount: _searchResultDeckList.length,
+                                  itemBuilder: (context, index) {
+                                    return ListTile(
+                                      title: Text(
+                                          _searchResultDeckList[index].name),
+                                    );
+                                  })),
                       const SizedBox(
                         height: 20,
                       ),

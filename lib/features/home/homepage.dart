@@ -64,6 +64,12 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
+  void doFetch() {
+    setState(() {
+      _userData = _fetchUserData();
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -165,6 +171,7 @@ class _HomePageState extends State<HomePage> {
               CardsInHand(
                 redundant: _includingSolvedProblems,
                 category: _selectedCategory ?? 'all',
+                onPop: doFetch,
               ),
             ],
           ),
