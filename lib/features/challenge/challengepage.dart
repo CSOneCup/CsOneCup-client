@@ -122,7 +122,7 @@ class _ChallengePageState extends State<ChallengePage> {
                         height: 10,
                       ),
                       Container(
-                        height: 125,
+                        height: 150,
                         alignment: Alignment.center,
                         decoration: const BoxDecoration(
                           color: Colors.white,
@@ -182,7 +182,7 @@ class _ChallengePageState extends State<ChallengePage> {
                         height: 10,
                       ),
                       Container(
-                          height: 130,
+                          height: 150,
                           alignment: Alignment.center,
                           decoration: const BoxDecoration(
                             color: Colors.white,
@@ -244,8 +244,8 @@ class _ChallengePageState extends State<ChallengePage> {
                           shadowColor: AppColors.mainDeepOrange,
                         ),
                         child: Container(
-                          width: widgetWidth * 0.38,
-                          height: 35,
+                          width: widgetWidth * 0.5,
+                          height: 45,
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
