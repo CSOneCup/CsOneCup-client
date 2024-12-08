@@ -1,6 +1,7 @@
 import 'package:cs_onecup/data/models/deck.dart';
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
+import 'package:flutter/rendering.dart';
 import '../deck/deckdetailspage.dart';
 
 
@@ -122,49 +123,46 @@ class _ChallengePageState extends State<ChallengePage> {
                         height: 10,
                       ),
                       Container(
-                        height: 125,
+                        height: 150,
                         alignment: Alignment.center,
                         decoration: const BoxDecoration(
                           color: Colors.white,
                           borderRadius: BorderRadius.all(Radius.circular(10)), // 둥근 모서리
                         ),
-                        child: GridView.builder(
-                          padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                          physics: NeverScrollableScrollPhysics(),
-                          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            mainAxisSpacing: 0.5,
-                            crossAxisSpacing: 0.5
-                          ),
-                          itemCount: 3,
-                          itemBuilder: (context, index) {
-                            return Center(
-                              child: Column(
-                                mainAxisAlignment: MainAxisAlignment.center,
-                                children: [
-                                  GestureDetector(
-                                    child: Stack(
-                                      key: UniqueKey(),
-                                      children: [
-                                        Center(
+                        child: Container(
+                          width: widgetWidth,
+                          child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            itemCount: _recommendedDeckList.length,
+                            itemBuilder: (context, index) {
+                              return Center(
+                                child: Container(
+                                  width: widgetWidth / 3,
+                                  child: Column(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      GestureDetector(
+                                        child: Center(
                                           child: Image.asset('assets/images/recommend_deck.png', width: 70, height: 90,)
                                         ),
-                                      ]
-                                    ),
-                                    onTap: () {
-                                      Navigator.push(context, MaterialPageRoute(
-                                        builder: (context) => DeckDetailsPage(),
-                                      ));
-                                    },
+                                        onTap: () {
+                                          Navigator.push(context, MaterialPageRoute(
+                                            builder: (context) => DeckDetailsPage(),
+                                          ));
+                                        },
+                                      ),
+                                      const SizedBox(
+                                        height: 5,
+                                      ),
+                                      Container(
+                                        child: Text(_recommendedDeckList[index].name, style: TextStyle(fontWeight: FontWeight.bold),)
+                                      )
+                                    ],
                                   ),
-                                  const SizedBox(
-                                    height: 5,
-                                  ),
-                                  Text(_recommendedDeckList[index].name, style: TextStyle(fontWeight: FontWeight.bold),)
-                                ],
-                              ),
-                            );
-                          }
+                                ),
+                              );
+                            }
+                          ),
                         )
                       ),
                       const SizedBox(
@@ -182,49 +180,44 @@ class _ChallengePageState extends State<ChallengePage> {
                         height: 10,
                       ),
                       Container(
-                          height: 130,
+                          height: 150,
                           alignment: Alignment.center,
                           decoration: const BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.all(Radius.circular(10)), // 둥근 모서리
                           ),
-                          child: GridView.builder(
-                              padding: EdgeInsets.only(left: 10, right: 10, top: 10, bottom: 10),
-                              physics: NeverScrollableScrollPhysics(),
-                              gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                                  crossAxisCount: 3,
-                                  mainAxisSpacing: 0.5,
-                                  crossAxisSpacing: 0.5
-                              ),
-                              itemCount: 3,
+                          child: Container(
+                            width: widgetWidth,
+                            child: ListView.builder(
+                              scrollDirection: Axis.horizontal,
+                              itemCount: _popularDeckList.length,
                               itemBuilder: (context, index) {
-                                return Center(
-                                  child: Column(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      GestureDetector(
-                                        child: Stack(
-                                            key: UniqueKey(),
-                                            children: [
-                                              Center(
-                                                  child: Image.asset('assets/images/popular_deck.png', width: 70, height: 90,)
-                                              ),
-                                            ]
-                                        ),
-                                        onTap: () {
-                                          Navigator.push(context, MaterialPageRoute(
-                                            builder: (context) => DeckDetailsPage(),
-                                          ));
-                                        },
+                                  return Container(
+                                    width: widgetWidth / 3,
+                                    child: Center(
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.end,
+                                        children: [
+                                          GestureDetector(
+                                            child: Center(
+                                                child: Image.asset('assets/images/popular_deck.png', width: 70, height: 90,)
+                                            ),
+                                            onTap: () {
+                                              Navigator.push(context, MaterialPageRoute(
+                                                builder: (context) => DeckDetailsPage(),
+                                              ));
+                                            },
+                                          ),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(_popularDeckList[index].name, style: TextStyle(fontWeight: FontWeight.bold),)
+                                        ],
                                       ),
-                                      const SizedBox(
-                                        height: 5,
-                                      ),
-                                      Text(_popularDeckList[index].name, style: TextStyle(fontWeight: FontWeight.bold),)
-                                    ],
-                                  ),
-                                );
-                              }
+                                    ),
+                                  );
+                                }
+                            ),
                           )
                       ),
                       const SizedBox(
@@ -244,8 +237,8 @@ class _ChallengePageState extends State<ChallengePage> {
                           shadowColor: AppColors.mainDeepOrange,
                         ),
                         child: Container(
-                          width: widgetWidth * 0.38,
-                          height: 35,
+                          width: widgetWidth * 0.5,
+                          height: 45,
                           child: const Row(
                             mainAxisAlignment: MainAxisAlignment.center,
                             crossAxisAlignment: CrossAxisAlignment.center,
@@ -260,10 +253,10 @@ class _ChallengePageState extends State<ChallengePage> {
                       const SizedBox(
                         height: 45,
                       ),
-                      Row(
+                      const Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          const Text('덱 검색', style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),),
+                          Text('덱 검색', style: TextStyle(fontSize: 20, color: Colors.black, fontWeight: FontWeight.bold),),
                         ],
                       ),
                       const SizedBox(

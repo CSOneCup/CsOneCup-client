@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.orange,
       ),
-      initialRoute: '/home',
+      initialRoute: '/landing',
       routes: {
         '/home': (context) => const MainPage(),
         '/landing': (context) => const LandingPage(),
