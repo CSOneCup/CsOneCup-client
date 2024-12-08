@@ -91,7 +91,7 @@ class SimpleQuizCard extends StatelessWidget {
                       quizExplanation,
                       style: const TextStyle(
                         color: Colors.black,
-                        fontSize: 15,
+                        fontSize: 13,
                       ),
                     ),
                   ),

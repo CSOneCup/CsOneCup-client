@@ -10,14 +10,19 @@ class ApiService {
 
   /// 주어진 파라미터로 GET 전송 + data 필드에 fromJson 매핑하여 반환
   Future<T> get<T>(String endpoint, {Map<String, String>? headers, required T Function(dynamic) fromJson}) async {
-    print("ApiService: GET to '$_BASE_URL/$endpoint");
+    headers = {
+      'Content-Type' : 'application/json',
+      ...?_defaultHeader,
+      ...?headers
+    };
     final response = await http.get(Uri.parse('$_BASE_URL/$endpoint'), headers: headers);
+    print("ApiService: GET to '$_BASE_URL/$endpoint with header $headers");
     String body = utf8.decode(response.bodyBytes);
     print("ApiService: GET /$endpoint received ${body}");
     if (response.statusCode == 200) {
       return fromJson(jsonDecode(body)['data']);
     } else {
-      throw Exception('Failed to load data: ${body}');
+      throw Exception('Failed to load data with ${response.statusCode}: ${body}');
     }
   }
 
