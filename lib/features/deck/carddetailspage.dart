@@ -35,6 +35,7 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
   // 카드 위젯 관련
   final GlobalKey<FlipCardState> _cardKey = GlobalKey<FlipCardState>();
   final _cardScaleFactor = 2.0;
+  String bottomLabelText = "눌러서 답 보기";
 
   @override
   void initState() {
@@ -82,6 +83,11 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
               width: 300,
               height: 500,
               child: FlipCard(
+                onFlipDone: (isFront) {
+                  setState(() {
+                    bottomLabelText = isFront ? "눌러서 답 보기" : "눌러서 문제 보기";
+                  });
+                },
                 key: _cardKey,
                 direction: FlipDirection.HORIZONTAL,
                 side: CardSide.FRONT,
@@ -101,7 +107,7 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
             const SizedBox(height: 8),
 
             // 레이블 (눌러서 답 보기)
-            Text("눌러서 답 보기",
+            Text(bottomLabelText ,
               style: TextStyle(
                 fontSize: 24,
                 color: AppColors.mainDeepOrange.withOpacity(0.3),
