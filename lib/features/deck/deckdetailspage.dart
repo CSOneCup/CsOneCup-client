@@ -85,35 +85,13 @@ class _DeckDetailsPageState extends State<DeckDetailsPage> {
             Navigator.pop(context);
           }
         ),
-        actions: [
-          TextButton(
-            onPressed: editDeck,
-            child: const Text(
-              "편집",
-              style: TextStyle(
-                fontSize: 20,
-                color: AppColors.mainDeepOrange
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: shareDeck,
-            child: const Text(
-              "공유",
-              style: TextStyle(
-                fontSize: 20,
-                color: AppColors.mainDeepOrange
-              ),
-            ),
-          ),
-        ],
       ),
 
       body: FutureBuilder(
           future: _future,
           builder: (context, snapshot) {
             if(snapshot.hasData == false) {
-              return const Center(child: const CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Center(
                 child: Text(
