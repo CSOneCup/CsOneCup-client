@@ -57,7 +57,9 @@ class _HomePageState extends State<HomePage> {
       },
     );
     if (response.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(response.body)['data'];
+      //final Map<String, dynamic> data = json.decode(response.body)['data'];
+      final Map<String, dynamic> data =
+          jsonDecode(utf8.decode(response.bodyBytes))['data'];
       return data;
     } else {
       throw Exception('Failed to load user data');

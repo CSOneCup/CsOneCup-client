@@ -69,9 +69,13 @@ class _RankingPageState extends State<RankingPage> {
         final int level = responseData['data']['level'];
         final int expPoint = responseData['data']['exp_point'];
 
-        return UserProfile(userName: userName, userLevel: level, userExp: expPoint,);
+        return UserProfile(
+          userName: userName,
+          userLevel: level,
+          userExp: expPoint,
+        );
       }
-    } catch(e) {
+    } catch (e) {
       print('오류 발생 - UserProfile');
       print(e);
       return null;
@@ -95,8 +99,10 @@ class _RankingPageState extends State<RankingPage> {
       );
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = jsonDecode(response.body);
-        List<dynamic> userList = responseData['data'];  // map
+        //final Map<String, dynamic> responseData = jsonDecode(response.body);
+        final Map<String, dynamic> responseData =
+            jsonDecode(utf8.decode(response.bodyBytes));
+        List<dynamic> userList = responseData['data']; // map
 
         userList.sort((mapA, mapB) {
           final expA = mapA['exp_point'];
@@ -104,12 +110,15 @@ class _RankingPageState extends State<RankingPage> {
           return expB.compareTo(expA);
         });
 
-        userList.forEach((user) {
-          userProfileList.add(UserProfile(userLevel: user['level'], userName: user['name'], userExp: user['exp_point']));
-        });
+        for (var user in userList) {
+          userProfileList.add(UserProfile(
+              userLevel: user['level'],
+              userName: user['name'],
+              userExp: user['exp_point']));
+        }
         return userProfileList;
       }
-    } catch(e) {
+    } catch (e) {
       print(e);
       return null;
     }
@@ -117,11 +126,11 @@ class _RankingPageState extends State<RankingPage> {
   }
 
   Color _setRankingTextColor(int index) {
-    if(index == 0) {
+    if (index == 0) {
       return Colors.yellow;
-    } else if(index == 1) {
+    } else if (index == 1) {
       return Colors.grey;
-    } else if(index == 2) {
+    } else if (index == 2) {
       return Colors.brown;
     } else {
       return Colors.black;
@@ -142,21 +151,21 @@ class _RankingPageState extends State<RankingPage> {
             const SizedBox(
               height: 5,
             ),
-            Container(
+            const SizedBox(
               width: 80,
               height: 80,
-              child: const Image(
-                  image: AssetImage('assets/images/ranking_crown.png')
-              ),
+              child:
+                  Image(image: AssetImage('assets/images/ranking_crown.png')),
             ),
-            Text('${_dateTime.year}년 ${_dateTime.month}월', style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
-            Container(
+            Text(
+              '${_dateTime.year}년 ${_dateTime.month}월',
+              style: const TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+            ),
+            const SizedBox(
               height: 20,
-              child: const Image(
-                image: AssetImage('assets/images/line_divider.png')
-              ),
+              child: Image(image: AssetImage('assets/images/line_divider.png')),
             ),
-            Container(
+            SizedBox(
               width: layoutWidth,
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,7 +173,10 @@ class _RankingPageState extends State<RankingPage> {
                   const SizedBox(
                     height: 10,
                   ),
-                  const Text('내 정보', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                  const Text(
+                    '내 정보',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(
                     height: 5,
                   ),
@@ -173,23 +185,36 @@ class _RankingPageState extends State<RankingPage> {
                     height: 40,
                     padding: const EdgeInsets.only(left: 15, right: 15),
                     decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.mainDeepOrange, width: 3),
+                      border:
+                          Border.all(color: AppColors.mainDeepOrange, width: 3),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: FutureBuilder(
                       future: _userProfile,
                       builder: (context, snapshot) {
-                        if(snapshot.hasData) {
+                        if (snapshot.hasData) {
                           return Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              const Text('레벨 순위              ',
-                                style: TextStyle(fontSize: 16, color: Colors.black,),),
-                              Text('전체 ${rank}위',
-                                  style: const TextStyle(fontSize: 16, color: Colors.orange)),
-                              const Text('       |       ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                              Text('Lv. ${snapshot.data?.userLevel}',
-                                style: const TextStyle(fontSize: 16, color: Colors.black),
+                              const Text(
+                                '레벨 순위              ',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              ),
+                              Text('전체 $rank위',
+                                  style: const TextStyle(
+                                      fontSize: 16, color: Colors.orange)),
+                              const Text(
+                                '       |       ',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                'Lv. ${snapshot.data?.userLevel}',
+                                style: const TextStyle(
+                                    fontSize: 16, color: Colors.black),
                               ),
                             ],
                           );
@@ -197,13 +222,25 @@ class _RankingPageState extends State<RankingPage> {
                           return const Row(
                             mainAxisAlignment: MainAxisAlignment.start,
                             children: [
-                              Text('레벨 순위              ',
-                                style: TextStyle(fontSize: 16, color: Colors.black,),),
+                              Text(
+                                '레벨 순위              ',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                  color: Colors.black,
+                                ),
+                              ),
                               Text('순위 없음',
-                                  style: TextStyle(fontSize: 16, color: Colors.orange)),
-                              Text('       |       ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                              Text('Lv. ?',
-                                style: TextStyle(fontSize: 16, color: Colors.black),
+                                  style: TextStyle(
+                                      fontSize: 16, color: Colors.orange)),
+                              Text(
+                                '       |       ',
+                                style: TextStyle(
+                                    fontSize: 16, fontWeight: FontWeight.bold),
+                              ),
+                              Text(
+                                'Lv. ?',
+                                style: TextStyle(
+                                    fontSize: 16, color: Colors.black),
                               ),
                             ],
                           );
@@ -214,16 +251,20 @@ class _RankingPageState extends State<RankingPage> {
                   const SizedBox(
                     height: 40,
                   ),
-                  const Text('이번 달 랭킹', style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),),
+                  const Text(
+                    '이번 달 랭킹',
+                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                  ),
                   const SizedBox(
                     height: 5,
                   ),
                   Container(
                     width: layoutWidth,
-                    margin: EdgeInsets.only(bottom: 20),
+                    margin: const EdgeInsets.only(bottom: 20),
                     height: 210,
                     decoration: BoxDecoration(
-                      border: Border.all(color: AppColors.mainDeepOrange, width: 3),
+                      border:
+                          Border.all(color: AppColors.mainDeepOrange, width: 3),
                       borderRadius: BorderRadius.circular(8),
                     ),
                     child: FutureBuilder(
@@ -231,43 +272,64 @@ class _RankingPageState extends State<RankingPage> {
                       builder: (context, snapshot) {
                         print(snapshot.toString());
 
-                        if(snapshot.hasData) {
+                        if (snapshot.hasData) {
                           return ListView.builder(
                               itemCount: snapshot.data?.length,
                               itemBuilder: (BuildContext context, int index) {
-                                if(index < 3) {
+                                if (index < 3) {
                                   return Container(
                                     child: Column(
                                       children: [
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
                                           children: [
                                             Container(
-                                              padding: EdgeInsets.only(left: 10),
+                                              padding: const EdgeInsets.only(
+                                                  left: 10),
                                               height: 25,
                                               child: const Image(
-                                                  image: AssetImage('assets/icons/icon_gold_medal.png')
-                                              ),
+                                                  image: AssetImage(
+                                                      'assets/icons/icon_gold_medal.png')),
                                             ),
                                             Container(
                                               width: 150,
                                               height: 40,
                                               alignment: Alignment.centerLeft,
-                                              child: Text('  ${snapshot.data?[index]?.userName}',
-                                                style: TextStyle(fontSize: 16, color: Colors.black,),),
+                                              child: Text(
+                                                '  ${snapshot.data?[index]?.userName}',
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
                                             ),
                                             Text('${index + 1}위',
-                                                style: TextStyle(fontSize: 16, color: _setRankingTextColor(index))),
-                                            const Text('     |     ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                                            Text('${snapshot.data?[index]?.userExp}  pts',
-                                              style: const TextStyle(fontSize: 16, color: Colors.black),
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: _setRankingTextColor(
+                                                        index))),
+                                            const Text(
+                                              '     |     ',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              '${snapshot.data?[index]?.userExp}  pts',
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black),
                                             ),
                                           ],
                                         ),
                                         Image(
-                                            width: MediaQuery.of(context).size.width * 0.75,
-                                            image: AssetImage('assets/images/line_divider.png')
-                                        ),
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.75,
+                                            image: const AssetImage(
+                                                'assets/images/line_divider.png')),
                                       ],
                                     ),
                                   );
@@ -276,34 +338,54 @@ class _RankingPageState extends State<RankingPage> {
                                     child: Column(
                                       children: [
                                         Row(
-                                          mainAxisAlignment: MainAxisAlignment.start,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.start,
                                           children: [
                                             Container(
                                               width: 150,
                                               height: 40,
-                                              margin: EdgeInsets.only(left: 35),
+                                              margin: const EdgeInsets.only(
+                                                  left: 35),
                                               alignment: Alignment.centerLeft,
-                                              child: Text('  ${snapshot.data?[index]?.userName}',
-                                                style: TextStyle(fontSize: 16, color: Colors.black,),),
+                                              child: Text(
+                                                '  ${snapshot.data?[index]?.userName}',
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
                                             ),
                                             Text('${index + 1}위',
-                                                style: TextStyle(fontSize: 16, color: _setRankingTextColor(index))),
-                                            const Text('     |     ', style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),),
-                                            Text('${snapshot.data?[index]?.userExp}  pts',
-                                              style: const TextStyle(fontSize: 16, color: Colors.black),
+                                                style: TextStyle(
+                                                    fontSize: 16,
+                                                    color: _setRankingTextColor(
+                                                        index))),
+                                            const Text(
+                                              '     |     ',
+                                              style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold),
+                                            ),
+                                            Text(
+                                              '${snapshot.data?[index]?.userExp}  pts',
+                                              style: const TextStyle(
+                                                  fontSize: 16,
+                                                  color: Colors.black),
                                             ),
                                           ],
                                         ),
                                         Image(
-                                            width: MediaQuery.of(context).size.width * 0.75,
-                                            image: AssetImage('assets/images/line_divider.png')
-                                        ),
+                                            width: MediaQuery.of(context)
+                                                    .size
+                                                    .width *
+                                                0.75,
+                                            image: const AssetImage(
+                                                'assets/images/line_divider.png')),
                                       ],
                                     ),
                                   );
                                 }
-                              }
-                            );
+                              });
                         } else {
                           return const CircularProgressIndicator();
                         }
@@ -316,9 +398,13 @@ class _RankingPageState extends State<RankingPage> {
                 ],
               ),
             ),
-            const Text('순위권에 오른 플레이어분께는\n매월 말일 특별한 보상이 지급됩니다.',
+            const Text(
+              '순위권에 오른 플레이어분께는\n매월 말일 특별한 보상이 지급됩니다.',
               textAlign: TextAlign.center,
-              style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold,),
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ],
         ),

@@ -54,18 +54,20 @@ class _MyDeckPageState extends State<MyDeckPage> {
       );
 
       if (response.statusCode == 200) {
-        final Map<String, dynamic> responseData = jsonDecode(utf8.decode(response.bodyBytes));
+        final Map<String, dynamic> responseData =
+            jsonDecode(utf8.decode(response.bodyBytes));
         final String userName = responseData['data']['name'];
         List listData = responseData['data']['decks'];
         List deckList = [];
 
-        listData.forEach((data) {
-          deckList.add(Deck(data['deck_id'], userName, data['name'], data['number_of_cards']));
-        });
+        for (var data in listData) {
+          deckList.add(Deck(data['deck_id'], userName, data['name'],
+              data['number_of_cards']));
+        }
 
         return deckList;
       }
-    } catch(e) {
+    } catch (e) {
       print(e);
       return null;
     }
@@ -167,43 +169,45 @@ class _MyDeckPageState extends State<MyDeckPage> {
             const SizedBox(
               height: 20,
             ),
-
             _isLoading
-            ? const CircularProgressIndicator()
-            : Expanded(
-              child: GridView.builder(
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 3,
-                  childAspectRatio: 1 / 1.4,
-                  mainAxisSpacing: 5,
-                  crossAxisSpacing: 0.5
-                ),
-                itemCount: _deckList?.length,
-                itemBuilder: (context, index) {
-                  return Container(
-                    child: Column(
-                      children: [
-                        GestureDetector(
-                          child: const Image(
-                            image: AssetImage('assets/images/emptyDeck.png')
-                          ),
-                          onTap: () {
-                            Navigator.push(context, MaterialPageRoute(
-                              builder: (context) => DeckDetailsPage(deckId: _deckList?[index].deckId),
-                            //   builder: (context) => DeckDetailsPage()    // 재환이가 짠 페이지로 연결
-                            ));
-                          },
-                        ),
-                        const SizedBox(
-                          height: 5,
-                        ),
-                        Text(_deckList?[index].name)
-                      ],
-                    ),
-                  );
-                }
-              )
-            ),
+                ? const CircularProgressIndicator()
+                : Expanded(
+                    child: GridView.builder(
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 3,
+                                childAspectRatio: 1 / 1.4,
+                                mainAxisSpacing: 5,
+                                crossAxisSpacing: 0.5),
+                        itemCount: _deckList?.length,
+                        itemBuilder: (context, index) {
+                          return Container(
+                            child: Column(
+                              children: [
+                                GestureDetector(
+                                  child: const Image(
+                                    image: AssetImage(
+                                        'assets/images/deck_image.png'),
+                                    width: 80,
+                                  ),
+                                  onTap: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                          builder: (context) => DeckDetailsPage(
+                                              deckId: _deckList?[index].deckId),
+                                          //   builder: (context) => DeckDetailsPage()    // 재환이가 짠 페이지로 연결
+                                        ));
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 5,
+                                ),
+                                Text(_deckList?[index].name)
+                              ],
+                            ),
+                          );
+                        })),
           ],
         ),
       ),
