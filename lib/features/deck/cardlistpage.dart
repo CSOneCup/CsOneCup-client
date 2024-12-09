@@ -106,8 +106,8 @@ class _CardListPageState extends State<CardListPage> {
         child: Column(
           children: [
             // 검색창
-            const SizedBox(height: 24),
-            SizedBox(
+            const SizedBox(height: 12),
+            /*SizedBox(
               width: MediaQuery.of(context).size.width * 0.9,
               height: 50,
               child: TextField(
@@ -129,38 +129,38 @@ class _CardListPageState extends State<CardListPage> {
                   ),
                 ),
               ),
-            ),
-            const SizedBox(height: 32,),
+            ),*/
+            // const SizedBox(height: 32,),
 
             // 필터 버튼 (dummy)
-            SizedBox(
-              height: 30,
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 200,
-                    height: 50,
-                    alignment: Alignment.centerLeft,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                        color: AppColors.mainDeepOrange,
-                        width: 1.0,
-                      ),
-                      borderRadius: BorderRadius.circular(8.0),
-                    ),
-                    child: const Text("  카테고리 |            ", style: TextStyle(color: AppColors.mainDeepOrange),),
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 16),
-
+            // SizedBox(
+            //   height: 30,
+            //   child: Row(
+            //     mainAxisAlignment: MainAxisAlignment.center,
+            //     crossAxisAlignment: CrossAxisAlignment.center,
+            //     children: [
+            //       Container(
+            //         width: 200,
+            //         height: 50,
+            //         alignment: Alignment.centerLeft,
+            //         decoration: BoxDecoration(
+            //           border: Border.all(
+            //             color: AppColors.mainDeepOrange,
+            //             width: 1.0,
+            //           ),
+            //           borderRadius: BorderRadius.circular(8.0),
+            //         ),
+            //         child: const Text("  카테고리 |            ", style: TextStyle(color: AppColors.mainDeepOrange),),
+            //       ),
+            //     ],
+            //   ),
+            // ),
+            // const SizedBox(height: 16),
+            //
 
             _isLoading
             // API Fetch 전엔 로딩 화면 출력
-            ? const CircularProgressIndicator()
+            ? const Center(child: CircularProgressIndicator())
             // 카드 Grid View 나열
             : Expanded(
               child: Padding(
