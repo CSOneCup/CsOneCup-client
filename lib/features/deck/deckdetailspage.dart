@@ -74,7 +74,7 @@ class _DeckDetailsPageState extends State<DeckDetailsPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.mainLightGray,
+      backgroundColor: AppColors.lightBeige,
       appBar: AppBar(
         elevation: 0,
         backgroundColor: AppColors.mainLightGray,
