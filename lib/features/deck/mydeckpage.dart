@@ -30,7 +30,7 @@ class _MyDeckPageState extends State<MyDeckPage> {
 
   void initData() async {
     _originalDeckList = await _loadUserDeck();
-    _deckList = _originalDeckList;
+    _deckList = await _loadUserDeck();
   }
 
   Future<List?> _loadUserDeck() async {
@@ -170,7 +170,7 @@ class _MyDeckPageState extends State<MyDeckPage> {
                   mainAxisSpacing: 5,
                   crossAxisSpacing: 0.5
                 ),
-                itemCount: _deckList!.length,
+                itemCount: _deckList?.length,
                 itemBuilder: (context, index) {
                   return Container(
                     child: Column(
@@ -189,7 +189,7 @@ class _MyDeckPageState extends State<MyDeckPage> {
                         const SizedBox(
                           height: 5,
                         ),
-                        Text(_deckList![index].name)
+                        Text(_deckList?[index].name)
                       ],
                     ),
                   );
