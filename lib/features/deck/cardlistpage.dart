@@ -100,7 +100,7 @@ class _CardListPageState extends State<CardListPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: AppColors.mainLightGray,
+      backgroundColor: AppColors.lightBeige,
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Column(

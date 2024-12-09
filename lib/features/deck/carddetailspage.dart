@@ -56,10 +56,10 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
         Navigator.pop(context);
       },
       child: Scaffold(
-        backgroundColor: AppColors.mainBeige,
+        backgroundColor: AppColors.lightBeige,
         appBar: AppBar(
           elevation: 0,
-          backgroundColor: AppColors.mainBeige,
+          backgroundColor: AppColors.lightBeige,
           leading: IconButton(onPressed: (){ Navigator.pop(context); }, icon: const Icon(Icons.arrow_back_ios_new, color: Colors.brown,)),
         ),
 
