@@ -2,7 +2,7 @@ import 'package:cs_onecup/features/deck/decklistpage.dart';
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/features/home/homepage.dart';
 import 'package:cs_onecup/features/deck/mydeckpage.dart';
-import 'package:cs_onecup/features/challenge/challengepage.dart';
+import 'package:cs_onecup/features/challenge/communitypage.dart';
 import 'package:cs_onecup/features/ranking/rankingpage.dart';
 
 class MainPage extends StatefulWidget {
@@ -91,12 +91,12 @@ class _MainPageState extends State<MainPage> {
                   ),
                   BottomNavigationBarItem(
                     icon: Image.asset(
-                      'assets/icons/icon_challengePage.png',
+                      'assets/icons/icon_communityPage.png',
                       width: 40,
                       color:
                           _index == 2 ? const Color(0xFFE1752F) : Colors.black,
                     ),
-                    label: '챌린지',
+                    label: '커뮤니티',
                   ),
                   BottomNavigationBarItem(
                     icon: Image.asset(
