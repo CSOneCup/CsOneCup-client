@@ -26,8 +26,9 @@ class SimpleCardTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print(onTap);
     return GestureDetector(
-      onTap: () => onTap != null ? onTap!(card) : null,
+      onTap: (onTap != null) ? (){onTap!(card);} : null,
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 4.0),
         child: Container(
@@ -38,7 +39,7 @@ class SimpleCardTile extends StatelessWidget {
             border: Border.all(color: Colors.black, width: 2.5),
           ),
           child: Padding(
-            // 내부 컨테이너 (베이지색)
+            // 내부 컨테이너 (베이지색);
             padding: const EdgeInsets.all(4.0), // 흰 테두리 두꼐
             child: Container(
               decoration: BoxDecoration(
@@ -60,9 +61,6 @@ class SimpleCardTile extends StatelessWidget {
                     ),
                   ),
                 ),
-                onTap: () {
-                  // 카드 클릭 이벤트
-                },
               ),
             ),
           ),
