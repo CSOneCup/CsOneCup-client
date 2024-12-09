@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:cs_onecup/data/models/deck.dart';
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:flutter/rendering.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../deck/deckdetailspage.dart';
+import 'package:http/http.dart' as http;
 
 
 class ChallengePage extends StatefulWidget {
@@ -14,36 +18,101 @@ class ChallengePage extends StatefulWidget {
 
 class _ChallengePageState extends State<ChallengePage> {
   final _deckSearchController = TextEditingController();
-  final List<Deck> _totalDeckList = <Deck>[
-    Deck(0, '선호', '테스트 덱 1', 3),
-    Deck(1, '재훈', '테스트 덱 2', 3),
-    Deck(2, '재환', '테스트 덱 3', 3),
-    Deck(3, '혁진', '테스트 덱 4', 3),
-  ];
-  List<Deck> _recommendedDeckList = <Deck>[
-    Deck(0, '선호', '테스트 덱 1', 3),
-    Deck(1, '재훈', '테스트 덱 2', 3),
-    Deck(2, '재환', '테스트 덱 3', 3),
-    Deck(3, '혁진', '테스트 덱 4', 3),
-  ];
-  List<Deck> _popularDeckList = <Deck>[
-    Deck(0, '선호', '테스트 덱 1', 3),
-    Deck(1, '재훈', '테스트 덱 2', 3),
-    Deck(2, '재환', '테스트 덱 3', 3),
-    Deck(3, '혁진', '테스트 덱 4', 3),
-  ];
-  List<Deck> _searchResultDeckList = <Deck>[
-    // Deck(0, '선호', '테스트 덱 1', 3),
-    // Deck(1, '재훈', '테스트 덱 2', 3),
-    // Deck(2, '재환', '테스트 덱 3', 3),
-    // Deck(3, '혁진', '테스트 덱 4', 3),
-  ];
+  final String url = "http://141.164.52.130:8082";
+
+  List? _totalDeckList;
+  List? _recommendedDeckList = [];
+  List? _popularDeckList = [];
+  List? _searchResultDeckList;
+
+  // final List<Deck> _totalDeckList = <Deck>[
+  //   Deck(0, '선호', '테스트 덱 1', 3),
+  //   Deck(1, '재훈', '테스트 덱 2', 3),
+  //   Deck(2, '재환', '테스트 덱 3', 3),
+  //   Deck(3, '혁진', '테스트 덱 4', 3),
+  // ];
+  // List<Deck> _recommendedDeckList = <Deck>[
+  //   Deck(0, '선호', '테스트 덱 1', 3),
+  //   Deck(1, '재훈', '테스트 덱 2', 3),
+  //   Deck(2, '재환', '테스트 덱 3', 3),
+  //   Deck(3, '혁진', '테스트 덱 4', 3),
+  // ];
+  // List<Deck> _popularDeckList = <Deck>[
+  //   Deck(0, '선호', '테스트 덱 1', 3),
+  //   Deck(1, '재훈', '테스트 덱 2', 3),
+  //   Deck(2, '재환', '테스트 덱 3', 3),
+  //   Deck(3, '혁진', '테스트 덱 4', 3),
+  // ];
+  // List<Deck> _searchResultDeckList = <Deck>[
+  //   Deck(0, '선호', '테스트 덱 1', 3),
+  //   Deck(1, '재훈', '테스트 덱 2', 3),
+  //   Deck(2, '재환', '테스트 덱 3', 3),
+  //   Deck(3, '혁진', '테스트 덱 4', 3),
+  // ];
+
+  @override
+  void initState() {
+    initData();
+    super.initState();
+  }
+
+  void initData() async {
+    _totalDeckList = await _loadUserData();
+    while(true) {
+      if(_totalDeckList!.isNotEmpty) {
+        _searchResultDeckList = _totalDeckList?[0];
+
+        for(int i = 0; i < _totalDeckList!.length; i++) {
+          if(i % 2 == 0) {
+            _recommendedDeckList?.add(_totalDeckList![i]);
+          } else {
+            _popularDeckList?.add(_totalDeckList![i]);
+          }
+        }
+        break;
+      }
+    }
+  }
+
+  Future<List?> _loadUserData() async {
+    String requestUrl = "$url/api/user/info";
+    final sharedPreference = await SharedPreferences.getInstance();
+    final jwtToken = sharedPreference.getString('authToken');
+    // List<UserProfile> userProfileList = [];
+
+    try {
+      final response = await http.get(
+        Uri.parse(requestUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = jsonDecode(utf8.decode(response.bodyBytes));
+        final String userName = responseData['data']['name'];
+        List listData = responseData['data']['decks'];
+        List deckList = [];
+
+        listData.forEach((data) {
+          deckList.add(Deck(data['deck_id'], userName, data['name'], data['number_of_cards']));
+        });
+
+        return deckList;
+      }
+    } catch(e) {
+      print(e);
+      return null;
+    }
+    return null;
+  }
 
   List<Deck> searchDeckList(String searchText) {
     List<Deck> deckList = <Deck>[];
 
     // 덱 이름 기반 필터링
-    _totalDeckList.where((deck) {
+    _totalDeckList?.where((deck) {
       if (deck.name == searchText ||
           deck.name.toString().contains(searchText)) {
         return true;
@@ -53,7 +122,7 @@ class _ChallengePageState extends State<ChallengePage> {
     }).forEach((deck) => deckList.add(deck));
 
     // 덱 태그 기반 필터링
-    _totalDeckList.where((deck) {
+    _totalDeckList?.where((deck) {
       if (deck.tags.toString().contains(searchText) &&
           !deckList.contains(deck)) {
         return true;
@@ -63,12 +132,6 @@ class _ChallengePageState extends State<ChallengePage> {
     }).forEach((deck) => deckList.add(deck));
 
     return deckList;
-  }
-
-  @override
-  void initState() {
-    // API로 데이터 받아와서 저장
-    super.initState();
   }
 
   @override
@@ -133,7 +196,7 @@ class _ChallengePageState extends State<ChallengePage> {
                           width: widgetWidth,
                           child: ListView.builder(
                             scrollDirection: Axis.horizontal,
-                            itemCount: _recommendedDeckList.length,
+                            itemCount: _recommendedDeckList?.length,
                             itemBuilder: (context, index) {
                               return Center(
                                 child: Container(
@@ -155,7 +218,7 @@ class _ChallengePageState extends State<ChallengePage> {
                                         height: 5,
                                       ),
                                       Container(
-                                        child: Text(_recommendedDeckList[index].name, style: TextStyle(fontWeight: FontWeight.bold),)
+                                        child: Text(_recommendedDeckList![index].name, style: TextStyle(fontWeight: FontWeight.bold),)
                                       )
                                     ],
                                   ),
@@ -190,7 +253,7 @@ class _ChallengePageState extends State<ChallengePage> {
                             width: widgetWidth,
                             child: ListView.builder(
                               scrollDirection: Axis.horizontal,
-                              itemCount: _popularDeckList.length,
+                              itemCount: _popularDeckList?.length,
                               itemBuilder: (context, index) {
                                   return Container(
                                     width: widgetWidth / 3,
@@ -211,7 +274,7 @@ class _ChallengePageState extends State<ChallengePage> {
                                           const SizedBox(
                                             height: 5,
                                           ),
-                                          Text(_popularDeckList[index].name, style: TextStyle(fontWeight: FontWeight.bold),)
+                                          Text(_popularDeckList?[index].name, style: TextStyle(fontWeight: FontWeight.bold),)
                                         ],
                                       ),
                                     ),
@@ -309,16 +372,18 @@ class _ChallengePageState extends State<ChallengePage> {
                           color: Colors.white,
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        child: _searchResultDeckList.isEmpty ?
-                        const Center(child: Text('검색 결과 없음', textAlign: TextAlign.center, style: TextStyle(fontSize: 20, color: Colors.grey, fontWeight: FontWeight.bold),)) :
-                        ListView.builder(
-                          itemCount: _searchResultDeckList.length,
-                          itemBuilder: (context, index) {
-                            return ListTile(
-                              title: Text(_searchResultDeckList[index].name),
-                            );
-                          }
-                        )
+                        child: _searchResultDeckList == null || _searchResultDeckList!.isEmpty
+                            ? const Center(
+                                child: Text('검색 결과 없음', style: TextStyle(fontSize: 16, color: Colors.grey),),
+                            )
+                            : ListView.builder(
+                              itemCount: _searchResultDeckList?.length,
+                              itemBuilder: (context, index) {
+                                return ListTile(
+                                  title: Text(_searchResultDeckList?[index].name),
+                                );
+                              }
+                            )
                       ),
                       const SizedBox(
                         height: 20,
