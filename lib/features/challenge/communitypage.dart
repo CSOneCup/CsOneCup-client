@@ -20,9 +20,11 @@ class _ChallengePageState extends State<ChallengePage> {
   final String url = "http://141.164.52.130:8082";
 
   List? _totalDeckList;
-  List? _recommendedDeckList = [];
-  List? _popularDeckList = [];
+  List? _recommendedDeckList;
+  List? _popularDeckList;
   List? _searchResultDeckList;
+
+  bool _isLoading = true;
 
   // final List<Deck> _totalDeckList = <Deck>[
   //   Deck(0, '선호', '테스트 덱 1', 3),
@@ -57,20 +59,26 @@ class _ChallengePageState extends State<ChallengePage> {
 
   void initData() async {
     _totalDeckList = await _loadUserData();
-    while(true) {
-      if(_totalDeckList!.isNotEmpty) {
-        _searchResultDeckList = _totalDeckList?[0];
 
-        for(int i = 0; i < _totalDeckList!.length; i++) {
-          if(i % 2 == 0) {
-            _recommendedDeckList?.add(_totalDeckList![i]);
-          } else {
-            _popularDeckList?.add(_totalDeckList![i]);
-          }
+    if(_totalDeckList!.isNotEmpty) {
+      _searchResultDeckList = [];
+
+      for(int i = 0; i < _totalDeckList!.length; i++) {
+        if(i % 2 == 0) {
+          _recommendedDeckList?.add(_totalDeckList![i]);
+        } else {
+          _popularDeckList?.add(_totalDeckList![i]);
         }
-        break;
       }
+    } else {
+      _searchResultDeckList = [];
+      _recommendedDeckList = [];
+      _popularDeckList = [];
     }
+
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   Future<List?> _loadUserData() async {
@@ -156,7 +164,7 @@ class _ChallengePageState extends State<ChallengePage> {
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Text(
-                    'CHALLENGE',
+                    'COMMUNITY',
                     style: TextStyle(
                         fontSize: 35,
                         color: Colors.white,
@@ -169,6 +177,8 @@ class _ChallengePageState extends State<ChallengePage> {
                 ],
               ),
             ),
+
+            _isLoading ? const CircularProgressIndicator() :
             SingleChildScrollView(
               child: Container(
                 width: MediaQuery.of(context).size.width,
@@ -229,9 +239,9 @@ class _ChallengePageState extends State<ChallengePage> {
                                           child: Image.asset('assets/images/recommend_deck.png', width: 70, height: 90,)
                                         ),
                                         onTap: () {
-                                          // Navigator.push(context, MaterialPageRoute(
-                                          //   builder: (context) => DeckDetailsPage(),
-                                          // ));
+                                          Navigator.push(context, MaterialPageRoute(
+                                            builder: (context) => DeckDetailsPage(deckId: _recommendedDeckList?[index].deckId),
+                                          ));
                                         },
                                       ),
                                       const SizedBox(
@@ -301,9 +311,9 @@ class _ChallengePageState extends State<ChallengePage> {
                                               height: 90,
                                             )),
                                             onTap: () {
-                                            //   Navigator.push(context, MaterialPageRoute(
-                                            //     builder: (context) => DeckDetailsPage(),
-                                            //   ));
+                                              Navigator.push(context, MaterialPageRoute(
+                                                builder: (context) => DeckDetailsPage(deckId: _popularDeckList?[index].deckId,),
+                                              ));
                                             },
                                           ),
                                           const SizedBox(
@@ -317,45 +327,7 @@ class _ChallengePageState extends State<ChallengePage> {
                                 }),
                           )),
                       const SizedBox(
-                        height: 45,
-                      ),
-                      ElevatedButton(
-                        onPressed: () {},
-                        style: ElevatedButton.styleFrom(
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          backgroundColor: Colors.white,
-                          foregroundColor: AppColors.mainDeepOrange,
-                          elevation: 10,
-                          shadowColor: AppColors.mainDeepOrange,
-                        ),
-                        child: SizedBox(
-                          width: widgetWidth * 0.5,
-                          height: 45,
-                          child: const Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              Image(
-                                  image: AssetImage(
-                                      'assets/icons/icon_rocket.png')),
-                              SizedBox(
-                                width: 10,
-                              ),
-                              Text(
-                                '빠른 시작',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 45,
+                        height: 65,
                       ),
                       const Row(
                         mainAxisAlignment: MainAxisAlignment.start,
