@@ -302,84 +302,10 @@ class _ChallengePageState extends State<ChallengePage> {
                                     ),
                                   );
                                 }),
-                          )),
+                          )
+                      ),
                       const SizedBox(
                         height: 65,
-                      ),
-                      const Row(
-                        mainAxisAlignment: MainAxisAlignment.start,
-                        children: [
-                          Text(
-                            '덱 검색',
-                            style: TextStyle(
-                                fontSize: 20,
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Container(
-                        height: 40,
-                        decoration: BoxDecoration(
-                            color: Colors.white,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: TextField(
-                          controller: _deckSearchController,
-                          cursorColor: AppColors.mainDeepOrange,
-                          textAlign: TextAlign.start,
-                          textAlignVertical: TextAlignVertical.center,
-                          decoration: InputDecoration(
-                            contentPadding:
-                                const EdgeInsets.only(left: 10, bottom: 5),
-                            fillColor: AppColors.mainDeepOrange,
-                            prefixIconColor: Colors.black,
-                            suffixIconColor: Colors.black,
-                            focusColor: AppColors.mainDeepOrange,
-                            hintText: '검색어를 입력해주세요',
-                            hintStyle: const TextStyle(
-                                fontSize: 15, color: Colors.grey),
-                            suffixIcon: const Icon(Icons.search),
-                            focusedBorder: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(10),
-                              borderSide: const BorderSide(
-                                  color: AppColors.mainDeepOrange, width: 2.0),
-                            ),
-                          ),
-                          onChanged: (text) {
-                            setState(() {
-                              _searchResultDeckList = searchDeckList(text);
-                            });
-                          },
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 20,
-                      ),
-                      Container(
-                        width: widgetWidth,
-                        height: 180,
-                        decoration: BoxDecoration(
-                          color: Colors.white,
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        child: _searchResultDeckList == null || _searchResultDeckList!.isEmpty
-                            ? const Center(
-                                child: Text('검색 결과 없음', style: TextStyle(fontSize: 16, color: Colors.grey),),
-                            )
-                            : ListView.builder(
-                              itemCount: _searchResultDeckList?.length,
-                              itemBuilder: (context, index) {
-                                return ListTile(
-                                  title: Text(_searchResultDeckList?[index].name),
-                                );
-                              }
-                            )
-                      ),
-                      const SizedBox(
-                        height: 20,
                       ),
                     ],
                   ),
