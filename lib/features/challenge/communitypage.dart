@@ -26,31 +26,6 @@ class _ChallengePageState extends State<ChallengePage> {
 
   bool _isLoading = true;
 
-  // final List<Deck> _totalDeckList = <Deck>[
-  //   Deck(0, '선호', '테스트 덱 1', 3),
-  //   Deck(1, '재훈', '테스트 덱 2', 3),
-  //   Deck(2, '재환', '테스트 덱 3', 3),
-  //   Deck(3, '혁진', '테스트 덱 4', 3),
-  // ];
-  // List<Deck> _recommendedDeckList = <Deck>[
-  //   Deck(0, '선호', '테스트 덱 1', 3),
-  //   Deck(1, '재훈', '테스트 덱 2', 3),
-  //   Deck(2, '재환', '테스트 덱 3', 3),
-  //   Deck(3, '혁진', '테스트 덱 4', 3),
-  // ];
-  // List<Deck> _popularDeckList = <Deck>[
-  //   Deck(0, '선호', '테스트 덱 1', 3),
-  //   Deck(1, '재훈', '테스트 덱 2', 3),
-  //   Deck(2, '재환', '테스트 덱 3', 3),
-  //   Deck(3, '혁진', '테스트 덱 4', 3),
-  // ];
-  // List<Deck> _searchResultDeckList = <Deck>[
-  //   Deck(0, '선호', '테스트 덱 1', 3),
-  //   Deck(1, '재훈', '테스트 덱 2', 3),
-  //   Deck(2, '재환', '테스트 덱 3', 3),
-  //   Deck(3, '혁진', '테스트 덱 4', 3),
-  // ];
-
   @override
   void initState() {
     initData();
@@ -58,34 +33,37 @@ class _ChallengePageState extends State<ChallengePage> {
   }
 
   void initData() async {
-    _totalDeckList = await _loadUserData();
-
-    if(_totalDeckList!.isNotEmpty) {
+      _totalDeckList = [];
       _searchResultDeckList = [];
-
-      for(int i = 0; i < _totalDeckList!.length; i++) {
-        if(i % 2 == 0) {
-          _recommendedDeckList?.add(_totalDeckList![i]);
-        } else {
-          _popularDeckList?.add(_totalDeckList![i]);
-        }
-      }
-    } else {
-      _searchResultDeckList = [];
-      _recommendedDeckList = [];
-      _popularDeckList = [];
-    }
+      _recommendedDeckList = await _loadDecksData();
+      _popularDeckList = await _loadDecksData();
+    // _totalDeckList = await _loadDecksData();
+    //
+    // if(_totalDeckList!.isNotEmpty) {
+    //   _searchResultDeckList = [];
+    //
+    //   for(int i = 0; i < _totalDeckList!.length; i++) {
+    //     if(i % 2 == 0) {
+    //       _recommendedDeckList?.add(_totalDeckList![i]);
+    //     } else {
+    //       _popularDeckList?.add(_totalDeckList![i]);
+    //     }
+    //   }
+    // } else {
+    //   _searchResultDeckList = [];
+    //   _recommendedDeckList = [];
+    //   _popularDeckList = [];
+    // }
 
     setState(() {
       _isLoading = false;
     });
   }
 
-  Future<List?> _loadUserData() async {
-    String requestUrl = "$url/api/user/info";
+  Future<List?> _loadDecksData() async {
+    String requestUrl = "$url/api/decks/random3";
     final sharedPreference = await SharedPreferences.getInstance();
     final jwtToken = sharedPreference.getString('authToken');
-    // List<UserProfile> userProfileList = [];
 
     try {
       final response = await http.get(
@@ -98,12 +76,11 @@ class _ChallengePageState extends State<ChallengePage> {
 
       if (response.statusCode == 200) {
         final Map<String, dynamic> responseData = jsonDecode(utf8.decode(response.bodyBytes));
-        final String userName = responseData['data']['name'];
-        List listData = responseData['data']['decks'];
+        List listData = responseData['data']['decks'] ?? [];
         List deckList = [];
 
         listData.forEach((data) {
-          deckList.add(Deck(data['deck_id'], userName, data['name'], data['number_of_cards']));
+          deckList.add(Deck.necessaryArgsConstructor(data['deck_id'], data['owner']['name'], data['name']));
         });
 
         return deckList;
@@ -248,7 +225,7 @@ class _ChallengePageState extends State<ChallengePage> {
                                         height: 5,
                                       ),
                                       Container(
-                                        child: Text(_recommendedDeckList![index].name, style: TextStyle(fontWeight: FontWeight.bold),)
+                                        child: Text(_recommendedDeckList?[index].name, style: TextStyle(fontWeight: FontWeight.bold),)
                                       )
                                     ],
                                   ),
