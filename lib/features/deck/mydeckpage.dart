@@ -22,6 +22,8 @@ class _MyDeckPageState extends State<MyDeckPage> {
   List? _deckList;
   String? _searchText;
 
+  bool _isLoading = true;
+
   @override
   void initState() {
     initData();
@@ -31,6 +33,10 @@ class _MyDeckPageState extends State<MyDeckPage> {
   void initData() async {
     _originalDeckList = await _loadUserDeck();
     _deckList = await _loadUserDeck();
+    _deckList = _deckList ?? [];
+    setState(() {
+      _isLoading = false;
+    });
   }
 
   Future<List?> _loadUserDeck() async {
@@ -161,7 +167,10 @@ class _MyDeckPageState extends State<MyDeckPage> {
             const SizedBox(
               height: 20,
             ),
-            Expanded(
+
+            _isLoading
+            ? const CircularProgressIndicator()
+            : Expanded(
               child: GridView.builder(
                 gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 3,
@@ -179,10 +188,10 @@ class _MyDeckPageState extends State<MyDeckPage> {
                             image: AssetImage('assets/images/emptyDeck.png')
                           ),
                           onTap: () {
-                            // Navigator.push(context, MaterialPageRoute(
-                            //   // builder: (context) => DeckDetailPage(deckId: _deckList[index].deckId),
+                            Navigator.push(context, MaterialPageRoute(
+                              builder: (context) => DeckDetailsPage(deckId: _deckList?[index].deckId),
                             //   builder: (context) => DeckDetailsPage()    // 재환이가 짠 페이지로 연결
-                            // ));
+                            ));
                           },
                         ),
                         const SizedBox(
