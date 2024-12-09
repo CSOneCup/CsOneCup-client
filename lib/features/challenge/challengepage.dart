@@ -246,47 +246,8 @@ class _ChallengePageState extends State<ChallengePage> {
                               );
                             }
                           ),
-                          child: SizedBox(
-                            width: widgetWidth,
-                            child: ListView.builder(
-                                scrollDirection: Axis.horizontal,
-                                itemCount: _recommendedDeckList.length,
-                                itemBuilder: (context, index) {
-                                  return Center(
-                                    child: SizedBox(
-                                      width: widgetWidth / 3,
-                                      child: Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          GestureDetector(
-                                            child: Center(
-                                                child: Image.asset(
-                                              'assets/images/recommend_deck.png',
-                                              width: 70,
-                                              height: 90,
-                                            )),
-                                            onTap: () {
-                                              // Navigator.push(context, MaterialPageRoute(
-                                              //   builder: (context) => DeckDetailsPage(),
-                                              // ));
-                                            },
-                                          ),
-                                          const SizedBox(
-                                            height: 5,
-                                          ),
-                                          Container(
-                                              child: Text(
-                                            _recommendedDeckList[index].name,
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold),
-                                          ))
-                                        ],
-                                      ),
-                                    ),
-                                  );
-                                }),
-                          )),
+                        ),
+                      ),
                       const SizedBox(
                         height: 25,
                       ),
