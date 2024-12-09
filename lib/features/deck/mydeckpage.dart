@@ -1,8 +1,12 @@
+import 'dart:convert';
+
 import 'package:cs_onecup/features/deck/deckcreatepage.dart';
 import 'package:cs_onecup/features/deck/deckdetailspage.dart';
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../data/models/deck.dart';
+import 'package:http/http.dart' as http;
 
 class MyDeckPage extends StatefulWidget {
   const MyDeckPage({super.key});
@@ -13,33 +17,68 @@ class MyDeckPage extends StatefulWidget {
 
 class _MyDeckPageState extends State<MyDeckPage> {
   final _deckSearchController = TextEditingController();
-  final List _originalDeckList = <Deck>[
-    Deck(0, '선호', '테스트 덱 1', 3),
-    Deck(1, '재훈', '테스트 덱 2', 3),
-    Deck(2, '재환', '테스트 덱 3', 3),
-    Deck(3, '혁진', '테스트 덱 4', 3),
-  ]; // 실제 데이터
-  List _deckList = <Deck>[
-    Deck(0, '선호', '테스트 덱 1', 3),
-    Deck(1, '재훈', '테스트 덱 2', 3),
-    Deck(2, '재환', '테스트 덱 3', 3),
-    Deck(3, '혁진', '테스트 덱 4', 3),
-  ];
-  final String _searchText = '';
+  final String url = "http://141.164.52.130:8082";
+  List? _originalDeckList;
+  List? _deckList;
+  String? _searchText;
 
-  int countListLength() {
-    if (_deckList.length % 3 == 0) {
-      return _deckList.length ~/ 3;
-    }
-
-    return _deckList.length ~/ 3 + 1;
+  @override
+  void initState() {
+    initData();
+    super.initState();
   }
 
-  List searchDeckList(String searchText) {
+  void initData() async {
+    _originalDeckList = await _loadUserDeck();
+    _deckList = await _loadUserDeck();
+  }
+
+  Future<List?> _loadUserDeck() async {
+    String requestUrl = "$url/api/user/info";
+    final sharedPreference = await SharedPreferences.getInstance();
+    final jwtToken = sharedPreference.getString('authToken');
+
+    try {
+      final response = await http.get(
+        Uri.parse(requestUrl),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $jwtToken'
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final Map<String, dynamic> responseData = jsonDecode(utf8.decode(response.bodyBytes));
+        final String userName = responseData['data']['name'];
+        List listData = responseData['data']['decks'];
+        List deckList = [];
+
+        listData.forEach((data) {
+          deckList.add(Deck(data['deck_id'], userName, data['name'], data['number_of_cards']));
+        });
+
+        return deckList;
+      }
+    } catch(e) {
+      print(e);
+      return null;
+    }
+    return null;
+  }
+
+  int countListLength() {
+    if (_deckList!.length % 3 == 0) {
+      return _deckList!.length ~/ 3;
+    }
+
+    return _deckList!.length ~/ 3 + 1;
+  }
+
+  List<Deck> searchDeckList(String searchText) {
     List<Deck> deckList = <Deck>[];
 
     // 덱 이름 기반 필터링
-    _originalDeckList.where((deck) {
+    _originalDeckList?.where((deck) {
       if (deck.name == searchText ||
           deck.name.toString().contains(searchText)) {
         return true;
@@ -49,7 +88,7 @@ class _MyDeckPageState extends State<MyDeckPage> {
     }).forEach((deck) => deckList.add(deck));
 
     // 덱 태그 기반 필터링
-    _originalDeckList.where((deck) {
+    _originalDeckList?.where((deck) {
       if (deck.tags.toString().contains(searchText) &&
           !deckList.contains(deck)) {
         return true;
@@ -123,37 +162,39 @@ class _MyDeckPageState extends State<MyDeckPage> {
               height: 20,
             ),
             Expanded(
-                child: GridView.builder(
-                    gridDelegate:
-                        const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 3,
-                            childAspectRatio: 1 / 1.4,
-                            mainAxisSpacing: 5,
-                            crossAxisSpacing: 0.5),
-                    itemCount: _deckList.length,
-                    itemBuilder: (context, index) {
-                      return Container(
-                        child: Column(
-                          children: [
-                            GestureDetector(
-                              child: const Image(
-                                  image: AssetImage(
-                                      'assets/images/emptyDeck.png')),
-                              onTap: () {
-                                // Navigator.push(context, MaterialPageRoute(
-                                //   // builder: (context) => DeckDetailPage(deckId: _deckList[index].deckId),
-                                //   builder: (context) => DeckDetailsPage()    // 재환이가 짠 페이지로 연결
-                                // ));
-                              },
-                            ),
-                            const SizedBox(
-                              height: 5,
-                            ),
-                            Text(_deckList[index].name)
-                          ],
+              child: GridView.builder(
+                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                  crossAxisCount: 3,
+                  childAspectRatio: 1 / 1.4,
+                  mainAxisSpacing: 5,
+                  crossAxisSpacing: 0.5
+                ),
+                itemCount: _deckList?.length,
+                itemBuilder: (context, index) {
+                  return Container(
+                    child: Column(
+                      children: [
+                        GestureDetector(
+                          child: const Image(
+                            image: AssetImage('assets/images/emptyDeck.png')
+                          ),
+                          onTap: () {
+                            // Navigator.push(context, MaterialPageRoute(
+                            //   // builder: (context) => DeckDetailPage(deckId: _deckList[index].deckId),
+                            //   builder: (context) => DeckDetailsPage()    // 재환이가 짠 페이지로 연결
+                            // ));
+                          },
                         ),
-                      );
-                    })),
+                        const SizedBox(
+                          height: 5,
+                        ),
+                        Text(_deckList?[index].name)
+                      ],
+                    ),
+                  );
+                }
+              )
+            ),
           ],
         ),
       ),
