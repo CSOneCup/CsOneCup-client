@@ -36,6 +36,7 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
   final GlobalKey<FlipCardState> _cardKey = GlobalKey<FlipCardState>();
   final _cardScaleFactor = 2.0;
   String bottomLabelText = "눌러서 답 보기";
+  bool isFront = true;
 
   @override
   void initState() {
@@ -83,8 +84,9 @@ class _CardDetailsPageState extends State<CardDetailsPage> {
               width: 300,
               height: 500,
               child: FlipCard(
-                onFlipDone: (isFront) {
+                onFlip: () {
                   setState(() {
+                    isFront = !isFront;
                     bottomLabelText = isFront ? "눌러서 답 보기" : "눌러서 문제 보기";
                   });
                 },
