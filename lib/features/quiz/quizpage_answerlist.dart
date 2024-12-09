@@ -2,12 +2,33 @@ import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
 import 'package:cs_onecup/features/answer/answerpage.dart';
 
-class QuizpageAnswerlist extends StatefulWidget {
-  final List<String> _answerList;
+import '../../core/constants/config.dart';
 
-  const QuizpageAnswerlist({
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
+class QuizpageAnswerlist extends StatefulWidget {
+  final bool redundant;
+  String category;
+  final String quizCategory;
+  final String quizExplanation;
+  final int quizAnswer;
+  final int csv_num;
+  final int solvedAnswerCnt;
+
+  final List<dynamic> _answerList;
+
+  QuizpageAnswerlist({
     super.key,
-    required List<String> answerList,
+    required List<dynamic> answerList,
+    required this.redundant,
+    required this.category,
+    required this.quizCategory,
+    required this.quizExplanation,
+    required this.quizAnswer,
+    required this.csv_num,
+    required this.solvedAnswerCnt,
   }) : _answerList = answerList;
 
   @override
@@ -22,6 +43,8 @@ class _QuizpageAnswerlistState extends State<QuizpageAnswerlist> {
   late double _answerFontSize;
   late FontWeight _answerFontWeight;
 
+  late String _answerString;
+
   int _selectedAnswerIndex = -1;
 
   @override
@@ -35,7 +58,28 @@ class _QuizpageAnswerlistState extends State<QuizpageAnswerlist> {
       _answerFontSize = 25;
       _answerFontWeight = FontWeight.normal;
     }
+
+    _answerString = widget._answerList[widget.quizAnswer - 1];
+
     super.initState();
+  }
+
+  Future<void> _getCard() async {
+    final SharedPreferences prefs = await SharedPreferences.getInstance();
+    final String? authToken = prefs.getString('authToken');
+    const String url = '${Config.baseUrl}/api/cards/user/add';
+    final body = jsonEncode({
+      "csv_num": widget.csv_num,
+    });
+
+    final http.Response response = await http.post(
+      Uri.parse(url),
+      headers: <String, String>{
+        'Content-Type': 'application/json; charset=UTF-8',
+        'Authorization': 'Bearer $authToken',
+      },
+      body: body,
+    );
   }
 
   @override
@@ -62,9 +106,26 @@ class _QuizpageAnswerlistState extends State<QuizpageAnswerlist> {
                       onTap: () {
                         if (_selectedAnswerIndex == index) {
                           //선택한 답이 또 클릭되면 제출
+
+                          final bool isCorrect =
+                              _selectedAnswerIndex == widget.quizAnswer - 1;
+
+                          //정답 시 로직
+                          if (isCorrect) {
+                            _getCard();
+                          }
+
                           Navigator.of(context).push(
                             MaterialPageRoute(
-                              builder: (context) => const AnswerPage(),
+                              builder: (context) => AnswerPage(
+                                redundant: widget.redundant,
+                                category: widget.category,
+                                quizCategory: widget.quizCategory,
+                                quizExplanation: widget.quizExplanation,
+                                quizAnswer: _answerString,
+                                isCorrect: isCorrect,
+                                solvedAnswerCnt: widget.solvedAnswerCnt,
+                              ),
                             ),
                           );
                         } else {

@@ -1,9 +1,23 @@
+import 'package:cs_onecup/core/constants/config.dart';
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/widgets/cards/iconcardwidget.dart';
 import 'package:cs_onecup/features/quiz/quizepage.dart';
 
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+
 class CardsInHand extends StatefulWidget {
-  const CardsInHand({super.key});
+  final bool redundant;
+  String category;
+  final VoidCallback onPop;
+
+  CardsInHand({
+    super.key,
+    required this.redundant,
+    required this.category,
+    required this.onPop,
+  });
 
   @override
   State<CardsInHand> createState() => _CardsInHandState();
@@ -20,6 +34,7 @@ class _CardsInHandState extends State<CardsInHand>
   @override
   void initState() {
     super.initState();
+
     _controller = AnimationController(
       duration: const Duration(milliseconds: 250),
       vsync: this,
@@ -41,23 +56,31 @@ class _CardsInHandState extends State<CardsInHand>
     super.dispose();
   }
 
-  void _startAnimation() {
-    _controller.forward(from: 0.0).then((_) {
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => const QuizPage(),
+  void _startAnimation() async {
+    await _controller.forward(from: 0.0);
+    await Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => QuizPage(
+          redundant: widget.redundant,
+          category: widget.category,
+          solvedAnswerCnt: 0,
         ),
-      ).then((_) {
-        setState(() {
-          _dragOffsetY = 0.0;
-        });
-      });
+      ),
+    );
+    widget.onPop();
+
+    setState(() {
+      _dragOffsetY = 0.0;
     });
   }
 
   @override
   Widget build(BuildContext context) {
+    if (widget.category == '모든 카테고리') {
+      widget.category = 'all';
+    }
+
     return GestureDetector(
       onPanUpdate: (details) {
         if (details.delta.dy < 0) {

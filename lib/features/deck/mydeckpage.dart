@@ -119,7 +119,11 @@ class _MyDeckPageState extends State<MyDeckPage> {
               height: 15,
             ),
             Padding(
-              padding: EdgeInsets.only(left: buttonWidth / 16, right: buttonWidth / 16, top: 5, bottom: 5),
+              padding: EdgeInsets.only(
+                  left: buttonWidth / 16,
+                  right: buttonWidth / 16,
+                  top: 5,
+                  bottom: 5),
               child: SizedBox(
                 height: 45,
                 child: TextField(
@@ -133,22 +137,17 @@ class _MyDeckPageState extends State<MyDeckPage> {
                     focusColor: AppColors.mainDeepOrange,
                     hintText: '검색어를 입력해주세요',
                     hintStyle: const TextStyle(
-                      fontSize: 15,
-                      color: AppColors.mainDeepOrange),
+                        fontSize: 15, color: AppColors.mainDeepOrange),
                     suffixIcon: const Icon(Icons.search),
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                        color: AppColors.mainDeepOrange,
-                        width: 1.5
-                      ),
+                          color: AppColors.mainDeepOrange, width: 1.5),
                     ),
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10),
                       borderSide: const BorderSide(
-                          color: AppColors.mainDeepOrange,
-                          width: 2.0
-                      ),
+                          color: AppColors.mainDeepOrange, width: 2.0),
                     ),
                   ),
                   onChanged: (text) {
@@ -202,14 +201,17 @@ class _MyDeckPageState extends State<MyDeckPage> {
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const DeckCreatePage()));
+              MaterialPageRoute(builder: (context) => const DeckCreatePage()));
         },
         tooltip: 'Create Deck',
         backgroundColor: AppColors.mainDeepOrange,
         foregroundColor: Colors.white,
         elevation: 25,
         shape: const CircleBorder(),
-        child: const Icon(Icons.add, size: 30,),
+        child: const Icon(
+          Icons.add,
+          size: 30,
+        ),
       ),
     );
   }

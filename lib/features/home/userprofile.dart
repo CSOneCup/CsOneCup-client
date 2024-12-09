@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cs_onecup/core/constants/colors.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class UserProfile extends StatefulWidget {
   int userLevel;
@@ -51,7 +52,15 @@ class _UserProfileState extends State<UserProfile> {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        const Icon(Icons.settings),
+                        IconButton(
+                            onPressed: () async {
+                              final SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              await prefs.remove('authToken'); // authToken 삭제
+                              Navigator.of(context)
+                                  .popUntil(ModalRoute.withName('/landing'));
+                            },
+                            icon: const Icon(Icons.logout)),
                       ],
                     ),
                   ],

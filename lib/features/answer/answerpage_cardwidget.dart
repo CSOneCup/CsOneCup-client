@@ -6,13 +6,16 @@ import 'package:cs_onecup/core/widgets/cards/answercardwidget.dart';
 class AnswerpageCardwidget extends StatefulWidget {
   final String _quizCategory;
   final String _quizExplanation;
+  final String _quizAnswer;
 
   const AnswerpageCardwidget(
       {super.key,
       required String quizCategory,
-      required String quizExplanation})
+      required String quizExplanation,
+      required String quizAnswer})
       : _quizCategory = quizCategory,
-        _quizExplanation = quizExplanation;
+        _quizExplanation = quizExplanation,
+        _quizAnswer = quizAnswer;
 
   @override
   State<AnswerpageCardwidget> createState() => _AnswerpageCardwidgetState();
@@ -23,10 +26,6 @@ class _AnswerpageCardwidgetState extends State<AnswerpageCardwidget> {
   double _dragOffset = 0;
   late double _dragDistance;
   bool _loading = true;
-
-  final String _answer = '어플리케이션 개발';
-  final String _answerExplanation =
-      '운영 체제의 주요 기능은 자원 관리와 시스템 보호입니다. 애플리케이션 개발은 운영 체제의 기능이 아니라 개발 도구나 IDE가 수행하는 역할입니다.';
 
   final GlobalKey<FlipCardState> _cardKey = GlobalKey<FlipCardState>();
 
@@ -78,8 +77,8 @@ class _AnswerpageCardwidgetState extends State<AnswerpageCardwidget> {
           ),
           back: AnswerCardwidget(
             scaleFactor: _scaleFactor,
-            quizAnswer: _answer,
-            answerExplanation: _answerExplanation,
+            quizAnswer: widget._quizAnswer,
+            answerExplanation: widget._quizExplanation,
           ),
         ),
       ),
