@@ -49,18 +49,27 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
 
     // API 전송 (TODO)
     print("${_deckTitleController.text} title is valid.");
-    try {
-      await createDeck(_deckTitleController.text);
-      _deckTitleController.text = '';
-      // TODO Navigator.pop();
-    } catch (e) {
+    await createDeck(_deckTitleController.text)
+        .catchError((e) {
       print(e);
-      print("Hello exception~~");
-    }
+      print("hello exception~");
+    });
+    _deckTitleController.text = '';
+    Navigator.pop(context);
   }
 
-  Future<int> createDeck(String title) async {
+  Future<void> createDeck(String title) async {
     // 덱 생성하는 경우 (deckId 제공 안된 경우) API 호출해서 새 id 받아옴
+    final cardIds = deckCards
+        .map((card) => card.cardId)
+        .toList();
+    await apiService.post(
+      "api/cards/deck/new",
+      requestBody: {"name": title, "card_id": cardIds,},
+      fromJson: (response) => response
+    );
+    return;
+    /*
     int id = widget.deckId ??
         await apiService.post('api/decks',
             requestBody: {'name': title},
@@ -68,8 +77,7 @@ class _DeckCreatePageState extends State<DeckCreatePage> {
 
     for (var card in deckCards) {
       registerCardToDeck(card.cardId, id);
-    }
-    return -1;
+      */
   }
 
   /// 덱에 단일 카드 등록
