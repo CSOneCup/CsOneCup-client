@@ -21,11 +21,28 @@ class _MainPageState extends State<MainPage> {
     _index = 0;
   }
 
+  Widget _buildPage(int index) {
+    switch (index) {
+      case 0:
+        return HomePage();
+      case 1:
+        return DeckListPage();
+      case 2:
+        return ChallengePage();
+      case 3:
+        return RankingPage();
+      default:
+        return RankingPage();
+    }
+  }
+
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
       child: Scaffold(
-        body: IndexedStack(
+        body: _buildPage(_index),
+        /*body: IndexedStack(
           index: _index,
           children: const <Widget>[
             HomePage(),
@@ -33,7 +50,7 @@ class _MainPageState extends State<MainPage> {
             ChallengePage(),
             RankingPage(),
           ],
-        ),
+        ),*/
         bottomNavigationBar: Container(
           decoration: const BoxDecoration(
             boxShadow: [

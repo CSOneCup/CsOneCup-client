@@ -20,6 +20,8 @@ class _DeckDetailsPageState extends State<DeckDetailsPage> {
   late ApiService apiService;
   late List<QuizCard> _cards;
   late String? _deckTitle;
+
+  late Future<dynamic>? _future;
   
   void editDeck() {
     // TODO
@@ -33,37 +35,40 @@ class _DeckDetailsPageState extends State<DeckDetailsPage> {
   Future<void> _initialize() async {
     pref = await SharedPreferences.getInstance();
     String? jwt = pref.getString('authToken');
-    apiService = ApiService(defaultHeader: {'Authorization': jwt ?? ''});
+    apiService = ApiService(defaultHeader: {'Authorization': "Bearer $jwt" ?? ''});
   }
 
   /// 덱 카드 가져오기
-  Future<void> _fetchCards() async {
+  Future<bool> _fetchCards() async {
     final response = await apiService.get(
         'api/decks/${widget.deckId}/cards',
         fromJson: (json) => (json)
     );
-    final cards = (response['cards'] as List<Map<String, dynamic>>)
-            .map((cardJson) => QuizCard.fromJson(cardJson))
+    final cards = (response['cards'] as List<dynamic>)
+            .map((cardJson) => QuizCard.fromJson(cardJson as Map<String, dynamic>))
             .toList();
 
-    print("DeckDetailsPage: fetched deck named $_deckTitle");
+
     for(var card in cards) print(card); // test
 
     setState(() {
       _deckTitle = response['deck_info']['name'];
       _cards = cards;
     });
+    print("DeckDetailsPage: fetched deck named ${_deckTitle}");
+    return true;
   }
 
-  Future<void> _fetchApiData() async {
+  Future<bool> _fetchApiData() async {
     await _initialize();
     await _fetchCards();
+    return true;
   }
 
   @override
   void initState() {
     super.initState();
-    _fetchApiData();
+    _future = _fetchApiData();
   }
 
   @override
@@ -80,88 +85,84 @@ class _DeckDetailsPageState extends State<DeckDetailsPage> {
             Navigator.pop(context);
           }
         ),
-        actions: [
-          TextButton(
-            onPressed: editDeck,
-            child: const Text(
-              "편집",
-              style: TextStyle(
-                fontSize: 20,
-                color: AppColors.mainDeepOrange
-              ),
-            ),
-          ),
-          TextButton(
-            onPressed: shareDeck,
-            child: const Text(
-              "공유",
-              style: TextStyle(
-                fontSize: 20,
-                color: AppColors.mainDeepOrange
-              ),
-            ),
-          ),
-        ],
       ),
 
-      body: Column(
-        children: [
-          // 덱 제목 & 카드 수
-          Padding(
-            padding: const EdgeInsets.all(16.0),
-            child: Column(
-              children: [
-                Text(
-                  _deckTitle ?? '나의 덱',
-                  style: const TextStyle(
-                    fontSize: 35,
-                    fontWeight: FontWeight.normal,
-                    color: AppColors.mainDeepOrange,
+      body: FutureBuilder(
+          future: _future,
+          builder: (context, snapshot) {
+            if(snapshot.hasData == false) {
+              return const Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Center(
+                child: Text(
+                  'Error: ${snapshot.error}',
+                  style: const TextStyle(fontSize: 15),
+                ),
+              );
+            } else {
+              return Column(
+                children: [
+                  // 덱 제목 & 카드 수
+                  Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      children: [
+                        Text(
+                          _deckTitle ?? '나의 덱',
+                          style: const TextStyle(
+                            fontSize: 35,
+                            fontWeight: FontWeight.normal,
+                            color: AppColors.mainDeepOrange,
+                          ),
+                        ),
+                        const SizedBox(height: 4),
+                        Text(
+                          "${_cards.length} cards",
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: AppColors.mainDeepOrange.withOpacity(0.5)),
+                        ),
+                        const SizedBox(height: 45,)
+                      ],
+                    ),
                   ),
-                ),
-                const SizedBox(height: 4),
-                Text(
-                  "${_cards.length} cards",
-                  style: TextStyle(
-                      fontSize: 16,
-                      color: AppColors.mainDeepOrange.withOpacity(0.5)),
-                ),
-                const SizedBox(height: 45,)
-              ],
-            ),
-          ),
 
-          _cards.isEmpty
-          // 카드 빈 경우 텍스트 출력
-          ? const Padding(
-            padding: EdgeInsets.all(16),
-            child: Text("덱이 비었습니다!", style: TextStyle(fontSize: 36,),),
-          )
-          // 카드 리스트 출력
-          : Expanded(
-              child: ListView.builder(
-                itemCount: _cards.length,
-                itemBuilder: (context, index) => SimpleCardTile(
-                  index: index,
-                  title: _cards[index].title,
-                  category: _cards[index].category,
-                  card: _cards[index],
-                  onTap: (quizCard) {
-                    print("tapped card $index (name: ${quizCard.title}");
-                    Navigator.push(context, MaterialPageRoute(
-                            builder: (context) => CardDetailsPage(
-                                cardTitle: quizCard.title,
-                                quizCategory: quizCard.category,
-                                quizExplanation: quizCard.question,
-                                quizAnswer: quizCard.choice[quizCard.answer - 1],
-                                answerExplanation: quizCard.explanation))
-                    );
-                  },
-                )
-              )
-          )
-        ],
-      )
+                  _cards.isEmpty
+                  // 카드 빈 경우 텍스트 출력
+                      ? const Padding(
+                    padding: EdgeInsets.all(16),
+                    child: Text("덱이 비었습니다!", style: TextStyle(fontSize: 36,),),
+                  )
+                  // 카드 리스트 출력
+                      : Expanded(
+                      child: ListView.builder(
+                          itemCount: _cards.length,
+                          itemBuilder: (context, index) => SimpleCardTile(
+                            index: index,
+                            title: _cards[index].title,
+                            category: _cards[index].category,
+                            card: _cards[index],
+                            onTap: (quizCard) {
+                              print("tapped card $index (name: ${quizCard.title}");
+                              Navigator.push(context, MaterialPageRoute(
+                                  builder: (context) => CardDetailsPage(
+                                      cardTitle: quizCard.title,
+                                      quizCategory: quizCard.category,
+                                      quizExplanation: quizCard.question,
+                                      quizAnswer: quizCard.choice[quizCard.answer - 1],
+                                      answerExplanation: quizCard.explanation))
+                              );
+                            },
+                          )
+                      )
+                  )
+                ],
+              );
+            }
+          }
+      ),
+
+
     );
   }
 }
